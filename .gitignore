@@ -1,0 +1,30 @@
+# Large files (>100MB, excluded from GitHub)
+序列K-原版/序列K-原版.pdf
+序列O-原版/序列O-原版.pdf
+
+# Cache directories
+**/.cache/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
