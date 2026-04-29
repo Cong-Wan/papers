@@ -291,7 +291,7 @@ Standard Hyper-Connections. The standard HC expands the width of the residual st
 
 
 $$
-X _ {l + 1} = B _ {l} X _ {l} + C _ {l} \mathcal {F} _ {l} (A _ {l} X _ {l}), \tag {1}
+X_{l+1} = B_{l} X_{l} + C_{l} \mathcal{F}_{l}(A_{l} X_{l}), \tag{1}
 $$
 
 
@@ -308,7 +308,7 @@ Manifold-Constrained Residual Mapping. The core innovation of mHC is to constrai
 
 
 $$
-B _ {l} \in \mathcal {M} := \{M \in \mathbb {R} ^ {n \times n} \mid M \mathbf {1} _ {n} = \mathbf {1} _ {n}, \mathbf {1} _ {n} ^ {T} M = \mathbf {1} _ {n} ^ {T}, M \geqslant 0 \}. \tag {2}
+B_{l} \in \mathcal{M} := \{M \in \mathbb{R}^{n \times n} \mid M \mathbf{1}_{n} = \mathbf{1}_{n}, \mathbf{1}_{n}^{T} M = \mathbf{1}_{n}^{T}, M \geqslant 0 \}. \tag{2}
 $$
 
 
@@ -319,17 +319,17 @@ Dynamic Parameterization. The parameters of three linear mappings are dynamicall
 
 
 $$
-\tilde {A} _ {l} = \alpha_ {l} ^ {\mathrm {p r e}} \cdot (\hat {X} _ {l} W _ {l} ^ {\mathrm {p r e}}) + S _ {l} ^ {\mathrm {p r e}}, \tag {3}
+\tilde{A}_{l} = \alpha_{l}^{\mathrm{pre}} \cdot (\hat{X}_{l} W_{l}^{\mathrm{pre}}) + S_{l}^{\mathrm{pre}}, \tag{3}
 $$
 
 
 $$
-\tilde {B} _ {l} = \alpha_ {l} ^ {\mathrm {r e s}} \cdot \operatorname {M a t} \left(\hat {X} _ {l} W _ {l} ^ {\mathrm {r e s}}\right) + S _ {l} ^ {\mathrm {r e s}}, \tag {4}
+\tilde{B}_{l} = \alpha_{l}^{\mathrm{res}} \cdot \operatorname{Mat}\left(\hat{X}_{l} W_{l}^{\mathrm{res}}\right) + S_{l}^{\mathrm{res}}, \tag{4}
 $$
 
 
 $$
-\tilde {C} _ {l} = \alpha_ {l} ^ {\mathrm {p o s t}} \cdot (\hat {X} _ {l} W _ {l} ^ {\mathrm {p o s t}}) ^ {T} + S _ {l} ^ {\mathrm {p o s t}}, \tag {5}
+\tilde{C}_{l} = \alpha_{l}^{\mathrm{post}} \cdot (\hat{X}_{l} W_{l}^{\mathrm{post}})^{T} + S_{l}^{\mathrm{post}}, \tag{5}
 $$
 
 
@@ -340,12 +340,12 @@ Applying Parameter Constraints. After obtaining the unconstrained raw parameters
 
 
 $$
-A _ {l} = \sigma (\tilde {A} _ {l}), \tag {6}
+A_{l} = \sigma(\tilde{A}_{l}), \tag{6}
 $$
 
 
 $$
-C _ {l} = 2 \sigma (\tilde {C} _ {l}). \tag {7}
+C_{l} = 2\sigma(\tilde{C}_{l}). \tag{7}
 $$
 
 
@@ -353,7 +353,7 @@ As for the residual mapping \(\tilde{B}_l\), we project it onto the manifold of 
 
 
 $$
-M ^ {(t)} = \mathcal {T} _ {r} \left(\mathcal {T} _ {c} \left(M ^ {(t - 1)}\right)\right), \tag {8}
+M^{(t)} = \mathcal{T}_{r}\left(\mathcal{T}_{c}\left(M^{(t-1)}\right)\right), \tag{8}
 $$
 
 
@@ -394,12 +394,12 @@ dimension:
 
 
 $$
-C ^ {a} = H \cdot W ^ {a K V}, \quad C ^ {b} = H \cdot W ^ {b K V}, \tag {9}
+C^{a} = H \cdot W^{aKV}, \quad C^{b} = H \cdot W^{bKV}, \tag{9}
 $$
 
 
 $$
-Z ^ {a} = H \cdot W ^ {a Z}, \qquad Z ^ {b} = H \cdot W ^ {b Z}, \tag {10}
+Z^{a} = H \cdot W^{aZ}, \qquad Z^{b} = H \cdot W^{bZ}, \tag{10}
 $$
 
 
@@ -407,12 +407,12 @@ where \( W^{aKV}, W^{bKV}, W^{aZ}, W^{bZ} \in \mathbb{R}^{d \times c} \) are tra
 
 
 $$
-\left[ S _ {m i: m (i + 1) - 1} ^ {a}; S _ {m (i - 1): m i - 1} ^ {b} \right] = \operatorname {S o f t m a x} _ {\mathrm {r o w}} \big ([ Z _ {m i: m (i + 1) - 1} ^ {a} + B ^ {a}; Z _ {m (i - 1): m i - 1} ^ {b} + B ^ {b} ] \big), \tag {11}
+\left[S_{mi:m(i+1)-1}^{a}; S_{m(i-1):mi-1}^{b}\right] = \operatorname{Softmax}_{\mathrm{row}}\big([Z_{mi:m(i+1)-1}^{a} + B^{a}; Z_{m(i-1):mi-1}^{b} + B^{b}]\big), \tag{11}
 $$
 
 
 $$
-C _ {i} ^ {\mathrm {C o m p}} = \sum_ {j = m i} ^ {m (i + 1) - 1} S _ {j} ^ {a} \odot C _ {j} ^ {a} + \sum_ {j = m (i - 1)} ^ {m i - 1} S _ {j} ^ {b} \odot C _ {j} ^ {b}, \tag {12}
+C_{i}^{\mathrm{Comp}} = \sum_{j=mi}^{m(i+1)-1} S_{j}^{a} \odot C_{j}^{a} + \sum_{j=m(i-1)}^{mi-1} S_{j}^{b} \odot C_{j}^{b}, \tag{12}
 $$
 
 
@@ -423,12 +423,12 @@ Lightning Indexer for Sparse Selection. After obtaining the compressed KV entrie
 
 
 $$
-\mathbf {c} _ {t} ^ {Q} = \mathbf {h} _ {t} \cdot W ^ {D Q}, \tag {13}
+\mathbf{c}_{t}^{Q} = \mathbf{h}_{t} \cdot W^{DQ}, \tag{13}
 $$
 
 
 $$
-[ \mathbf {q} _ {t, 1} ^ {I}; \mathbf {q} _ {t, 2} ^ {I}; \dots ; \mathbf {q} _ {t, n _ {h} ^ {I}} ^ {I} ] = \mathbf {q} _ {t} ^ {I} = \mathbf {c} _ {t} ^ {Q} \cdot W ^ {I U Q}, \tag {14}
+[\mathbf{q}_{t,1}^{I}; \mathbf{q}_{t,2}^{I}; \dots; \mathbf{q}_{t,n_{h}^{I}}^{I}] = \mathbf{q}_{t}^{I} = \mathbf{c}_{t}^{Q} \cdot W^{IUQ}, \tag{14}
 $$
 
 
@@ -436,12 +436,12 @@ where \(\mathbf{h}_t \in \mathbb{R}^d\) is the input hidden state of the query t
 
 
 $$
-\left[ w _ {t, 1} ^ {I}; w _ {t, 2} ^ {I}; \dots ; w _ {t, n _ {h} ^ {I}} ^ {I} \right] = \mathbf {w} _ {t} ^ {I} = \mathbf {h} _ {t} \cdot W ^ {\omega}, \tag {15}
+[w_{t,1}^{I}; w_{t,2}^{I}; \dots; w_{t,n_{h}^{I}}^{I}] = \mathbf{w}_{t}^{I} = \mathbf{h}_{t} \cdot W^{\omega}, \tag{15}
 $$
 
 
 $$
-I _ {t, s} = \sum_ {h = 1} ^ {n _ {h} ^ {I}} w _ {t, h} ^ {I} \cdot \operatorname {R e L U} \left(\mathbf {q} _ {t, h} ^ {I} \cdot K _ {s} ^ {\mathrm {I C o m p}}\right), \tag {16}
+I_{t,s} = \sum_{h=1}^{n_{h}^{I}} w_{t,h}^{I} \cdot \operatorname{ReLU}\left(\mathbf{q}_{t,h}^{I} \cdot K_{s}^{\mathrm{IComp}}\right), \tag{16}
 $$
 
 
@@ -449,7 +449,7 @@ where \( W^{w} \in \mathbb{R}^{d \times n_{h}^{I}} \) is a learnable matrix; \( 
 
 
 $$
-C _ {t} ^ {\mathrm {S p r s C o m p}} = \left\{C _ {s} ^ {\mathrm {C o m p}} \Bigg | I _ {t, s} \in \operatorname {T o p - k} (I _ {t,:}) \right\}. \tag {17}
+C_{t}^{\mathrm{SprsComp}} = \left\{C_{s}^{\mathrm{Comp}} \Bigg| I_{t,s} \in \operatorname{Top-k}(I_{t,:})\right\}. \tag{17}
 $$
 
 
@@ -466,7 +466,7 @@ Shared Key-Value MQA. After selecting the sparse KV entries, CSA then performs c
 
 
 $$
-\left[ \mathbf {q} _ {t, 1}; \mathbf {q} _ {t, 2}; \dots ; \mathbf {q} _ {t, n _ {h}} \right] = \mathbf {q} _ {t} = \mathbf {c} _ {t} ^ {Q} \cdot W ^ {U Q}, \tag {18}
+[\mathbf{q}_{t,1}; \mathbf{q}_{t,2}; \dots; \mathbf{q}_{t,n_{h}}] = \mathbf{q}_{t} = \mathbf{c}_{t}^{Q} \cdot W^{UQ}, \tag{18}
 $$
 
 
@@ -474,7 +474,7 @@ where \(n_h\) denotes the number of query heads; \(W^{UQ} \in \mathbb{R}^{d_c \t
 
 
 $$
-\mathbf {o} _ {t, i} = \operatorname {C o r e A t t n} \left(\text {q u e r y} = \mathbf {q} _ {t, i}, \text {k e y} = C _ {t} ^ {\text {S p r s C o m p}}, \text {v a l u e} = C _ {t} ^ {\text {S p r s C o m p}}\right), \tag {19}
+\mathbf{o}_{t,i} = \operatorname{CoreAttn}\left(\text{query} = \mathbf{q}_{t,i}, \text{key} = C_{t}^{\mathrm{SprsComp}}, \text{value} = C_{t}^{\mathrm{SprsComp}}\right), \tag{19}
 $$
 
 
@@ -500,12 +500,12 @@ compression. Let \( H \in \mathbb{R}^{n \times d} \) be a sequence of input hidd
 
 
 $$
-C = H \cdot W ^ {K V}, \tag {20}
+C = H \cdot W^{KV}, \tag{20}
 $$
 
 
 $$
-Z = H \cdot W ^ {Z}, \tag {21}
+Z = H \cdot W^{Z}, \tag{21}
 $$
 
 
@@ -513,12 +513,12 @@ where \( W^{KV}, W^{Z} \in \mathbb{R}^{d \times c} \) are trainable parameters. 
 
 
 $$
-S _ {m ^ {\prime} i: m ^ {\prime} (i + 1) - 1} = \operatorname {S o f t m a x} _ {\text {r o w}} \left(Z _ {m ^ {\prime} i: m ^ {\prime} (i + 1) - 1} + B\right), \tag {22}
+S_{m'i:m'(i+1)-1} = \operatorname{Softmax}_{\mathrm{row}}\left(Z_{m'i:m'(i+1)-1} + B\right), \tag{22}
 $$
 
 
 $$
-C _ {i} ^ {\text {C o m p}} = \sum_ {j = m ^ {\prime} i} ^ {m ^ {\prime} (i + 1) - 1} S _ {j} \odot C _ {j}. \tag {23}
+C_{i}^{\mathrm{Comp}} = \sum_{j=m'i}^{m'(i+1)-1} S_{j} \odot C_{j}. \tag{23}
 $$
 
 
@@ -529,12 +529,12 @@ Shared Key-Value MQA and Grouped Output Projection. HCA also employs the shared 
 
 
 $$
-\mathbf {c} _ {t} ^ {Q} = \mathbf {h} _ {t} \cdot W ^ {D Q}, \tag {24}
+\mathbf{c}_{t}^{Q} = \mathbf{h}_{t} \cdot W^{DQ}, \tag{24}
 $$
 
 
 $$
-\left[ \mathbf {q} _ {t, 1}; \mathbf {q} _ {t, 2}; \dots ; \mathbf {q} _ {t, n _ {h}} \right] = \mathbf {q} _ {t} = \mathbf {c} _ {t} ^ {Q} \cdot W ^ {U Q}, \tag {25}
+[\mathbf{q}_{t,1}; \mathbf{q}_{t,2}; \dots; \mathbf{q}_{t,n_{h}}] = \mathbf{q}_{t} = \mathbf{c}_{t}^{Q} \cdot W^{UQ}, \tag{25}
 $$
 
 
@@ -542,7 +542,7 @@ where \(\mathbf{h}_t \in \mathbb{R}^d\) is the input hidden state of the query t
 
 
 $$
-\mathbf {o} _ {t, i} = \operatorname {C o r e A t t n} \left(\text {q u e r y} = \mathbf {q} _ {t, i}, \text {k e y} = C ^ {\text {C o m p}}, \text {v a l u e} = C ^ {\text {C o m p}}\right), \tag {26}
+\mathbf{o}_{t,i} = \operatorname{CoreAttn}\left(\text{query} = \mathbf{q}_{t,i}, \text{key} = C^{\mathrm{Comp}}, \text{value} = C^{\mathrm{Comp}}\right), \tag{26}
 $$
 
 
@@ -571,7 +571,7 @@ Attention Sink. In the core attention of CSA and HCA, we employ the trick of att
 
 
 $$
-s _ {h, i, j} = \frac {\operatorname {E x p} (z _ {h , i , j})}{\sum_ {k} \operatorname {E x p} (z _ {h , i , k}) + \operatorname {E x p} (z _ {h} ^ {\prime})}, \tag {27}
+s_{h,i,j} = \frac{\operatorname{Exp}(z_{h,i,j})}{\sum_{k} \operatorname{Exp}(z_{h,i,k}) + \operatorname{Exp}(z_{h}')}, \tag{27}
 $$
 
 
@@ -623,7 +623,7 @@ Hybrid Newton-Schulz Iterations. For a given matrix \(M\), let its Singular Valu
 
 
 $$
-M _ {k} = a M _ {k - 1} + b (M _ {k - 1} M _ {k - 1} ^ {T}) M _ {k - 1} + c (M _ {k - 1} M _ {k - 1} ^ {T}) ^ {2} M _ {k - 1}. \tag {28}
+M_{k} = a M_{k-1} + b (M_{k-1} M_{k-1}^{T}) M_{k-1} + c (M_{k-1} M_{k-1}^{T})^{2} M_{k-1}. \tag{28}
 $$
 
 
@@ -688,7 +688,7 @@ Observations and Proposals. We share observations and lessons from kernel develo
 
 
 $$
-\frac {C}{B} \leqslant 2 d = 6 1 4 4 \mathrm {F L O P s / B y t e}.
+\frac{C}{B} \leqslant 2d = 6144 \mathrm{FLOPs/Byte}.
 $$
 
 
@@ -1184,7 +1184,7 @@ _Table 5 | Quick Instruction special tokens for auxiliary tasks._
 
 
 $$
-\mathcal {L} _ {\mathrm {O P D}} (\theta) = \sum_ {i = 1} ^ {N} w _ {i} \cdot \mathrm {D} _ {\mathrm {K L}} \left(\pi_ {\theta} \| \pi_ {E _ {i}}\right). \tag {29}
+\mathcal{L}_{\mathrm{OPD}}(\theta) = \sum_{i=1}^{N} w_{i} \cdot \mathrm{D}_{\mathrm{KL}}\left(\pi_{\theta} \| \pi_{E_i}\right). \tag{29}
 $$
 
 
