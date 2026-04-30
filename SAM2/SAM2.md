@@ -11,7 +11,7 @@ Meta FAIR
 *core contributor, †project lead
 
 
-We present Segment Anything Model 2 (SAM 2), a foundation model towards solving promptable visual segmentation in images and videos. We build a data engine, which improves model and data via user interaction, to collect the largest video segmentation dataset to date. Our model is a simple transformer architecture with streaming memory for real-time video processing. SAM 2 trained on our data provides strong performance across a wide range of tasks. In video segmentation, we observe better accuracy, using \(3 \times\) fewer interactions than prior approaches. In image segmentation, our model is more accurate and \(6 \times\) faster than the Segment Anything Model (SAM). We believe that our data, model, and insights will serve as a significant milestone for video segmentation and related perception tasks. We are releasing a version of our model, the dataset and an interactive demo.
+We present Segment Anything Model 2 (SAM 2), a foundation model towards solving promptable visual segmentation in images and videos. We build a data engine, which improves model and data via user interaction, to collect the largest video segmentation dataset to date. Our model is a simple transformer architecture with streaming memory for real-time video processing. SAM 2 trained on our data provides strong performance across a wide range of tasks. In video segmentation, we observe better accuracy, using $3 \times$ fewer interactions than prior approaches. In image segmentation, our model is more accurate and $6 \times$ faster than the Segment Anything Model (SAM). We believe that our data, model, and insights will serve as a significant milestone for video segmentation and related perception tasks. We are releasing a version of our model, the dataset and an interactive demo.
 
 
 Demo: https://sam2.metademolab.com
@@ -62,10 +62,10 @@ _(c) Data: data engine and dataset_
 _Figure 1 We introduce the Segment Anything Model 2 (SAM 2), towards solving the promptable visual segmentation task (a) with our foundation model (b), trained on our large-scale SA-V dataset collected through our data engine (c). SAM 2 is capable of interactively segmenting regions through prompts ( clicks, boxes, or masks) on one or multiple video frames by utilizing a streaming memory that stores previous prompts and predictions._
 
 
-We employ a data engine (§5) to generate training data by using our model in the loop with annotators to interactively annotate new and challenging data. Different from most existing video segmentation datasets, our data engine is not restricted to objects of specific categories, but instead targeted to provide training data for segmenting any object with a valid boundary, including parts and subparts. Compared to existing model assisted approaches, our data engine with SAM 2 in the loop is \(8.4 \times\) faster at comparable quality. Our final Segment Anything Video (SA-V) dataset (§5.2) consists of 35.5M masks across 50.9K videos, \(53 \times\) more masks than any existing video segmentation dataset. SA-V is challenging with small objects and parts that get occluded and re-appear throughout the video. Our SA-V dataset is geographically diverse, and a fairness evaluation of SAM 2 indicates minimal performance discrepancy in video segmentation based on perceived gender, and little variance among the three perceived age groups we evaluated.
+We employ a data engine (§5) to generate training data by using our model in the loop with annotators to interactively annotate new and challenging data. Different from most existing video segmentation datasets, our data engine is not restricted to objects of specific categories, but instead targeted to provide training data for segmenting any object with a valid boundary, including parts and subparts. Compared to existing model assisted approaches, our data engine with SAM 2 in the loop is $8.4 \times$ faster at comparable quality. Our final Segment Anything Video (SA-V) dataset (§5.2) consists of 35.5M masks across 50.9K videos, $53 \times$ more masks than any existing video segmentation dataset. SA-V is challenging with small objects and parts that get occluded and re-appear throughout the video. Our SA-V dataset is geographically diverse, and a fairness evaluation of SAM 2 indicates minimal performance discrepancy in video segmentation based on perceived gender, and little variance among the three perceived age groups we evaluated.
 
 
-Our experiments (§6) show that SAM 2 delivers a step-change in the video segmentation experience. SAM 2 can produce better segmentation accuracy while using \(3 \times\) fewer interactions than prior approaches. Further, SAM 2 outperforms prior work in established video object segmentation benchmarks, under multiple evaluation settings, and delivers better performance compared to SAM on image segmentation benchmarks, while being \(6 \times\) faster. SAM 2 is shown to be effective across a variety of video and image distributions as observed through numerous zero-shot benchmarks including 17 for video segmentation and 37 for single-image segmentation.
+Our experiments (§6) show that SAM 2 delivers a step-change in the video segmentation experience. SAM 2 can produce better segmentation accuracy while using $3 \times$ fewer interactions than prior approaches. Further, SAM 2 outperforms prior work in established video object segmentation benchmarks, under multiple evaluation settings, and delivers better performance compared to SAM on image segmentation benchmarks, while being $6 \times$ faster. SAM 2 is shown to be effective across a variety of video and image distributions as observed through numerous zero-shot benchmarks including 17 for video segmentation and 37 for single-image segmentation.
 
 
 We are releasing our work under permissive open licences, including the SA-V dataset (CC by 4.0) a version of the model SAM 2 (Apache 2.0), along with an interactive online demo at https://sam2.metademolab.com.
@@ -146,7 +146,7 @@ _Figure 3 The SAM 2 architecture. For a given frame, the segmentation prediction
 Image encoder. For real-time processing of arbitrarily long videos, we take a streaming approach, consuming video frames as they become available. The image encoder is only run once for the entire interaction and its role is to provide unconditioned tokens (feature embeddings) representing each frame. We use an MAE (He et al., 2022) pre-trained Hiera (Ryali et al., 2023; Bolya et al., 2023) image encoder, which is hierarchical, allowing us to use multiscale features during decoding.
 
 
-Memory attention. The role of memory attention is to condition the current frame features on the past frames features and predictions as well as on any new prompts. We stack \( L \) transformer blocks, the first one taking the image encoding from the current frame as input. Each block performs self-attention, followed by cross-attention to memories of (prompted/unprompted) frames and object pointers (see below), stored in a memory bank (see below), followed by an MLP. We use vanilla attention operations for self- and cross-attention, allowing us to benefit from recent developments in efficient attention kernels (Dao, 2023).
+Memory attention. The role of memory attention is to condition the current frame features on the past frames features and predictions as well as on any new prompts. We stack $ L $ transformer blocks, the first one taking the image encoding from the current frame as input. Each block performs self-attention, followed by cross-attention to memories of (prompted/unprompted) frames and object pointers (see below), stored in a memory bank (see below), followed by an MLP. We use vanilla attention operations for self- and cross-attention, allowing us to benefit from recent developments in efficient attention kernels (Dao, 2023).
 
 
 Prompt encoder and mask decoder. Our prompt encoder is identical to SAM's and can be prompted by clicks (positive or negative), bounding boxes, or masks to define the extent of the object in a given frame. Sparse prompts are represented by positional encodings summed with learned embeddings for each prompt type, while masks are embedded using convolutions and summed with the frame embedding.
@@ -161,7 +161,7 @@ Unlike SAM where there is always a valid object to segment given a positive prom
 Memory encoder. The memory encoder generates a memory by downsampling the output mask using a convolutional module and summing it element-wise with the unconditioned frame embedding from the image-encoder (not shown in Fig. 3), followed by light-weight convolutional layers to fuse the information.
 
 
-Memory bank. The memory bank retains information about past predictions for the target object in the video by maintaining a FIFO queue of memories of up to \( N \) recent frames and stores information from prompts in a FIFO queue of up to \( M \) prompted frames. For instance, in the VOS task where the initial mask is the only prompt, the memory bank consistently retains the first frame's memory along with memories of up to \( N \) recent (unprompted) frames. Both sets of memories are stored as spatial feature maps.
+Memory bank. The memory bank retains information about past predictions for the target object in the video by maintaining a FIFO queue of memories of up to $ N $ recent frames and stores information from prompts in a FIFO queue of up to $ M $ prompted frames. For instance, in the VOS task where the initial mask is the only prompt, the memory bank consistently retains the first frame's memory along with memories of up to $ N $ recent (unprompted) frames. Both sets of memories are stored as spatial feature maps.
 
 
 In addition to the spatial memory, we store a list of object pointers as lightweight vectors for high-level semantic information of the object to segment, based on mask decoder output tokens of each frame (Meinhardt et al., 2022). Our memory attention cross-attends to both spatial memory features and these object pointers.
@@ -170,7 +170,7 @@ In addition to the spatial memory, we store a list of object pointers as lightwe
 ---
 
 
-We embed temporal position information into the memories of \( N \) recent frames, allowing the model to represent short-term object motion, but not into those of prompted frames, because the training signal from prompted frames is sparser and it is more difficult to generalize to the inference setting where prompted frames may come from a very different temporal range than seen during training.
+We embed temporal position information into the memories of $ N $ recent frames, allowing the model to represent short-term object motion, but not into those of prompted frames, because the training signal from prompted frames is sparser and it is more difficult to generalize to the inference setting where prompted frames may come from a very different temporal range than seen during training.
 
 
 Training. The model is trained jointly on image and video data. Similar to previous work (Kirillov et al., 2023; Sofiiuk et al., 2022), we simulate interactive prompting of the model. We sample sequences of 8 frames and randomly select up to 2 frames to prompt and probabilistically receive corrective clicks which are sampled using the ground-truth masklet and model predictions during training. The training task is to sequentially (and "interactively") predict the ground-truth masklet. Initial prompts to the model can be the ground-truth mask with probability 0.5, a positive click sampled from the ground-truth mask with probability 0.25, or a bounding box input with probability 0.25. See §C for more details.
@@ -188,13 +188,13 @@ To develop the capability to "segment anything" in video, we built a data engine
 Phase 1: SAM per frame. The initial phase used the image-based interactive SAM (Kirillov et al., 2023) to assist human annotation. Annotators are tasked with annotating the mask of a target object in every frame of the video at 6 frames per second (FPS) using SAM, and pixel-precise manual editing tools such as a "brush" and "eraser". There is no tracking model involved to assist with the temporal propagation of masks to other frames. As this is a per-frame method, and all frames require mask annotation from scratch, the process is slow, with an average annotation time of 37.8 seconds per frame in our experiment. However, this yields high-quality spatial annotations per frame. In this phase, we collected 16K masklets across 1.4K videos. We further use this approach to annotate our SA-V val and test sets to mitigate potential biases of SAM 2 during evaluation.
 
 
-Phase 2: SAM + SAM 2 Mask. The second phase added SAM 2 into the loop, where SAM 2 only accepted masks as prompts. We refer to this version as SAM 2 Mask. Annotators used SAM and other tools as in Phase 1 to generate spatial masks in the first frame, and then use SAM 2 Mask to temporally propagate the annotated mask to other frames to get the full spatio-temporal masklets. At any subsequent video frame, annotators can spatially modify the predictions made by SAM 2 Mask by annotating a mask from scratch with SAM, a "brush" and/or "eraser", and re-propagate with SAM 2 Mask, repeating this process until the masklet is correct. SAM 2 Mask was initially trained on the Phase 1 data and publicly available datasets. During Phase 2, we re-trained and updated SAM 2 Mask in the annotation loop twice using the collected data. In Phase 2, we collected 63.5K masklets. The annotation time went down to 7.4 s/frame, a \(\sim\)5.1x speed up over Phase 1.
+Phase 2: SAM + SAM 2 Mask. The second phase added SAM 2 into the loop, where SAM 2 only accepted masks as prompts. We refer to this version as SAM 2 Mask. Annotators used SAM and other tools as in Phase 1 to generate spatial masks in the first frame, and then use SAM 2 Mask to temporally propagate the annotated mask to other frames to get the full spatio-temporal masklets. At any subsequent video frame, annotators can spatially modify the predictions made by SAM 2 Mask by annotating a mask from scratch with SAM, a "brush" and/or "eraser", and re-propagate with SAM 2 Mask, repeating this process until the masklet is correct. SAM 2 Mask was initially trained on the Phase 1 data and publicly available datasets. During Phase 2, we re-trained and updated SAM 2 Mask in the annotation loop twice using the collected data. In Phase 2, we collected 63.5K masklets. The annotation time went down to 7.4 s/frame, a $\sim$5.1x speed up over Phase 1.
 
 
 Despite an improvement in annotation time, this decoupled approach requires annotating masks in intermediate frames from scratch, without previous memory. We then advanced to develop the fully-featured SAM 2, capable of performing both interactive image segmentation and mask propagation in a unified model.
 
 
-Phase 3: SAM 2. In the final phase, we utilize the fully-featured SAM 2, which accepts various types of prompts, including points and masks. SAM 2 benefits from memories of objects across the temporal dimension to generate mask predictions. This means annotators only need to provide occasional refinement clicks to SAM 2 to edit the predicted masklets in intermediate frames, as opposed to annotating from scratch with a spatial SAM which has no such memory context. During Phase 3, we re-trained and updated SAM 2 using the collected annotations five times. With SAM 2 in the loop, the annotation time per frame went down to 4.5 seconds, a \(\sim\)8.4x speed up over Phase 1. In Phase 3, we collected 197.0K masklets.
+Phase 3: SAM 2. In the final phase, we utilize the fully-featured SAM 2, which accepts various types of prompts, including points and masks. SAM 2 benefits from memories of objects across the temporal dimension to generate mask predictions. This means annotators only need to provide occasional refinement clicks to SAM 2 to edit the predicted masklets in intermediate frames, as opposed to annotating from scratch with a spatial SAM which has no such memory context. During Phase 3, we re-trained and updated SAM 2 using the collected annotations five times. With SAM 2 in the loop, the annotation time per frame went down to 4.5 seconds, a $\sim$8.4x speed up over Phase 1. In Phase 3, we collected 197.0K masklets.
 
 
 ---
@@ -212,25 +212,25 @@ Quality verification. To uphold a high standard for annotation, we introduce a v
 Auto masklet generation. Ensuring diversity in annotation is important to enable the anything capability of our model. As human annotators might typically focus more on salient objects, we augment the annotations with automatically generated masklets (referred to as "Auto"). This serves a dual purpose of increasing the coverage of annotations and helping identify model failure cases. To generate auto masklets, we prompt SAM 2 with a regular grid of points in the first frame and generate candidate masklets. These are then sent to the masklet verification step for filtering. Automatic masklets tagged as "satisfactory" are added to the SA-V dataset. Masklets identified as "unsatisfactory" (i.e., model failure cases) are sampled and presented to annotators to refine with SAM 2 in the loop (Phase 3 of the data engine). These automatic masklets cover large salient central objects but also objects of varying sizes and positions in the background.
 
 
-Analysis. Table 1 shows a comparison of the annotation protocol in each data engine phase through a controlled experiment (details in §D.2.2). We compare the average annotation time per frame, the average percentage of manually edited frames per masklet, and the average number of clicks per clicked frame. For quality evaluation, we define the Phase 1 Mask Alignment Score as the percentage of masks whose IoU compared to the corresponding masks in Phase 1 exceeds 0.75. Phase 1 data is chosen as a reference as it has per-frame high quality manual annotations. Phase 3 with SAM 2 in the loop leads to increased efficiency and comparable quality: it is \(8.4 \times\) faster than Phase 1, has the lowest edited frame percentage and clicks per frame and results in better alignment.
+Analysis. Table 1 shows a comparison of the annotation protocol in each data engine phase through a controlled experiment (details in §D.2.2). We compare the average annotation time per frame, the average percentage of manually edited frames per masklet, and the average number of clicks per clicked frame. For quality evaluation, we define the Phase 1 Mask Alignment Score as the percentage of masks whose IoU compared to the corresponding masks in Phase 1 exceeds 0.75. Phase 1 data is chosen as a reference as it has per-frame high quality manual annotations. Phase 3 with SAM 2 in the loop leads to increased efficiency and comparable quality: it is $8.4 \times$ faster than Phase 1, has the lowest edited frame percentage and clicks per frame and results in better alignment.
 
 
-In Table 2, we show the performance comparison of SAM 2 trained on the available data at the end of each phase keeping the number of iterations fixed, therefore measuring solely the impact of the additional data. We evaluate on our own SA-V val set and also on 9 zero-shot benchmarks (see §E.1 for details) using the standard \(\mathcal{I}\&\mathcal{F}\) accuracy metric (the higher the better) when prompting with 3-clicks on the first frame. We note a consistent improvement after iteratively including the data from each phase, not only on the in-domain SA-V val set, but also on the 9 zero-shot benchmarks.
+In Table 2, we show the performance comparison of SAM 2 trained on the available data at the end of each phase keeping the number of iterations fixed, therefore measuring solely the impact of the additional data. We evaluate on our own SA-V val set and also on 9 zero-shot benchmarks (see §E.1 for details) using the standard $\mathcal{I}\&\mathcal{F}$ accuracy metric (the higher the better) when prompting with 3-clicks on the first frame. We note a consistent improvement after iteratively including the data from each phase, not only on the in-domain SA-V val set, but also on the 9 zero-shot benchmarks.
 
 
 <table><tr><td>Training data</td><td>SA-V val</td><td>9 zero-shot</td></tr><tr><td>VOS + SA-1B</td><td>50.0</td><td>62.5</td></tr><tr><td>+ Phase 1</td><td>53.0</td><td>66.9</td></tr><tr><td>+ Phase 2</td><td>58.8</td><td>70.9</td></tr><tr><td>+ Phase 3</td><td>62.5</td><td>71.2</td></tr><tr><td>+ Auto</td><td>63.2</td><td>71.5</td></tr></table>
 
 
-_Table 2 Segmentation accuracy (\(\mathcal{J}\& \mathcal{F}\) metric) improvement from adding data from each data engine phase. “VOS” is a set of video object segmentation datasets. Details are in §E._
+_Table 2 Segmentation accuracy ($\mathcal{J}\& \mathcal{F}$ metric) improvement from adding data from each data engine phase. “VOS” is a set of video object segmentation datasets. Details are in §E._
 
 
 # 5.2 SA-V dataset
 
 
-The SA-V dataset collected with our data engine comprises 50.9K videos with 642.6K masklets. In Table 3 we compare the SA-V composition to common VOS datasets across the number of videos, masklets, and masks. Notably, the number of annotated masks is \(53 \times (15 \times\) without auto) larger than any existing VOS dataset, providing a substantial resource for future work. We are releasing SA-V under a permissive license.
+The SA-V dataset collected with our data engine comprises 50.9K videos with 642.6K masklets. In Table 3 we compare the SA-V composition to common VOS datasets across the number of videos, masklets, and masks. Notably, the number of annotated masks is $53 \times (15 \times$ without auto) larger than any existing VOS dataset, providing a substantial resource for future work. We are releasing SA-V under a permissive license.
 
 
-Videos. We collected a new set of 50.9K videos captured by crowdworkers. Videos comprise \(54\%\) indoor and \(46\%\) outdoor scenes with an average duration of 14 seconds. Videos feature “in-the-wild” diverse environments, and cover various everyday scenarios. Our dataset has more videos than existing VOS datasets, and as shown in Fig. 5, videos span 47 countries and were captured by diverse participants (self-reported demographics).
+Videos. We collected a new set of 50.9K videos captured by crowdworkers. Videos comprise $54\%$ indoor and $46\%$ outdoor scenes with an average duration of 14 seconds. Videos feature “in-the-wild” diverse environments, and cover various everyday scenarios. Our dataset has more videos than existing VOS datasets, and as shown in Fig. 5, videos span 47 countries and were captured by diverse participants (self-reported demographics).
 
 
 ---
@@ -281,7 +281,7 @@ _(c) Crowdworker Demographics_
 _Figure 5 Dataset distribution: (a) masklets size distribution (normalized by video resolution), (b) geographic diversity of the videos, and (c) self-reported demographics of the crowdworkers who recorded the videos._
 
 
-Masklets. The annotations comprise 190.9K manual masklet annotations and 451.7K automatic masklets collected using our data engine. Example videos with masklets overlaid (manual and automatic) are shown in Fig. 4. SA-V has \(53 \times (15 \times\) without auto annotations) more masks than the largest VOS dataset. The disappearance rate (Ding et al., 2023) in SA-V Manual (the percentage of annotated masklets that disappear in at least one frame and then re-appear) is \(42.5\%\), competitive among existing datasets. Fig. 5a shows a comparison of mask size distribution (normalized by video resolution) with DAVIS, MOSE, and YouTubeVOS. More than \(88\%\) of SA-V masks have a normalized mask area less than 0.1.
+Masklets. The annotations comprise 190.9K manual masklet annotations and 451.7K automatic masklets collected using our data engine. Example videos with masklets overlaid (manual and automatic) are shown in Fig. 4. SA-V has $53 \times (15 \times$ without auto annotations) more masks than the largest VOS dataset. The disappearance rate (Ding et al., 2023) in SA-V Manual (the percentage of annotated masklets that disappear in at least one frame and then re-appear) is $42.5\%$, competitive among existing datasets. Fig. 5a shows a comparison of mask size distribution (normalized by video resolution) with DAVIS, MOSE, and YouTubeVOS. More than $88\%$ of SA-V masks have a normalized mask area less than 0.1.
 
 
 SA-V training, validation and test splits. We split SA-V based on the video authors (and their geographic locations) to ensure minimal overlap of similar objects. To create SA-V val and SA-V test sets, we focus on challenging scenarios in selecting videos, and ask annotators to identify challenging targets that are fast-moving, have complex occlusions by other objects as well as disappearance/re-appearance patterns. These targets were annotated at 6 FPS using the data engine Phase 1 setup in §5.1. There are 293 masklets and 155 videos in the SA-V val split, and 278 masklets and 150 videos in the SA-V test split.
@@ -311,25 +311,25 @@ Here, we compare SAM 2 with previous work on zero-shot video tasks (§6.1) and i
 ![图片 page10-2](images/page010_img01.png)
 
 
-_(a) offline average \(\mathcal{J}\& \mathcal{F}\) across datasets (3-click)_
+_(a) offline average $\mathcal{J}\& \mathcal{F}$ across datasets (3-click)_
 
 
 ![图片 page10-4](images/page010_img02.png)
 
 
-_(b) online average \(\mathcal{J}\& \mathcal{F}\) across datasets (3-click)_
+_(b) online average $\mathcal{J}\& \mathcal{F}$ across datasets (3-click)_
 
 
 _Figure 6 Zero-shot accuracy over 9 datasets in interactive offline and online evaluation settings._
 
 
-We first evaluate promptable video segmentation, which involves simulating an interactive setting that resembles the user experience. We have two settings, offline evaluation, where multiple passes are made through a video to select frames to interact with based on the largest model error, and online evaluation, where the frames are annotated in a single forward pass through the video. These evaluations are conducted on 9 densely annotated zero-shot video datasets using \( N_{\mathrm{click}} = 3 \) clicks per frame (see §E.1 for details).
+We first evaluate promptable video segmentation, which involves simulating an interactive setting that resembles the user experience. We have two settings, offline evaluation, where multiple passes are made through a video to select frames to interact with based on the largest model error, and online evaluation, where the frames are annotated in a single forward pass through the video. These evaluations are conducted on 9 densely annotated zero-shot video datasets using $ N_{\mathrm{click}} = 3 $ clicks per frame (see §E.1 for details).
 
 
 We create two strong baselines, SAM+XMem++ and SAM+Cutie, based on two state-of-the-art models for video object segmentation, XMem++ (Bekuzarov et al., 2023) and Cutie (Cheng et al., 2023a). We use XMem++ to generate a video segmentation based on mask inputs on one or multiple frames. SAM is used to provide an initial mask or to refine an output (by feeding the current segmentation as a mask prompt to SAM). For the SAM+Cutie baseline, we modify Cutie to allow taking mask inputs on multiple frames.
 
 
-In Fig. 6, we report the average \(\mathcal{J}\&\mathcal{F}\) accuracy over \(N_{\mathrm{frame}} = 1,\ldots,8\) interacted frames. SAM 2 outperforms SAM+XMem++ and SAM+Cutie for both offline and online evaluation settings. Across all 9 datasets (see per-dataset results in §E.1), SAM 2 dominates both methods, confirming that SAM 2 is able to generate high-quality video segmentation from a few clicks while also allowing continued refinement of the results with further prompts. Overall, SAM 2 can generate better segmentation accuracy, with \(>3\times\) fewer interactions.
+In Fig. 6, we report the average $\mathcal{J}\&\mathcal{F}$ accuracy over $N_{\mathrm{frame}} = 1,\ldots,8$ interacted frames. SAM 2 outperforms SAM+XMem++ and SAM+Cutie for both offline and online evaluation settings. Across all 9 datasets (see per-dataset results in §E.1), SAM 2 dominates both methods, confirming that SAM 2 is able to generate high-quality video segmentation from a few clicks while also allowing continued refinement of the results with further prompts. Overall, SAM 2 can generate better segmentation accuracy, with $>3\times$ fewer interactions.
 
 
 # 6.1.2 Semi-supervised video object segmentation
@@ -338,13 +338,13 @@ In Fig. 6, we report the average \(\mathcal{J}\&\mathcal{F}\) accuracy over \(N_
 <table><tr><td>Method</td><td>1-click</td><td>3-click</td><td>5-click</td><td>bounding box</td><td>ground-truth mask‡</td></tr><tr><td>SAM+XMem++</td><td>56.9</td><td>68.4</td><td>70.6</td><td>67.6</td><td>72.7</td></tr><tr><td>SAM+Cutie</td><td>56.7</td><td>70.1</td><td>72.2</td><td>69.4</td><td>74.1</td></tr><tr><td>SAM 2</td><td>64.3</td><td>73.2</td><td>75.4</td><td>72.9</td><td>77.6</td></tr></table>
 
 
-_Table 4 Zero-shot accuracy across 17 video datasets under semi-supervised VOS evaluation using different prompts. The table shows the averaged \(\mathcal{I}\&\mathcal{F}\) for each type of prompt (1, 3 or 5 clicks, bounding boxes, or ground-truth masks) in the first video frame (\(\ddagger\): in this case we directly use masks as inputs into XMem++ or Cutie without using SAM)._
+_Table 4 Zero-shot accuracy across 17 video datasets under semi-supervised VOS evaluation using different prompts. The table shows the averaged $\mathcal{I}\&\mathcal{F}$ for each type of prompt (1, 3 or 5 clicks, bounding boxes, or ground-truth masks) in the first video frame ($\ddagger$: in this case we directly use masks as inputs into XMem++ or Cutie without using SAM)._
 
 
 We next evaluate the semi-supervised video object segmentation (VOS) setting (Pont-Tuset et al., 2017) with click, box, or mask prompts only on the first frame of the video. When using click prompts, we interactively sample either 1, 3 or 5 clicks on the first video frame, and then track the object based on these clicks.
 
 
-Similar to the interactive setting in §6.1.1, we compare to XMem++ and Cutie, using SAM for click and box prompts, and in their default setting when using mask prompts. We report the standard \(\mathcal{I}\&\mathcal{F}\) accuracy (Pont-Tuset et al., 2017), except for on VOST (Tokmakov et al., 2022), where we report the \(\mathcal{I}\) metric following its protocol. The results are in Table 4. SAM 2 outperforms both baselines on the 17 datasets, using various input prompts. The results underline that SAM 2 also excels at the conventional, non-interactive VOS task with mask input, for which these other works are specifically designed. More details are in §E.1.3.
+Similar to the interactive setting in §6.1.1, we compare to XMem++ and Cutie, using SAM for click and box prompts, and in their default setting when using mask prompts. We report the standard $\mathcal{I}\&\mathcal{F}$ accuracy (Pont-Tuset et al., 2017), except for on VOST (Tokmakov et al., 2022), where we report the $\mathcal{I}$ metric following its protocol. The results are in Table 4. SAM 2 outperforms both baselines on the 17 datasets, using various input prompts. The results underline that SAM 2 also excels at the conventional, non-interactive VOS task with mask input, for which these other works are specifically designed. More details are in §E.1.3.
 
 
 ---
@@ -359,10 +359,10 @@ We evaluate SAM 2 for fairness across demographic groups. We collect annotations
 <table><tr><td></td><td>1-click</td><td>3-click</td><td>mask</td></tr><tr><td colspan="4">gender</td></tr><tr><td>male</td><td>81.9</td><td>95.1</td><td>95.9</td></tr><tr><td>female</td><td>75.1</td><td>94.1</td><td>95.2</td></tr><tr><td colspan="4">age</td></tr><tr><td>18-26</td><td>77.2</td><td>95.0</td><td>95.7</td></tr><tr><td>26-50</td><td>76.7</td><td>94.7</td><td>95.8</td></tr><tr><td>50+</td><td>81.4</td><td>95.1</td><td>96.2</td></tr></table>
 
 
-_Table 5 Fairness evaluation of SAM 2 (under \(\mathcal{I}\& \mathcal{F}\) metric) on protected demographic groups._
+_Table 5 Fairness evaluation of SAM 2 (under $\mathcal{I}\& \mathcal{F}$ metric) on protected demographic groups._
 
 
-Table 5 shows the comparison in \(\mathcal{J}\&\mathcal{F}\) accuracy of SAM 2 for segmenting people across gender and age. At 3 clicks and with ground-truth mask prompts there is minimal discrepancy. We manually inspect 1 click predictions, and find the model frequently predicts the mask for a part instead of the person. When limiting the comparison to clips where the person is correctly segmented, the gap in 1 click shrinks substantially (\(\mathcal{J}\&\mathcal{F}\) male 94.3, female 92.7), suggesting the discrepancy can be partially attributed to ambiguity in the prompt.
+Table 5 shows the comparison in $\mathcal{J}\&\mathcal{F}$ accuracy of SAM 2 for segmenting people across gender and age. At 3 clicks and with ground-truth mask prompts there is minimal discrepancy. We manually inspect 1 click predictions, and find the model frequently predicts the mask for a part instead of the person. When limiting the comparison to clips where the person is correctly segmented, the gap in 1 click shrinks substantially ($\mathcal{J}\&\mathcal{F}$ male 94.3, female 92.7), suggesting the discrepancy can be partially attributed to ambiguity in the prompt.
 
 
 In Appendix G, we provide model, data and annotation cards for SA-V.
@@ -374,10 +374,10 @@ In Appendix G, we provide model, data and annotation cards for SA-V.
 We evaluate SAM 2 on the Segment Anything task across 37 zero-shot datasets, including 23 datasets previously used by SAM for evaluation. 1-click and 5-click mIoUs are reported in Table 6 and we show the average mIoU by dataset domain and model speed in Frames Per Second (FPS) on a single A100 GPU.
 
 
-The first column (SA-23 All) shows accuracy on the 23 datasets from SAM. SAM 2 achieves higher accuracy \((58.9\mathrm{mIoU}\) with 1 click) than SAM (58.1 mIoU with 1 click), without using any extra data and while being \(6\times\) faster. This can be mainly attributed to the smaller but more effective Hiera image encoder in SAM 2.
+The first column (SA-23 All) shows accuracy on the 23 datasets from SAM. SAM 2 achieves higher accuracy $(58.9\mathrm{mIoU}$ with 1 click) than SAM (58.1 mIoU with 1 click), without using any extra data and while being $6\times$ faster. This can be mainly attributed to the smaller but more effective Hiera image encoder in SAM 2.
 
 
-The bottom row shows how training on our SA-1B and video data mix can further improve accuracy to \(61.4\%\) on average on the 23 datasets. We also see exceptional gains on the video benchmarks from SA-23 (video datasets are evaluated as images, identical to Kirillov et al. (2023)), and the 14 new video datasets we added.
+The bottom row shows how training on our SA-1B and video data mix can further improve accuracy to $61.4\%$ on average on the 23 datasets. We also see exceptional gains on the video benchmarks from SA-23 (video datasets are evaluated as images, identical to Kirillov et al. (2023)), and the 14 new video datasets we added.
 
 
 <table><tr><td rowspan="2">Model</td><td rowspan="2">Data</td><td colspan="4">1 (5) click mIoU</td><td rowspan="2">FPS</td></tr><tr><td>SA-23 All</td><td>SA-23 Image</td><td>SA-23 Video</td><td>14 new Video</td></tr><tr><td>SAM</td><td>SA-1B</td><td>58.1 (81.3)</td><td>60.8 (82.1)</td><td>54.5 (80.3)</td><td>59.1 (83.4)</td><td>21.7</td></tr><tr><td>SAM 2</td><td>SA-1B</td><td>58.9 (81.7)</td><td>60.8 (82.1)</td><td>56.4 (81.2)</td><td>56.6 (83.7)</td><td>130.1</td></tr><tr><td>SAM 2</td><td>our mix</td><td>61.4 (83.7)</td><td>63.1 (83.9)</td><td>59.1 (83.3)</td><td>69.6 (86.0)</td><td>130.1</td></tr></table>
@@ -401,7 +401,7 @@ Our primary focus is on the general, interactive PVS task, but we also address t
 <table><tr><td rowspan="2">Method</td><td colspan="5">J&amp;F</td><td>G</td><td rowspan="2">FPS</td></tr><tr><td>MOSE val</td><td>DAVIS 2017 val</td><td>LVOS val</td><td>SA-V val</td><td>SA-V test</td><td>YTVOS 2019 val</td></tr><tr><td>STCN (Cheng et al., 2021a)</td><td>52.5</td><td>85.4</td><td>-</td><td>61.0</td><td>62.5</td><td>82.7</td><td>13.2</td></tr><tr><td>SwinB-AOT (Yang et al., 2021b)</td><td>59.4</td><td>85.4</td><td>-</td><td>51.1</td><td>50.3</td><td>84.5</td><td>-</td></tr><tr><td>SwinB-DeAOT (Yang &amp; Yang, 2022)</td><td>59.9</td><td>86.2</td><td>-</td><td>61.4</td><td>61.8</td><td>86.1</td><td>-</td></tr><tr><td>RDE (Li et al., 2022a)</td><td>46.8</td><td>84.2</td><td>-</td><td>51.8</td><td>53.9</td><td>81.9</td><td>24.4</td></tr><tr><td>XMem (Cheng &amp; Schwing, 2022)</td><td>59.6</td><td>86.0</td><td>-</td><td>60.1</td><td>62.3</td><td>85.6</td><td>22.6</td></tr><tr><td>SimVOS-B (Wu et al., 2023b)</td><td>-</td><td>88.0</td><td>-</td><td>44.2</td><td>44.1</td><td>84.2</td><td>3.3</td></tr><tr><td>JointFormer (Zhang et al., 2023b)</td><td>-</td><td>90.1</td><td>-</td><td>-</td><td>-</td><td>87.4</td><td>3.0</td></tr><tr><td>ISVOS (Wang et al., 2022)</td><td>-</td><td>88.2</td><td>-</td><td>-</td><td>-</td><td>86.3</td><td>5.8</td></tr><tr><td>DEVA (Cheng et al., 2023b)</td><td>66.0</td><td>87.0</td><td>55.9</td><td>55.4</td><td>56.2</td><td>85.4</td><td>25.3</td></tr><tr><td>Cutie-base (Cheng et al., 2023a)</td><td>69.9</td><td>87.9</td><td>66.0</td><td>60.7</td><td>62.7</td><td>87.0</td><td>36.4</td></tr><tr><td>Cutie-base+ (Cheng et al., 2023a)</td><td>71.7</td><td>88.1</td><td>-</td><td>61.3</td><td>62.8</td><td>87.5</td><td>17.9</td></tr><tr><td>SAM 2 (Hiera-B+)</td><td>75.8</td><td>90.9</td><td>74.9</td><td>73.6</td><td>74.1</td><td>88.4</td><td>43.8</td></tr><tr><td>SAM 2 (Hiera-L)</td><td>77.2</td><td>91.6</td><td>76.1</td><td>75.6</td><td>77.6</td><td>89.1</td><td>30.2</td></tr></table>
 
 
-_Table 7 VOS comparison to prior work. SAM 2 performs well in accuracy \((\mathcal{J}\& \mathcal{F},\mathcal{G})\) and speed (FPS) for video segmentation based on first-frame ground-truth mask prompts. SAM 2 performs significantly better on SA-V val/test. All FPS estimates are on A100 GPUs. FPS estimates for other than our models are taken from Cheng et al. (2023a)._
+_Table 7 VOS comparison to prior work. SAM 2 performs well in accuracy $(\mathcal{J}\& \mathcal{F},\mathcal{G})$ and speed (FPS) for video segmentation based on first-frame ground-truth mask prompts. SAM 2 performs significantly better on SA-V val/test. All FPS estimates are on A100 GPUs. FPS estimates for other than our models are taken from Cheng et al. (2023a)._
 
 
 We also evaluate existing work on the SA-V val and test sets which measure performance for open-world segments of "any" object class. When comparing on this benchmark, we see that most previous methods peak at around the same accuracy. The best performance on SA-V val and SA-V test for prior work is significantly lower demonstrating the gap to a "segment anything in videos" capability. Finally, we see that SAM 2 also brings notable gains in long-term video object segmentation as observed in the LVOS benchmark result.
@@ -410,7 +410,7 @@ We also evaluate existing work on the SA-V val and test sets which measure perfo
 # 8 Data and model ablations
 
 
-This section presents ablations that informed the design decisions for SAM 2. We evaluate on our MOSE development set ("MOSE dev") which contains 200 randomly-sampled videos from the MOSE training split and excluded from the training data in our ablations, SA-V val, and the average over 9 zero-shot video datasets. As the metric for comparison, we report \(\mathcal{I}\&\mathcal{F}\) under 3-click input on the first frame as a balance between the 1-click regime and the VOS-style mask prompts. Additionally, we report the average 1-click mIoU on the 23-dataset benchmark used by SAM for the SA task on images. Unless otherwise specified, we run our ablations at 512 resolution and with SA-V manual and a \(10\%\) subset of SA-1B. Additional details are in §C.2.
+This section presents ablations that informed the design decisions for SAM 2. We evaluate on our MOSE development set ("MOSE dev") which contains 200 randomly-sampled videos from the MOSE training split and excluded from the training data in our ablations, SA-V val, and the average over 9 zero-shot video datasets. As the metric for comparison, we report $\mathcal{I}\&\mathcal{F}$ under 3-click input on the first frame as a balance between the 1-click regime and the VOS-style mask prompts. Additionally, we report the average 1-click mIoU on the 23-dataset benchmark used by SAM for the SA task on images. Unless otherwise specified, we run our ablations at 512 resolution and with SA-V manual and a $10\%$ subset of SA-1B. Additional details are in §C.2.
 
 
 # 8.1 Data ablations
@@ -422,7 +422,7 @@ Data mix ablation. In Table 8, we compare the accuracy of SAM 2 when trained on 
 We observe tremendous benefit from adding our data engine data into the training mix, including +12.1% average performance improvement on 9 zero-shot datasets (row 11 vs 1). This can be attributed to the limited coverage and size of VOS datasets. Adding SA-1B images improves the performance on the image segmentation task (rows 3 vs 4, 5 vs 6, 9 vs 10, 11 vs 12) without degrading the VOS capability. Training only on SA-V and SA-1B (row 4) is enough to obtain strong performance on all benchmarks except for MOSE. Overall, we obtain the best results when mixing all datasets: VOS, SA-1B, and our data engine data (row 12).
 
 
-Data quantity ablation. We next study the effect of scaling training data. SAM 2 is pre-trained on SA-1B before training on varying sizes of SA-V. We report average \(\mathcal{I}\&\mathcal{F}\) score (when prompted with 3 clicks in the
+Data quantity ablation. We next study the effect of scaling training data. SAM 2 is pre-trained on SA-1B before training on varying sizes of SA-V. We report average $\mathcal{I}\&\mathcal{F}$ score (when prompted with 3 clicks in the
 
 
 ---
@@ -431,7 +431,7 @@ Data quantity ablation. We next study the effect of scaling training data. SAM 2
 <table><tr><td rowspan="2"></td><td colspan="4">Training data</td><td colspan="4">J&amp;F</td><td>mIoU</td></tr><tr><td>VOS</td><td>Internal</td><td>SA-V</td><td>SA-1B</td><td>SA-V val</td><td>Internal-test</td><td>MOSE dev</td><td>9 zero-shot</td><td>SA-23</td></tr><tr><td>1</td><td>✓</td><td></td><td></td><td></td><td>48.1</td><td>60.2</td><td>76.9</td><td>59.7</td><td>45.4</td></tr><tr><td>2</td><td></td><td>✓</td><td></td><td></td><td>57.0</td><td>72.2</td><td>70.6</td><td>70.0</td><td>54.4</td></tr><tr><td>3</td><td></td><td></td><td>✓</td><td></td><td>63.0</td><td>72.6</td><td>72.8</td><td>69.7</td><td>53.0</td></tr><tr><td>4</td><td></td><td></td><td>✓</td><td>✓</td><td>62.9</td><td>73.2</td><td>73.6</td><td>69.7</td><td>58.6</td></tr><tr><td>5</td><td></td><td>✓</td><td>✓</td><td></td><td>63.0</td><td>73.2</td><td>73.3</td><td>70.9</td><td>55.8</td></tr><tr><td>6</td><td></td><td>✓</td><td>✓</td><td>✓</td><td>63.6</td><td>75.0</td><td>74.4</td><td>71.6</td><td>58.6</td></tr><tr><td>7</td><td>✓</td><td></td><td></td><td>✓</td><td>50.0</td><td>63.2</td><td>77.6</td><td>62.5</td><td>54.8</td></tr><tr><td>8</td><td>✓</td><td>✓</td><td></td><td></td><td>54.9</td><td>71.5</td><td>77.9</td><td>70.6</td><td>55.1</td></tr><tr><td>9</td><td>✓</td><td></td><td>✓</td><td></td><td>61.6</td><td>72.8</td><td>78.3</td><td>69.9</td><td>51.0</td></tr><tr><td>10</td><td>✓</td><td></td><td>✓</td><td>✓</td><td>62.2</td><td>74.1</td><td>78.5</td><td>70.3</td><td>57.3</td></tr><tr><td>11</td><td>✓</td><td>✓</td><td>✓</td><td></td><td>61.8</td><td>74.4</td><td>78.5</td><td>71.8</td><td>55.7</td></tr><tr><td>12</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>63.1</td><td>73.7</td><td>79.0</td><td>71.6</td><td>58.9</td></tr></table>
 
 
-_Table 8 We train our model on different data mixtures including VOS (Davis, MOSE, YouTubeVOS), and subsets of Internal-train, SA-V, and SA-1B. We report the \(\mathcal{I}\&\mathcal{F}\) accuracy when prompted with 3 clicks in the first frame on SA-V val and Internal-test, MOSE, and 9 zero-shot datasets, and the average 1-click mIoU on SA-23 datasets._
+_Table 8 We train our model on different data mixtures including VOS (Davis, MOSE, YouTubeVOS), and subsets of Internal-train, SA-V, and SA-1B. We report the $\mathcal{I}\&\mathcal{F}$ accuracy when prompted with 3 clicks in the first frame on SA-V val and Internal-test, MOSE, and 9 zero-shot datasets, and the average 1-click mIoU on SA-23 datasets._
 
 
 first frame) over 3 benchmarks: SA-V val, zero-shot, and MOSE dev. Fig. 7 shows a consistent power law relationship between the quantity of training data and the video segmentation accuracy on all benchmarks.
@@ -446,10 +446,10 @@ first frame) over 3 benchmarks: SA-V val, zero-shot, and MOSE dev. Fig. 7 shows 
 ![图片 page13-5](images/page013_img03.png)
 
 
-_Figure 7 Performance of SAM 2 as a function of the SA-V quantity. We report \(\mathcal{J}\&\mathcal{F}\) accuracy for 3-click prompts in the first frame on SA-V val (left), 9 zero-shot datasets (center), and MOSE dev (right)._
+_Figure 7 Performance of SAM 2 as a function of the SA-V quantity. We report $\mathcal{J}\&\mathcal{F}$ accuracy for 3-click prompts in the first frame on SA-V val (left), 9 zero-shot datasets (center), and MOSE dev (right)._
 
 
-Data quality ablation. In Table 9, we experiment with filtering strategies for quality. We subsample \(50\mathrm{k}\) masklets from SA-V, either randomly or by taking the masklets that have been edited the most by annotators. Filtering based on the number of edited frames leads to strong performance using just \(25\%\) of the data, and outperforms random sampling. However it is worse than using all \(190\mathrm{k}\) SA-V masklets.
+Data quality ablation. In Table 9, we experiment with filtering strategies for quality. We subsample $50\mathrm{k}$ masklets from SA-V, either randomly or by taking the masklets that have been edited the most by annotators. Filtering based on the number of edited frames leads to strong performance using just $25\%$ of the data, and outperforms random sampling. However it is worse than using all $190\mathrm{k}$ SA-V masklets.
 
 
 <table><tr><td rowspan="2">Setting</td><td colspan="4">J&amp;F</td><td>mIoU</td></tr><tr><td>SA-V val</td><td>Intern-test</td><td>MOSE dev</td><td>9 zero-shot</td><td>SA-23</td></tr><tr><td>SA-1B + SA-V 50k random</td><td>63.7</td><td>70.3</td><td>72.3</td><td>68.7</td><td>59.1</td></tr><tr><td>SA-1B + SA-V 50k most edited</td><td>66.2</td><td>73.0</td><td>72.5</td><td>69.2</td><td>58.6</td></tr><tr><td>SA-1B + SA-V</td><td>69.9</td><td>73.8</td><td>73.9</td><td>70.8</td><td>59.8</td></tr></table>
@@ -461,7 +461,7 @@ _Table 9 We train our model on different subsets of our SA-V Manual data: 50k ra
 # 8.2 Model architecture ablations
 
 
-Here we present model ablations that guided design decisions. We report segmentation accuracy for video \((\mathcal{I}\& \mathcal{F})\) and image (mIoU) tasks, and video segmentation speed (FPS). We find design choices for image and video components to be largely decoupled - this can be attributed to our modular design and training strategy.
+Here we present model ablations that guided design decisions. We report segmentation accuracy for video $(\mathcal{I}\& \mathcal{F})$ and image (mIoU) tasks, and video segmentation speed (FPS). We find design choices for image and video components to be largely decoupled - this can be attributed to our modular design and training strategy.
 
 
 ---
@@ -512,10 +512,10 @@ _Table 10 Capacity ablations. We ablate modeling capacity along input size (reso
 Input size. During training, we sample sequences of frames of fixed resolution and fixed length (here denoted by # frames). We ablate their impact in Tables 10a, 10b. A higher resolution leads to significant improvements across image and video tasks. Increasing the number of frames brings notable gains on video benchmarks and we use a default of 8 to balance speed and accuracy.
 
 
-Memory size. Increasing the (maximum) number of memories, \( N \), generally helps the performance although there could be some variance, as in Table 10c. We use a default value of 6 past frames to strike a balance between temporal context length and computational cost. Using fewer channels for memories does not cause much performance regression as in Table 10d, while making the memory required for storage \( 4 \times \) smaller.
+Memory size. Increasing the (maximum) number of memories, $ N $, generally helps the performance although there could be some variance, as in Table 10c. We use a default value of 6 past frames to strike a balance between temporal context length and computational cost. Using fewer channels for memories does not cause much performance regression as in Table 10d, while making the memory required for storage $ 4 \times $ smaller.
 
 
-Model size. More capacity in the backbone or memory-attention generally leads to improved results, as shown in Tables 10e, 10f. Scaling the backbone brings gains on both image and video metrics, while scaling the memory-attention only improves video metrics. We default to using a \(\mathrm{B + }\) backbone, which provides a reasonable balance between speed and accuracy; we note that even with a \(\mathrm{B + }\) backbone, SAM 2 is already able to significantly outperform SAM ViT-H (see Table 6).
+Model size. More capacity in the backbone or memory-attention generally leads to improved results, as shown in Tables 10e, 10f. Scaling the backbone brings gains on both image and video metrics, while scaling the memory-attention only improves video metrics. We default to using a $\mathrm{B + }$ backbone, which provides a reasonable balance between speed and accuracy; we note that even with a $\mathrm{B + }$ backbone, SAM 2 is already able to significantly outperform SAM ViT-H (see Table 6).
 
 
 <table><tr><td rowspan="2">RPB in img. enc.</td><td rowspan="2">2d-RoPE in mem. attn.</td><td colspan="4">J&amp;F</td><td colspan="2">mIoU</td></tr><tr><td>MOSE dev</td><td>SA-V val</td><td>LVOSv2 val</td><td>9 zero-shot</td><td>FPS</td><td>SA-23</td></tr><tr><td></td><td>✓</td><td>73.0</td><td>68.3</td><td>71.6</td><td>70.7</td><td>77.3</td><td>59.7</td></tr><tr><td>✓</td><td>✓</td><td>73.6</td><td>67.9</td><td>71.0</td><td>71.5</td><td>77.3</td><td>60.0</td></tr><tr><td></td><td></td><td>72.8</td><td>67.1</td><td>70.3</td><td>70.3</td><td>84.4</td><td>59.9</td></tr></table>
@@ -572,25 +572,25 @@ We thank Alexander Kirillov and Jitendra Malik for discussions on project direct
 # Table of contents:
 
 
-\(\S A\) : Task Details
+$\S A$ : Task Details
 
 
-\(\S \mathrm{B}\) : Limitations
+$\S \mathrm{B}$ : Limitations
 
 
-\(\S \mathrm{C}\) : Model Details
+$\S \mathrm{C}$ : Model Details
 
 
-\(\S \mathrm{D}\) : Dataset Details
+$\S \mathrm{D}$ : Dataset Details
 
 
-\(\S \mathrm{E}\) : Zero-shot Experiments Details
+$\S \mathrm{E}$ : Zero-shot Experiments Details
 
 
-\(\S G\) : Dataset, Annotation, and Model Cards
+$\S G$ : Dataset, Annotation, and Model Cards
 
 
-\(\S\)D.2.1: Annotation Guidelines
+$\S$D.2.1: Annotation Guidelines
 
 
 # A Details on the PVS Task
@@ -632,13 +632,13 @@ Our data engine relies on human annotators to verify masklet quality and select 
 # C.1 Architecture
 
 
-Here we discuss further architecture details, expanding on the model description in \(\S 4\).
+Here we discuss further architecture details, expanding on the model description in $\S 4$.
 
 
 Image encoder. We use a feature pyramid network (Lin et al., 2017) to fuse the stride 16 and 32 features from Stages 3 and 4 of the Hiera image encoder respectively to produce the image embeddings for each frame. In addition, the stride 4 and 8 features from Stages 1 and 2 are not used in the memory attention but are added to the upsampling layers in the mask decoder as shown in Figure 9, which helps produce high-resolution segmentation details. We follow Bolya et al. (2023) in using windowed absolute positional embeddings in the Hiera image encoder. In Bolya et al. (2023), RPB provided positional information spanning across windows in the backbone, in lieu of which we adopt a simpler approach of interpolating the global positional embedding instead to span across windows. We do not use any relative positional encoding. We train models with varying image encoder sizes - T, S, B+ and L. We follow Li et al. (2022b) and use global attention in only a subset of the image encoder layers (see Table 13).
 
 
-Memory attention. In addition to sinusoidal absolute positional embeddings, we use 2d spatial Rotary Positional Embedding (RoPE) (Su et al., 2021; Heo et al., 2024) in self-attention and cross-attention layers. The object pointer tokens are excluded from RoPE as they do not have specific spatial correspondence. By default, the memory attention uses \( L = 4 \) layers.
+Memory attention. In addition to sinusoidal absolute positional embeddings, we use 2d spatial Rotary Positional Embedding (RoPE) (Su et al., 2021; Heo et al., 2024) in self-attention and cross-attention layers. The object pointer tokens are excluded from RoPE as they do not have specific spatial correspondence. By default, the memory attention uses $ L = 4 $ layers.
 
 
 ![图片 page17-8](images/page017_img01.png)
@@ -668,10 +668,10 @@ Memory encoder and memory bank. Our memory encoder does not use an additional im
 # C.2.1 Pre-training
 
 
-We first pre-train SAM 2 on static images on the SA-1B dataset (Kirillov et al., 2023). Table 13a details the settings used during pre-training on SA-1B - other settings not mentioned here follow Kirillov et al. (2023). The image encoder is initialized from MAE pre-trained Hiera (Ryali et al., 2023). Similar to SAM, we filter masks covering more than \(90\%\) of the image and restricted training to 64 randomly sampled masks per image.
+We first pre-train SAM 2 on static images on the SA-1B dataset (Kirillov et al., 2023). Table 13a details the settings used during pre-training on SA-1B - other settings not mentioned here follow Kirillov et al. (2023). The image encoder is initialized from MAE pre-trained Hiera (Ryali et al., 2023). Similar to SAM, we filter masks covering more than $90\%$ of the image and restricted training to 64 randomly sampled masks per image.
 
 
-Unlike SAM, we found it beneficial to use an \(\ell_1\) loss to more aggressively supervise the IoU predictions and to apply a sigmoid activation to the IoU logits to restrict the output into the range between 0 and 1. For multi-mask predictions (on the first click), we supervise the IoU predictions of all masks to encourage better learning of when a mask might be bad, but only supervise the mask logits with the lowest segmentation loss (linear combination of focal and dice loss). In SAM, during iterative sampling of points, two iterations were inserted with no additional prompts (only feeding the previous mask logits) - we do not add such iterations during our training and use 7 correction clicks (instead of 8 in SAM). We also employ horizontal flip augmentation during training and resize the image to a square size of \(1024 \times 1024\).
+Unlike SAM, we found it beneficial to use an $\ell_1$ loss to more aggressively supervise the IoU predictions and to apply a sigmoid activation to the IoU logits to restrict the output into the range between 0 and 1. For multi-mask predictions (on the first click), we supervise the IoU predictions of all masks to encourage better learning of when a mask might be bad, but only supervise the mask logits with the lowest segmentation loss (linear combination of focal and dice loss). In SAM, during iterative sampling of points, two iterations were inserted with no additional prompts (only feeding the previous mask logits) - we do not add such iterations during our training and use 7 correction clicks (instead of 8 in SAM). We also employ horizontal flip augmentation during training and resize the image to a square size of $1024 \times 1024$.
 
 
 We use AdamW (Loshchilov & Hutter, 2019) and apply layer decay (Clark et al., 2020) on the image encoder and follow a reciprocal square-root schedule (Zhai et al., 2022). See Table 13 (a) for the hyperparameters in our pre-training stage.
@@ -680,10 +680,10 @@ We use AdamW (Loshchilov & Hutter, 2019) and apply layer decay (Clark et al., 20
 # C.2.2 Full training
 
 
-After pre-training, we train SAM 2 on our introduced datasets SA-V + Internal (section §5.2), a \(10\%\) subset of SA-1B, and a mixture of open-source video datasets including DAVIS (Pont-Tuset et al., 2017; Caelles et al., 2019), MOSE (Ding et al., 2023), and YouTubeVOS (Xu et al., 2018b). Our released model is trained on SA-V manual + Internal and SA-1B.
+After pre-training, we train SAM 2 on our introduced datasets SA-V + Internal (section §5.2), a $10\%$ subset of SA-1B, and a mixture of open-source video datasets including DAVIS (Pont-Tuset et al., 2017; Caelles et al., 2019), MOSE (Ding et al., 2023), and YouTubeVOS (Xu et al., 2018b). Our released model is trained on SA-V manual + Internal and SA-1B.
 
 
-SAM 2 is designed for two tasks; the PVS task (on videos) and the SA task (on images). Training is done jointly on image and video data. To optimize our data usage and computational resources during training, we adopt an alternating training strategy between video data (multiple frames) and static images (one single frame). Specifically, in each training iteration, we sample a full batch either from the image or video dataset, with their sampling probabilities proportional to the size of each data source. This approach allows for a balanced exposure to both tasks and a different batch size for each data source to maximize compute utilization. Settings not explicitly mentioned here for the image task follow settings from the pre-training phase. See Table 13 (b) for the hyperparameters in our full training stage. The training data mixture consists of \(\sim 15.2\%\) SA-1B, \(\sim 70\%\) SA-V and \(\sim 14.8\%\) Internal. The same settings are used when open-source datasets
+SAM 2 is designed for two tasks; the PVS task (on videos) and the SA task (on images). Training is done jointly on image and video data. To optimize our data usage and computational resources during training, we adopt an alternating training strategy between video data (multiple frames) and static images (one single frame). Specifically, in each training iteration, we sample a full batch either from the image or video dataset, with their sampling probabilities proportional to the size of each data source. This approach allows for a balanced exposure to both tasks and a different batch size for each data source to maximize compute utilization. Settings not explicitly mentioned here for the image task follow settings from the pre-training phase. See Table 13 (b) for the hyperparameters in our full training stage. The training data mixture consists of $\sim 15.2\%$ SA-1B, $\sim 70\%$ SA-V and $\sim 14.8\%$ Internal. The same settings are used when open-source datasets
 
 
 ---
@@ -704,13 +704,13 @@ _(b) Full training_
 _Table 13 Hyperparameters and details of SAM 2 pre-training and full training. Note that some settings vary with image encoder size (T, S, B+, L)._
 
 
-are included, with the change that the additional data is included (\(\sim 1.3\%\) DAVIS, \(\sim 9.4\%\) MOSE, \(\sim 9.2\%\) YouTubeVOS, \(\sim 15.5\%\) SA-1B, \(\sim 49.5\%\) SA-V, \(\sim 15.1\%\) Internal).
+are included, with the change that the additional data is included ($\sim 1.3\%$ DAVIS, $\sim 9.4\%$ MOSE, $\sim 9.2\%$ YouTubeVOS, $\sim 15.5\%$ SA-1B, $\sim 49.5\%$ SA-V, $\sim 15.1\%$ Internal).
 
 
 We train by simulating an interactive setting, sampling 8-frame sequences and randomly selecting up to 2 frames (including the first) for corrective clicks. During training, we use ground-truth masklets and model predictions to sample prompts, with initial prompts being the ground-truth mask (50% probability), a positive click from the ground-truth mask (25%), or a bounding box input (25%).
 
 
-We restrict the maximum number of masklets for each sequence of 8 frames to 3 randomly chosen ones. We reverse the temporal order with a probability of \(50\%\) to help generalization to bi-directional propagation. When we sample corrective clicks - with a small probability of \(10\%\), we randomly sample clicks from the ground truth mask, irrespective of the model prediction, to allow additional flexibility in mask refinement.
+We restrict the maximum number of masklets for each sequence of 8 frames to 3 randomly chosen ones. We reverse the temporal order with a probability of $50\%$ to help generalization to bi-directional propagation. When we sample corrective clicks - with a small probability of $10\%$, we randomly sample clicks from the ground truth mask, irrespective of the model prediction, to allow additional flexibility in mask refinement.
 
 
 Losses and optimization. We supervise the model's predictions using a linear combination of focal and dice losses for the mask prediction, mean-absolute-error (MAE) loss for the IoU prediction, and cross-entropy loss for object prediction with a ratio of 20:1:1:1 respectively. As during pre-training, for multi-mask predictions, we only supervise the mask with the lowest segmentation loss. If the ground-truth does not contain a mask for a frame, we do not supervise any of the mask outputs (but always supervise the occlusion prediction head that predicts whether there should exist a mask in the frame).
@@ -731,10 +731,10 @@ We run all benchmarking experiments on a single A100 GPU using PyTorch 2.3.1 and
 # D.1 SA-V dataset details
 
 
-Videos. Video resolutions range from 240p to 4K with an average size of \(1,401 \times 1,037\). Video duration ranges from 4 seconds to 2.3 minutes, with an average of 13.8 seconds, totaling 4.2M annotated frames and 196 hours.
+Videos. Video resolutions range from 240p to 4K with an average size of $1,401 \times 1,037$. Video duration ranges from 4 seconds to 2.3 minutes, with an average of 13.8 seconds, totaling 4.2M annotated frames and 196 hours.
 
 
-Automatic masklets. Similar to the approach described by Kirillov et al. (2023), automatic masklets are generated by prompting the model with regular grids. We prompt the model with a \( 32 \times 32 \) grid on the first frame, and additionally we use a \( 16 \times 16 \) grid on 4 zoomed image crops of the first frame (derived from a \( 2 \times 2 \) overlapped window) and a \( 4 \times 4 \) grid on 16 zoomed image crops of the first frame (derived from a \( 4 \times 4 \) overlapped window). We
+Automatic masklets. Similar to the approach described by Kirillov et al. (2023), automatic masklets are generated by prompting the model with regular grids. We prompt the model with a $ 32 \times 32 $ grid on the first frame, and additionally we use a $ 16 \times 16 $ grid on 4 zoomed image crops of the first frame (derived from a $ 2 \times 2 $ overlapped window) and a $ 4 \times 4 $ grid on 16 zoomed image crops of the first frame (derived from a $ 4 \times 4 $ overlapped window). We
 
 
 ![图片 page20-4](images/page020_img01.png)
@@ -773,7 +773,7 @@ We found the number of edited frames to be a proxy to the "challengingness" of a
 # D.2.2 Data engine phase comparison
 
 
-The comparison of data engine phases shown in Table 1 was conducted as a controlled experiment using 169 videos and 452 masklets. We ask three subsets of annotators to annotate the same set of objects with the annotation protocol from each phase. We categorize masklets into three buckets based on the mask area in the first frame (small: 1 to \(32^2\), medium: \(32^2\) to \(96^2\), and large: equal or greater than \(96^2\)). Phase 1 data is used as the quality reference, due to the high quality masks from frame-by-frame manual annotation with SAM.
+The comparison of data engine phases shown in Table 1 was conducted as a controlled experiment using 169 videos and 452 masklets. We ask three subsets of annotators to annotate the same set of objects with the annotation protocol from each phase. We categorize masklets into three buckets based on the mask area in the first frame (small: 1 to $32^2$, medium: $32^2$ to $96^2$, and large: equal or greater than $96^2$). Phase 1 data is used as the quality reference, due to the high quality masks from frame-by-frame manual annotation with SAM.
 
 
 # E Details on zero-shot transfer experiments
@@ -815,22 +815,22 @@ Among these 17 zero-shot video datasets above, 9 of them (EndoVis, ESD, LVOSv2, 
 # E.1.2 Interactive offline and online evaluation details
 
 
-Offline evaluation involves multiple passes over the entire video. We start with click prompts on the first frame, segment the object throughout the entire video, and then in the next pass, we select the frame with the lowest segmentation IoU w.r.t. the ground-truth as the new frame for prompting. The model then segments the object again throughout the video based on all prompts received previously, until reaching a maximum of \( N_{\mathrm{frame}} \) passes (with one new prompted frame in each pass).
+Offline evaluation involves multiple passes over the entire video. We start with click prompts on the first frame, segment the object throughout the entire video, and then in the next pass, we select the frame with the lowest segmentation IoU w.r.t. the ground-truth as the new frame for prompting. The model then segments the object again throughout the video based on all prompts received previously, until reaching a maximum of $ N_{\mathrm{frame}} $ passes (with one new prompted frame in each pass).
 
 
-Online evaluation involves only one pass over the entire video. We start with click prompts on the first frame and propagate the prompts across the video, pausing propagation when encountering a frame with a low-quality prediction (IoU \(< 0.75\) with ground-truth). We then add additional click prompts on the paused frame to correct the segment on this frame and resume the propagation forward until reaching another low quality frame with IoU \(< 0.75\). This is repeated while the number of prompted frames is less than the maximum \(N_{\mathrm{frame}}\). Unlike the previous offline evaluation, in this setting, the new prompts only affect the frames after the current paused frame but not the frames before it.
+Online evaluation involves only one pass over the entire video. We start with click prompts on the first frame and propagate the prompts across the video, pausing propagation when encountering a frame with a low-quality prediction (IoU $< 0.75$ with ground-truth). We then add additional click prompts on the paused frame to correct the segment on this frame and resume the propagation forward until reaching another low quality frame with IoU $< 0.75$. This is repeated while the number of prompted frames is less than the maximum $N_{\mathrm{frame}}$. Unlike the previous offline evaluation, in this setting, the new prompts only affect the frames after the current paused frame but not the frames before it.
 
 
-In both settings, we evaluate on 9 densely annotated datasets in §E.1.1 (EndoVis, ESD, LVOSv2, LV-VIS, UVO, VOST, PUMaVOS, Virtual KITTI 2, and VIPSeg). If a video contains multiple objects to segment in its ground-truth annotations, we perform inference on each object independently. We simulate interactive video segmentation with \( N_{\mathrm{click}} = 3 \) clicks per frame, assuming that the user would visually locate the object to label it (with initial clicks) or to refine the current segmentation prediction of it (with correction clicks). Specifically, when starting the first pass (where there are not any existing predictions yet), we place an initial click on the first frame at the center<sup>1</sup> of the object's ground-truth mask and then interactively add two more clicks based on the center of the error region (between the ground-truth mask and the predicted segments on the first frame). Then in subsequent passes (where there are already predicted segments), we interactively add three clicks based on the center of the error region (between the ground-truth mask and the predicted segments on the frame being prompted).
+In both settings, we evaluate on 9 densely annotated datasets in §E.1.1 (EndoVis, ESD, LVOSv2, LV-VIS, UVO, VOST, PUMaVOS, Virtual KITTI 2, and VIPSeg). If a video contains multiple objects to segment in its ground-truth annotations, we perform inference on each object independently. We simulate interactive video segmentation with $ N_{\mathrm{click}} = 3 $ clicks per frame, assuming that the user would visually locate the object to label it (with initial clicks) or to refine the current segmentation prediction of it (with correction clicks). Specifically, when starting the first pass (where there are not any existing predictions yet), we place an initial click on the first frame at the center<sup>1</sup> of the object's ground-truth mask and then interactively add two more clicks based on the center of the error region (between the ground-truth mask and the predicted segments on the first frame). Then in subsequent passes (where there are already predicted segments), we interactively add three clicks based on the center of the error region (between the ground-truth mask and the predicted segments on the frame being prompted).
 
 
-We report the average \(\mathcal{J}\& \mathcal{F}\) metric over \(N_{\mathrm{frame}} = 1,\ldots ,8\) interacted frames and the \(\mathcal{J}\& \mathcal{F}\) metrics under different annotation time on a video based on the following assumptions:
+We report the average $\mathcal{J}\& \mathcal{F}$ metric over $N_{\mathrm{frame}} = 1,\ldots ,8$ interacted frames and the $\mathcal{J}\& \mathcal{F}$ metrics under different annotation time on a video based on the following assumptions:
 
 
-- On each frame, it takes \( T_{\mathrm{loc}} = 1 \) sec for the annotator to visually locate an object in the frame, and \( T_{\mathrm{click}} = 1.5 \) sec to add each click, following Delatolas et al. (2024).
+- On each frame, it takes $ T_{\mathrm{loc}} = 1 $ sec for the annotator to visually locate an object in the frame, and $ T_{\mathrm{click}} = 1.5 $ sec to add each click, following Delatolas et al. (2024).
 
 
-- In offline mode, it takes \( T_{\mathrm{exam}} = 30 \) sec on a 300-frame video to examine the results throughout the video in each round, including finding the frame with the worst segmentation quality to add corrections (and for longer or shorter videos, this time is proportional to the video length \( L \), assuming the annotator could examine the results at 10 FPS).
+- In offline mode, it takes $ T_{\mathrm{exam}} = 30 $ sec on a 300-frame video to examine the results throughout the video in each round, including finding the frame with the worst segmentation quality to add corrections (and for longer or shorter videos, this time is proportional to the video length $ L $, assuming the annotator could examine the results at 10 FPS).
 
 
 <sup>1</sup>The center of a mask is defined as the mask pixel that has the largest Euclidean distance to the mask boundary.
@@ -866,22 +866,22 @@ We report the average \(\mathcal{J}\& \mathcal{F}\) metric over \(N_{\mathrm{fra
 ![图片 page23-8](images/page023_img09.png)
 
 
-_(a) \(\mathcal{I}\& \mathcal{F}\) performance on each dataset with different number of interacted frames (3-click)_
+_(a) $\mathcal{I}\& \mathcal{F}$ performance on each dataset with different number of interacted frames (3-click)_
 
 
 <table><tr><td>Method</td><td>EndoVis 2018</td><td>ESD</td><td>LVOSv2</td><td>LV-VIS</td><td>PUMaVOS</td><td>UVO</td><td>VIPSeg</td><td>Virtual KITTI 2</td><td>VOST</td><td>(average)</td></tr><tr><td>SAM + XMem++</td><td>68.9</td><td>88.2</td><td>72.1</td><td>86.4</td><td>60.2</td><td>74.5</td><td>84.2</td><td>63.8</td><td>46.6</td><td>71.7</td></tr><tr><td>SAM + Cutie</td><td>71.8</td><td>87.6</td><td>82.1</td><td>87.1</td><td>59.4</td><td>75.2</td><td>84.4</td><td>70.3</td><td>54.3</td><td>74.7</td></tr><tr><td>SAM 2</td><td>78.4</td><td>89.6</td><td>87.3</td><td>90.4</td><td>70.6</td><td>79.8</td><td>89.0</td><td>74.7</td><td>66.6</td><td>80.7</td></tr></table>
 
 
-_(b) average \(\mathcal{I}\& \mathcal{F}\) on each dataset over 8 interacted frames (3-click)_
+_(b) average $\mathcal{I}\& \mathcal{F}$ on each dataset over 8 interacted frames (3-click)_
 
 
 _Figure 12 Zero-shot performance of SAM 2 vs baselines (SAM+XMem++ and SAM+Cutie) under interactive offline evaluation with different numbers of interacted frames, using 3 clicks per interacted frame. See §E.1.2 for details._
 
 
-- In online mode, it takes \( T_{\mathrm{exam}} = 30 \) sec on a 300-frame video to follow the results throughout the video in total, including pausing at a frame with low quality for further corrections (and this time is proportional to the video length \( L \) similar to the offline mode).
+- In online mode, it takes $ T_{\mathrm{exam}} = 30 $ sec on a 300-frame video to follow the results throughout the video in total, including pausing at a frame with low quality for further corrections (and this time is proportional to the video length $ L $ similar to the offline mode).
 
 
-- The annotation time for an object is \((T_{\mathrm{exam}} \cdot (L / 300) + T_{\mathrm{loc}} + T_{\mathrm{click}} \cdot N_{\mathrm{click}}) \cdot N_{\mathrm{frame}}\) in offline mode and \(T_{\mathrm{exam}} \cdot (L / 300) + (T_{\mathrm{loc}} + T_{\mathrm{click}} \cdot N_{\mathrm{click}}) \cdot N_{\mathrm{frame}}\) in online mode, where \(L\) is the total frame number in the video, \(N_{\mathrm{frame}} = 1, \ldots, 8\) is the number of frames annotated (i.e., the number of interactive rounds), and \(N_{\mathrm{click}} = 3\) is the number of clicks per frame.
+- The annotation time for an object is $(T_{\mathrm{exam}} \cdot (L / 300) + T_{\mathrm{loc}} + T_{\mathrm{click}} \cdot N_{\mathrm{click}}) \cdot N_{\mathrm{frame}}$ in offline mode and $T_{\mathrm{exam}} \cdot (L / 300) + (T_{\mathrm{loc}} + T_{\mathrm{click}} \cdot N_{\mathrm{click}}) \cdot N_{\mathrm{frame}}$ in online mode, where $L$ is the total frame number in the video, $N_{\mathrm{frame}} = 1, \ldots, 8$ is the number of frames annotated (i.e., the number of interactive rounds), and $N_{\mathrm{click}} = 3$ is the number of clicks per frame.
 
 
 We show per-dataset results of SAM 2 and the two baselines (SAM+XMem++ and SAM+Cutie, see their details below) for interactive offline and online evaluation in Fig. 12 and Fig. 13. SAM 2 outperforms both baselines with a notable margin on all datasets and settings.
@@ -893,7 +893,7 @@ We show per-dataset results of SAM 2 and the two baselines (SAM+XMem++ and SAM+C
 In §6.1.2, we also compare with previous video tracking methods under the semi-supervised VOS setting (Pont-Tuset et al., 2017), where prompts (which can be foreground/background clicks, bounding boxes, or ground-truth object masks) are provided only on the first frame of the video. When using click prompts, we interactively sample either 1, 3 or 5 clicks on the first video frame, and then track the object based on these clicks. Following the click-based evaluation in prior work (Kirillov et al., 2023; Sofiiuk et al., 2022), the initial
 
 
-2We note that this estimation does not account for the model's tracking FPS. The intuition is that human annotators can only examine the results at a lower speed, and therefore the model's tracking time is covered by \( T_{\mathrm{exam}} \).
+2We note that this estimation does not account for the model's tracking FPS. The intuition is that human annotators can only examine the results at a lower speed, and therefore the model's tracking time is covered by $ T_{\mathrm{exam}} $.
 
 
 ---
@@ -926,13 +926,13 @@ In §6.1.2, we also compare with previous video tracking methods under the semi-
 ![图片 page24-8](images/page024_img09.png)
 
 
-_(a) \(\mathcal{I}\& \mathcal{F}\) performance on each dataset with different number of interacted frames (3-click)_
+_(a) $\mathcal{I}\& \mathcal{F}$ performance on each dataset with different number of interacted frames (3-click)_
 
 
 <table><tr><td>Method</td><td>EndoVis 2018</td><td>ESD</td><td>LVOSv2</td><td>LV-VIS</td><td>PUMaVOS</td><td>UVO</td><td>VIPSeg</td><td>Virtual KITTI 2</td><td>VOST</td><td>(average)</td></tr><tr><td>SAM + XMem++</td><td>71.4</td><td>87.8</td><td>72.9</td><td>85.2</td><td>63.7</td><td>74.7</td><td>82.5</td><td>63.9</td><td>52.7</td><td>72.8</td></tr><tr><td>SAM + Cutie</td><td>70.5</td><td>87.3</td><td>80.6</td><td>86.0</td><td>58.9</td><td>75.2</td><td>82.1</td><td>70.4</td><td>54.6</td><td>74.0</td></tr><tr><td>SAM 2</td><td>77.8</td><td>88.5</td><td>85.8</td><td>88.7</td><td>74.2</td><td>79.0</td><td>86.1</td><td>74.3</td><td>63.3</td><td>79.7</td></tr></table>
 
 
-_(b) average \(\mathcal{J}\& \mathcal{F}\) on each dataset over 8 interacted frames (3-click)_
+_(b) average $\mathcal{J}\& \mathcal{F}$ on each dataset over 8 interacted frames (3-click)_
 
 
 _Figure 13 Zero-shot performance of SAM 2 vs baselines (SAM+XMem++ and SAM+Cutie) under interactive online evaluation with different numbers of interacted frames, using 3 clicks per interacted frame. See §E.1.2 for details._
@@ -947,7 +947,7 @@ Similar to the interactive setting, here we also use SAM+XMem++ and SAM+Cutie as
 In this setting, we evaluate on all 17 zero-shot video datasets in §E.1.1. If a dataset does not follow the standard VOS format, we preprocess it into a format similar to MOSE (Ding et al., 2023). During processing, we ensure that all objects in each video have a valid non-empty segmentation mask on the first frame to be compatible with semi-supervised VOS evaluation. In case an object doesn't appear in the first frame, we create a separate video for it starting from the first frame where the object appears.
 
 
-We report the standard \(\mathcal{J}\& \mathcal{F}\) metric (Pont-Tuset et al., 2017) for this evaluation. If a dataset provides an official evaluation toolkit, we use it for evaluation (on the VOST dataset, we report the \(\mathcal{J}\) metric instead, following its official protocol (Tokmakov et al., 2022)). The results are shown in Table 4, where SAM 2 performs better than both baselines on the majority of the 17 datasets across different types of prompts.
+We report the standard $\mathcal{J}\& \mathcal{F}$ metric (Pont-Tuset et al., 2017) for this evaluation. If a dataset provides an official evaluation toolkit, we use it for evaluation (on the VOST dataset, we report the $\mathcal{J}$ metric instead, following its official protocol (Tokmakov et al., 2022)). The results are shown in Table 4, where SAM 2 performs better than both baselines on the majority of the 17 datasets across different types of prompts.
 
 
 We show per-dataset results of SAM 2 and the two baselines (SAM+XMem++ and SAM+Cutie, see their details below) for semi-supervised VOS evaluation in Fig. 14. SAM 2 outperforms both baselines on the majority of these datasets across different types of prompts.
@@ -986,7 +986,7 @@ When using SAM to apply a correction over an existing mask prediction in a given
 ---
 
 
-mask in SAM by sampling clicks from them and feeding them as inputs to SAM until the reconstructed mask in SAM reaches IoU \(>0.8\) with the XMem++ or Cutie output mask. Then, to incorporate new positive and negative clicks for correction, we concatenate these additional correction clicks with the initial clicks sampled during mask construction, and feed the joint concatenated list as input into SAM to obtain the final corrected masks. We find that this strategy works better than several alternatives (such as feeding the XMem++ or Cutie output mask as a mask prompt together with new correction clicks into SAM, or taking only the correction clicks as inputs to SAM while ignoring the XMem++ or Cutie output mask).
+mask in SAM by sampling clicks from them and feeding them as inputs to SAM until the reconstructed mask in SAM reaches IoU $>0.8$ with the XMem++ or Cutie output mask. Then, to incorporate new positive and negative clicks for correction, we concatenate these additional correction clicks with the initial clicks sampled during mask construction, and feed the joint concatenated list as input into SAM to obtain the final corrected masks. We find that this strategy works better than several alternatives (such as feeding the XMem++ or Cutie output mask as a mask prompt together with new correction clicks into SAM, or taking only the correction clicks as inputs to SAM while ignoring the XMem++ or Cutie output mask).
 
 
 # E.2 DAVIS interactive benchmark
@@ -995,13 +995,13 @@ mask in SAM by sampling clicks from them and feeding them as inputs to SAM until
 We also evaluate on the DAVIS interactive benchmark (Caelles et al., 2018), which resembles our interactive offline evaluation in §6.1.1, where in each round of interaction, the evaluation server would provide new annotations on frames with the worst segmentation performance. The official DAVIS eval toolkit provides scribble prompts during interactions, while other work such as CiVOS (Vujasinovic et al., 2022) has also extended this to cover click prompts.
 
 
-Here we follow CiVOS to use positive and negative clicks as input prompts and adopt the same strategy for click sampling. We report the \(\mathcal{J}\& \mathcal{F}@\mathrm{60s}\) and AUC-\(\mathcal{J}\& \mathcal{F}\) metrics on this benchmark as provided by its evaluator, and compare to two baselines: MiVOS (Cheng et al., 2021b), which directly uses the provided scribbles via a scribble-to-mask module (and is also extended to click prompts in Vujasinovic et al. (2022)), and CiVOS, which samples click from the provided scribbles. The results are shown in Table 14, where SAM 2 (based on click inputs) outperforms both baselines under click inputs. We note that SAM 2 often tends to segment object parts (e.g. a person's arm) on the first click while the DAVIS dataset mainly contains whole objects (e.g. an entire person), which could penalize SAM 2's \(\mathcal{J}\& \mathcal{F}\) performance on this benchmark. We verified this by observing better accuracy (0.86 AUC-\(\mathcal{J}\& \mathcal{F}\) and 0.89 \(\mathcal{J}\& \mathcal{F}@\mathrm{60s}\) with click input) for an earlier model trained on fewer part annotations.
+Here we follow CiVOS to use positive and negative clicks as input prompts and adopt the same strategy for click sampling. We report the $\mathcal{J}\& \mathcal{F}@\mathrm{60s}$ and AUC-$\mathcal{J}\& \mathcal{F}$ metrics on this benchmark as provided by its evaluator, and compare to two baselines: MiVOS (Cheng et al., 2021b), which directly uses the provided scribbles via a scribble-to-mask module (and is also extended to click prompts in Vujasinovic et al. (2022)), and CiVOS, which samples click from the provided scribbles. The results are shown in Table 14, where SAM 2 (based on click inputs) outperforms both baselines under click inputs. We note that SAM 2 often tends to segment object parts (e.g. a person's arm) on the first click while the DAVIS dataset mainly contains whole objects (e.g. an entire person), which could penalize SAM 2's $\mathcal{J}\& \mathcal{F}$ performance on this benchmark. We verified this by observing better accuracy (0.86 AUC-$\mathcal{J}\& \mathcal{F}$ and 0.89 $\mathcal{J}\& \mathcal{F}@\mathrm{60s}$ with click input) for an earlier model trained on fewer part annotations.
 
 
 <table><tr><td>Method</td><td>input type</td><td>AUC-J&amp;F</td><td>J&amp;F@60s</td></tr><tr><td>MiVOS (Cheng et al., 2021b)</td><td>scribbles</td><td>0.87</td><td>0.88</td></tr><tr><td>MiVOS (Cheng et al., 2021b)‡</td><td>clicks</td><td>0.75</td><td>0.75</td></tr><tr><td>CiVOS (Vujasinović et al., 2022)</td><td>clicks</td><td>0.83</td><td>0.84</td></tr><tr><td>SAM 2</td><td>clicks</td><td>0.84</td><td>0.87</td></tr></table>
 
 
-_Table 14 Performance of SAM 2 and other models on the DAVIS interactive benchmark. For SAM 2, we use clicks as inputs following the click sampling strategy from CiVOS (Vujasinović et al., 2022). See §E.2 for details (\(\ddagger\): performance reported in Vujasinović et al. (2022))._
+_Table 14 Performance of SAM 2 and other models on the DAVIS interactive benchmark. For SAM 2, we use clicks as inputs following the click sampling strategy from CiVOS (Vujasinović et al., 2022). See §E.2 for details ($\ddagger$: performance reported in Vujasinović et al. (2022))._
 
 
 # E.3 Zero-shot image tasks
@@ -1028,7 +1028,7 @@ In this section, we include a more detailed version of the experiments in §6.2.
 Table 15 first shows a comparison of the models trained only on images (for the SA task) with different backbone sizes on both the SA-23 benchmark as well as the 14 newly introduced video datasets. SAM 2 (Hiera-B+) trained only on SA-1B outperforms SAM (ViT-H) on 1-click accuracy, and both SAM (ViT-H) and HQ-SAM (ViT-H) on 5-click accuracy while being 6x faster. SAM 2 (Hiera-L) further improves the 1-click accuracy by 1 point on average, but trading off speed. Despite being slower than Hiera-B+, it is still 3.4x faster than SAM (ViT-H) and 1.5x faster than SAM (ViT-B).
 
 
-The last two rows in Table 15 illustrate the benefits of training with our mix of image and video data, which boosts the average accuracy to \(61.4\%\) across the 23 datasets with the Hirea-B+ backbone. Additionally, we observe substantial improvements on the video benchmarks of SA-23 as well as the 14 newly introduced video datasets. We note that we do not scale beyond Hiera-L, but expect better performance for a larger model.
+The last two rows in Table 15 illustrate the benefits of training with our mix of image and video data, which boosts the average accuracy to $61.4\%$ across the 23 datasets with the Hirea-B+ backbone. Additionally, we observe substantial improvements on the video benchmarks of SA-23 as well as the 14 newly introduced video datasets. We note that we do not scale beyond Hiera-L, but expect better performance for a larger model.
 
 
 <table><tr><td rowspan="2">Model</td><td rowspan="2">Data</td><td colspan="4">1 (5) click mIoU</td><td rowspan="2">FPS</td></tr><tr><td>SA-23 All</td><td>SA-23 Image</td><td>SA-23 Video</td><td>14 new Video</td></tr><tr><td>SAM (ViT-B)</td><td>SA-1B</td><td>55.9 (80.9)</td><td>57.4 (81.3)</td><td>54.0 (80.4)</td><td>54.5 (82.6)</td><td>76.7</td></tr><tr><td>SAM (ViT-H)</td><td>SA-1B</td><td>58.1 (81.3)</td><td>60.8 (82.1)</td><td>54.5 (80.3)</td><td>59.1 (83.4)</td><td>21.7</td></tr><tr><td>HQ-SAM (ViT-B)</td><td>HQSEG-44k</td><td>53.9 (72.1)</td><td>56.3 (73.9)</td><td>50.7 (69.9)</td><td>54.5 (75.0)</td><td>73.5</td></tr><tr><td>HQ-SAM (ViT-H)</td><td>HQSEG-44k</td><td>59.1 (79.8)</td><td>61.8 (80.5)</td><td>55.7 (78.9)</td><td>58.9 (81.6)</td><td>21.4</td></tr><tr><td>SAM 2 (Hiera-B+)</td><td>SA-1B</td><td>58.9 (81.7)</td><td>60.8 (82.1)</td><td>56.4 (81.2)</td><td>56.6 (83.7)</td><td>130.1</td></tr><tr><td>SAM 2 (Hiera-L)</td><td>SA-1B</td><td>60.0 (81.8)</td><td>62.0 (82.2)</td><td>57.4 (81.2)</td><td>58.5 (83.8)</td><td>61.4</td></tr><tr><td>SAM 2 (Hiera-B+)</td><td>our mix</td><td>61.9 (83.6)</td><td>63.2 (83.8)</td><td>60.3 (83.3)</td><td>69.9 (85.9)</td><td>130.1</td></tr><tr><td>SAM 2 (Hiera-L)</td><td>our mix</td><td>63.5 (83.5)</td><td>64.3 (83.7)</td><td>62.4 (83.2)</td><td>71.2 (85.6)</td><td>61.4</td></tr></table>
@@ -1037,7 +1037,7 @@ The last two rows in Table 15 illustrate the benefits of training with our mix o
 _Table 15 Zero-shot performance on the Segment Anything (SA) task across a suite of 37 datasets. The table shows the average 1- and 5- click mIoU of SAM 2 compared to two baselines, categorized by dataset domain. We report the average metrics on the 23 datasets used by SAM for zero-shot evaluation, as well as the average across 14 newly introduced zero-shot video benchmarks._
 
 
-A breakdown of the accuracy across datasets is presented in Fig. 15, where the per-dataset delta in 1-click mIoU relative to SAM is color-coded to indicate the data type (image or video). Notably, SAM 2 (Hiera-B+) surpasses SAM on 29 datasets<sup>3</sup> by up to \(53.9\mathrm{mIoU}\), despite using a smaller Hiera-B+ backbone.
+A breakdown of the accuracy across datasets is presented in Fig. 15, where the per-dataset delta in 1-click mIoU relative to SAM is color-coded to indicate the data type (image or video). Notably, SAM 2 (Hiera-B+) surpasses SAM on 29 datasets<sup>3</sup> by up to $53.9\mathrm{mIoU}$, despite using a smaller Hiera-B+ backbone.
 
 
 # F Details on comparison to state-of-the-art in semi-supervised VOS
@@ -1118,7 +1118,7 @@ _Figure 17 Examples from SAM 2 zero-shot video benchmark suite._
 (d) Comparisons between SAM 2 and previous work on the semi-supervised VOS task.
 
 
-Table 17 Detailed comparisons between SAM 2 and previous work on various benchmarks (\(\ddagger\): a version of the model trained on SA-1B, SA-V, and our internal dataset as described in §5.2).
+Table 17 Detailed comparisons between SAM 2 and previous work on various benchmarks ($\ddagger$: a version of the model trained on SA-1B, SA-V, and our internal dataset as described in §5.2).
 
 
 ---
@@ -1531,7 +1531,7 @@ Kevin Clark, Minh-Thang Luong, Quoc V Le, and Christopher D Manning. ELECTRA: Pr
 Nadav Cohen, Yael Newman, and Ariel Shamir. Semantic segmentation in art paintings. Computer Graphics Forum, 2022.
 
 
-Marius Cordts, Mohamed Omran, Sebastian Ramos, Timo Rehfeld, Markus Enzweiler, Rodrigo Benenson, Uwe Franke, Stefan Roth, and Bernt Schiele. The cityscapes dataset for semantic urban scene understanding. In \(CVPR\), pp. 3213-3223, 2016.
+Marius Cordts, Mohamed Omran, Sebastian Ramos, Timo Rehfeld, Markus Enzweiler, Rodrigo Benenson, Uwe Franke, Stefan Roth, and Bernt Schiele. The cityscapes dataset for semantic urban scene understanding. In $CVPR$, pp. 3213-3223, 2016.
 
 
 Dima Damen, Hazel Doughty, Giovanni Maria Farinella, Antonino Furnari, Jian Ma, Evangelos Kazakos, Davide Moltisanti, Jonathan Munro, Toby Perrett, Will Price, and Michael Wray. Rescaling egocentric vision: Collection, pipeline and challenges for EPIC-KITCHENS-100. IJCV, 2022.

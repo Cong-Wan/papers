@@ -70,7 +70,7 @@ This version of the paper has been extensively summarized to fit the page limit 
 _Figure 1: The uniform and reusable structure as well as multi time scale update in the brain are the key components to unlock the continual learning in humans. Nested Learning (NL) allows for multi time-scale update for each component of the brain, while showing that well-known architectures such as Transformers are in fact linear layers with different frequency updates._
 
 
-For decades, AI research has focused on designing machine learning algorithms that learn from data [2-5] or experience [6-8]; often by optimizing an objective \(\mathcal{L}(\pmb{\theta})\) over parameters \(\pmb{\theta} \in \Theta\) with gradient-based methods. While traditional machine learning techniques required careful engineering and domain expertise to design feature extractors, limiting their ability to directly process and learn from natural data [9], deep representation learning offered a fully automated alternative to discover the representations needed for the task. Thereafter, deep learning has been an inseparable part of the large-scale computational models with seminal success in chemistry and biology [10], games [11, 12], computer vision [13, 14], and multimodal and natural language understanding [15-17].
+For decades, AI research has focused on designing machine learning algorithms that learn from data [2-5] or experience [6-8]; often by optimizing an objective $\mathcal{L}(\pmb{\theta})$ over parameters $\pmb{\theta} \in \Theta$ with gradient-based methods. While traditional machine learning techniques required careful engineering and domain expertise to design feature extractors, limiting their ability to directly process and learn from natural data [9], deep representation learning offered a fully automated alternative to discover the representations needed for the task. Thereafter, deep learning has been an inseparable part of the large-scale computational models with seminal success in chemistry and biology [10], games [11, 12], computer vision [13, 14], and multimodal and natural language understanding [15-17].
 
 
 Stacking of multiple layers, as it is done in deep learning models, provides the models with larger capacity, better expressive power in representing complex features, and more internal computations (e.g., #FLOPS) [18-20], all of which are critical and desirable characteristics for static tasks that require in-distribution predictions over a previously fixed set. This deep design, however, is not a universal solution to all the challenges and cannot help the expressive power of the models in multiple aspects, for example: (i) The computational depth of deep models might not change with more layers [21, 22], leaving their ability to implement complex algorithms untouched compared to traditional shallow approaches [23]; (ii) The capacity of some class of parameters might show marginal improvement with increasing the depth/width of the model [24]; (iii) The training process might converge to a suboptimal solution, mainly due to the suboptimal choice of the optimizer or its hyperparameters; and (iv) The model's ability to fast adapt to a new task, continually learn, and/or generalize to out-of-distribution data might not changed with stacking more layers and requires more careful designs.
@@ -100,7 +100,7 @@ Human brain is highly efficient and effective when it comes to continual learnin
 Coming back to the analogy of anterograde amnesia, evidence indicates that the condition can impact both stages, but especially the online consolidation phase, mainly due to the fact that hippocampus is the gateway for encoding new declarative memories, and so its damage means new information never will be stored in long-term memory. As mentioned above, the design of LLMs, and more specifically Transformer-based backbones, suffers from a similar condition after the pre-training phase. That is, the information provided in the context, never impacts the long-term memory parameters (e.g., feedforward layers), and so the model is not capable of acquiring new knowledge or skill, unless the information is still stored in the short-term memory (e.g., attention). To this end, although the second stage is equally, or even more, crucial for the consolidation of memories, and its absence can damage the process and might cause loss of memory [54, 55], in this work, we focus on the first stage: memory consolidation as an online process. We provide additional discussion on human brain perspective and its connection to NL in Appendix A.
 
 
-Notations. We let \( x \in \mathbb{R}^{N \times d_{\mathrm{in}}} \) be the input, \( \mathcal{M}_t \) represent the state of memory/model \( \mathcal{M} \) at time \( t \), \( \mathbf{K} \) be the keys, \( \mathbf{V} \) be the values, and \( \mathbf{Q} \) be the query matrices. We use bold lowercase letters with subscript \( t \) to refer to the vector corresponds to the input \( t \) (i.e., \( \mathbf{k}_t \), \( \mathbf{v}_t \), and \( \mathbf{q}_t \)). We further refer to the distribution of any entities \( f \) as \( p(f) \). Through the paper, we use simple MLPs with \( \mathcal{L}_{\mathcal{M}} \geq 1 \) layers and residual connection as the architecture of the memory module \( \mathcal{M}(\cdot) \). When it is needed, we parameterized the memory module with \( \theta_{\mathcal{M}} \supseteq \{W_1, W_2, \ldots, W_{\mathcal{L}_{\mathcal{M}}} \} \), which at least includes the parameters of linear layers in the MLP. We use superscript with parenthesis to refer to parameters in different levels of nested learning (different update frequency): i.e., \( W^{(\ell)} \).
+Notations. We let $ x \in \mathbb{R}^{N \times d_{\mathrm{in}}} $ be the input, $ \mathcal{M}_t $ represent the state of memory/model $ \mathcal{M} $ at time $ t $, $ \mathbf{K} $ be the keys, $ \mathbf{V} $ be the values, and $ \mathbf{Q} $ be the query matrices. We use bold lowercase letters with subscript $ t $ to refer to the vector corresponds to the input $ t $ (i.e., $ \mathbf{k}_t $, $ \mathbf{v}_t $, and $ \mathbf{q}_t $). We further refer to the distribution of any entities $ f $ as $ p(f) $. Through the paper, we use simple MLPs with $ \mathcal{L}_{\mathcal{M}} \geq 1 $ layers and residual connection as the architecture of the memory module $ \mathcal{M}(\cdot) $. When it is needed, we parameterized the memory module with $ \theta_{\mathcal{M}} \supseteq \{W_1, W_2, \ldots, W_{\mathcal{L}_{\mathcal{M}}} \} $, which at least includes the parameters of linear layers in the MLP. We use superscript with parenthesis to refer to parameters in different levels of nested learning (different update frequency): i.e., $ W^{(\ell)} $.
 
 
 # 2 Nested Learning
@@ -171,7 +171,7 @@ Memory is a neural update caused by an input, and learning is the process for ac
 In this work, our goal is to first show that all the elements of a computational sequence model, including optimizers and neural networks, are associative memory systems that compress their own context flow. Broadly speaking, associative memory is an operator that maps a set of keys to a set of values. We follow the general definition of associative memory by Behrouz et al. [58]:
 
 
-Definition 1 (Associative Memory). Given a set of keys \(\mathcal{K} \subseteq \mathbb{R}^{d_k}\) and values \(\mathcal{V} \subseteq \mathbb{R}^{d_v}\), associative memory is an operator \(\mathcal{M}: \mathcal{K} \to \mathcal{V}\) that maps two sets of keys \(\mathcal{K}\) and values \(\mathcal{V}\). To learn such mapping from the data, an objective \(\tilde{\mathcal{L}}(\cdot; \cdot)\) measures the quality of the mapping and \(\mathcal{M}\) can be defined as:
+Definition 1 (Associative Memory). Given a set of keys $\mathcal{K} \subseteq \mathbb{R}^{d_k}$ and values $\mathcal{V} \subseteq \mathbb{R}^{d_v}$, associative memory is an operator $\mathcal{M}: \mathcal{K} \to \mathcal{V}$ that maps two sets of keys $\mathcal{K}$ and values $\mathcal{V}$. To learn such mapping from the data, an objective $\tilde{\mathcal{L}}(\cdot; \cdot)$ measures the quality of the mapping and $\mathcal{M}$ can be defined as:
 
 
 $$
@@ -179,7 +179,7 @@ $$
 $$
 
 
-While the operator itself is a memory and the mapping acts as a memorization process (i.e., memorizing the connections of events in the context), acquiring such effective operator based on the data, is a learning process. It is notable that, here, keys and values can be any arbitrary events that memory aims to map them and are not limited to tokens. Later in this section, we will discuss that given a context flow, keys and values might be tokens, gradients, sub-sequences, etc. Furthermore, while the term of associative memory is more common in neuroscience and neuropsychology literature, the above formulation is also closely related to data compression and low-dimensional representation. That is, one can interpret the optimization process in Equation 1 as the training process of a network \(\mathcal{M}(.)\) that aims to compress the mappings into its parameters and so represent them in a lower dimensional space.
+While the operator itself is a memory and the mapping acts as a memorization process (i.e., memorizing the connections of events in the context), acquiring such effective operator based on the data, is a learning process. It is notable that, here, keys and values can be any arbitrary events that memory aims to map them and are not limited to tokens. Later in this section, we will discuss that given a context flow, keys and values might be tokens, gradients, sub-sequences, etc. Furthermore, while the term of associative memory is more common in neuroscience and neuropsychology literature, the above formulation is also closely related to data compression and low-dimensional representation. That is, one can interpret the optimization process in Equation 1 as the training process of a network $\mathcal{M}(.)$ that aims to compress the mappings into its parameters and so represent them in a lower dimensional space.
 
 
 In sequence modeling, where keys and values are input tokens (e.g., tokenized text), the choice of objective and the optimization process for solving Equation 1 can result in distinct sequence
@@ -191,7 +191,7 @@ In sequence modeling, where keys and values are input tokens (e.g., tokenized te
 modeling architectures (see [59] and [58]) such as global/local softmax attention [27], or other modern recurrent models [28, 60, 61]. This simple formulation of sequence models provides us with better understanding of their internal process and also a tool to simply compare their modeling power based on their objective and optimization process. In the following, using step-by-step examples, we discuss how this formulation can be applied to all components of a neural architecture (including its optimization process in pre-training) and in fact, how a model is an integrated system of multi-level, nested, and or parallel memories, each of which with its own context flow.
 
 
-A Simple Example of MLP Training. We start with a simple example, in which we aim to train a 1-layer MLP (parameterized with \( W \)) for task \( \mathcal{T} \) and on dataset \( \mathcal{D}_{\mathrm{train}} = \{x_1,\dots,x_{|\mathcal{D}_{\mathrm{train}}|}\} \) by optimizing the objective \( \mathcal{L}(\cdot ;\cdot) \) with gradient descent. In this case, the training process is equivalent to the following optimization problem:
+A Simple Example of MLP Training. We start with a simple example, in which we aim to train a 1-layer MLP (parameterized with $ W $) for task $ \mathcal{T} $ and on dataset $ \mathcal{D}_{\mathrm{train}} = \{x_1,\dots,x_{|\mathcal{D}_{\mathrm{train}}|}\} $ by optimizing the objective $ \mathcal{L}(\cdot ;\cdot) $ with gradient descent. In this case, the training process is equivalent to the following optimization problem:
 
 
 $$
@@ -207,7 +207,7 @@ $$
 $$
 
 
-where \( y_{t+1} = Wx_{t+1} \) is the output of the model for input \( x_{t+1} \). Given this formulation, one can let \( u_{t+1} = \nabla_{y_{t+1}}\mathcal{L}(W_t; x_{t+1}) \) and reformulate the backpropagation process as the solution to an optimization problem on finding an optimal associative memory that maps input data points \( \mathcal{D}_{\mathrm{train}} = \{x_t\}_{t=1}^{|\mathcal{D}_{\mathrm{train}}|} \) to their corresponding \( u_{t+1} = \nabla_{y_{t+1}}\mathcal{L}(W_t; x_{t+1}) \). That is, we let \( \mathcal{M}(\cdot) = W_t \). parametrizes the memory, and use dot-product similarity to measure the quality of \( W_t \)'s mapping between \( x_{t+1} \) and \( \nabla_{y_{t+1}}\mathcal{L}(W_t; x_{t+1}) \):
+where $ y_{t+1} = Wx_{t+1} $ is the output of the model for input $ x_{t+1} $. Given this formulation, one can let $ u_{t+1} = \nabla_{y_{t+1}}\mathcal{L}(W_t; x_{t+1}) $ and reformulate the backpropagation process as the solution to an optimization problem on finding an optimal associative memory that maps input data points $ \mathcal{D}_{\mathrm{train}} = \{x_t\}_{t=1}^{|\mathcal{D}_{\mathrm{train}}|} $ to their corresponding $ u_{t+1} = \nabla_{y_{t+1}}\mathcal{L}(W_t; x_{t+1}) $. That is, we let $ \mathcal{M}(\cdot) = W_t $. parametrizes the memory, and use dot-product similarity to measure the quality of $ W_t $'s mapping between $ x_{t+1} $ and $ \nabla_{y_{t+1}}\mathcal{L}(W_t; x_{t+1}) $:
 
 
 $$
@@ -215,7 +215,7 @@ $$
 $$
 
 
-In the above formulation, \( u_{t + 1} = \nabla_{y_{t + 1}}\mathcal{L}(W_t;x_{t + 1}) \) can be interpreted as a local surprise signal in representation space that quantifies the mismatch between the current output and the structure the objective \( \mathcal{L}(\cdot ;\cdot) \) enforces. Therefore, this formulation translates the training phase of the model as a process of acquiring effective memory that maps data samples to their Local Surprise Signal (LSS) in representation space—defined as the mismatch between the current output and the structure enforced by the objective \( \mathcal{L}(\cdot ;\cdot) \). Accordingly, in this example, our model has a single gradient flow over the data samples, which is only active over dataset \( \mathcal{D}_{\mathrm{train}} = \{x_1,\ldots ,x_{|\mathcal{D}_{\mathrm{train}}|}\} \) and will be frozen for any other data samples afterwards (a.k.a inference or test time).
+In the above formulation, $ u_{t + 1} = \nabla_{y_{t + 1}}\mathcal{L}(W_t;x_{t + 1}) $ can be interpreted as a local surprise signal in representation space that quantifies the mismatch between the current output and the structure the objective $ \mathcal{L}(\cdot ;\cdot) $ enforces. Therefore, this formulation translates the training phase of the model as a process of acquiring effective memory that maps data samples to their Local Surprise Signal (LSS) in representation space—defined as the mismatch between the current output and the structure enforced by the objective $ \mathcal{L}(\cdot ;\cdot) $. Accordingly, in this example, our model has a single gradient flow over the data samples, which is only active over dataset $ \mathcal{D}_{\mathrm{train}} = \{x_1,\ldots ,x_{|\mathcal{D}_{\mathrm{train}}|}\} $ and will be frozen for any other data samples afterwards (a.k.a inference or test time).
 
 
 Next, in the above example, we replace the gradient descent algorithm with its enhanced momentum-based variant, resulting in an update rule of:
@@ -231,7 +231,7 @@ $$
 $$
 
 
-In Equation 8, given the previous state of Equation 7 (at time \(t\)), the value of \(\nabla_{W_t}\mathcal{L}(W_t;x_{t + 1})\) or similarly \(\nabla_{y_{t + 1}}\mathcal{L}(W_t;x_{t + 1})\) are independent of recurrence in Equation 8 and so can be pre-computed beforehand. To this end, we let \(u_{t + 1} = \nabla_{W_t}\mathcal{L}(W_t;x_{t + 1})\), and so Equation 8 can be reformulated as:
+In Equation 8, given the previous state of Equation 7 (at time $t$), the value of $\nabla_{W_t}\mathcal{L}(W_t;x_{t + 1})$ or similarly $\nabla_{y_{t + 1}}\mathcal{L}(W_t;x_{t + 1})$ are independent of recurrence in Equation 8 and so can be pre-computed beforehand. To this end, we let $u_{t + 1} = \nabla_{W_t}\mathcal{L}(W_t;x_{t + 1})$, and so Equation 8 can be reformulated as:
 
 
 $$
@@ -239,7 +239,7 @@ $$
 $$
 
 
-where the optimization problem in Equation 10 is equivalent to on step of gradient descent with adaptive learning rate of \(\eta_{t + 1}\). Given these formulation, one can interpret the momentum term as either: (1) a key-less associative memory that compresses the gradients into its parameters, or (2) an associative memory that learns how to map data points to their corresponding LSS-value. Interestingly, this formulation reveals that gradient descent with momentum is indeed a two-level
+where the optimization problem in Equation 10 is equivalent to on step of gradient descent with adaptive learning rate of $\eta_{t + 1}$. Given these formulation, one can interpret the momentum term as either: (1) a key-less associative memory that compresses the gradients into its parameters, or (2) an associative memory that learns how to map data points to their corresponding LSS-value. Interestingly, this formulation reveals that gradient descent with momentum is indeed a two-level
 
 
 ---
@@ -248,10 +248,10 @@ where the optimization problem in Equation 10 is equivalent to on step of gradie
 optimization process, where the memory is optimized by simple gradient descent algorithm. This process is closely related to Fast Weight Programs (FWPs) [62], where the weight update process (i.e., Equation 9) is the slow network that its momentum weight is generated by a fast network (i.e., Equation 10).
 
 
-Concluding the above examples, we observed that the training process of a 1-layer MLP with: (1) Gradient descent is a 1-level associative memory that learns how to map data points to their corresponding LSS-value; and (2) Gradient descent with momentum is a 2-level associative memory (or optimization process) that the inner-level learns to store gradient values into its parameters, and then the outer-level updates the slow weight (i.e., \( W_{t} \)) with the value of the inner-level memory. While these are the most simple examples with respect to both architecture and optimizer algorithms, one might ask if similar conclusion can be made in more complex setups.
+Concluding the above examples, we observed that the training process of a 1-layer MLP with: (1) Gradient descent is a 1-level associative memory that learns how to map data points to their corresponding LSS-value; and (2) Gradient descent with momentum is a 2-level associative memory (or optimization process) that the inner-level learns to store gradient values into its parameters, and then the outer-level updates the slow weight (i.e., $ W_{t} $) with the value of the inner-level memory. While these are the most simple examples with respect to both architecture and optimizer algorithms, one might ask if similar conclusion can be made in more complex setups.
 
 
-An Example of Architectural Decomposition. In the next example, we replace the MLP module with a linear attention [60]. That is, we aim to train a 1-layer linear attention for task \(\mathcal{T}\) and on a sequence of \(\mathcal{D}_{\mathrm{train}} = \{x_1,\ldots ,x_{|\mathcal{D}_{\mathrm{train}}|}\}\) by optimizing the objective \(\mathcal{L}\) with gradient descent. Recalling the unnormalized linear attention formulation:
+An Example of Architectural Decomposition. In the next example, we replace the MLP module with a linear attention [60]. That is, we aim to train a 1-layer linear attention for task $\mathcal{T}$ and on a sequence of $\mathcal{D}_{\mathrm{train}} = \{x_1,\ldots ,x_{|\mathcal{D}_{\mathrm{train}}|}\}$ by optimizing the objective $\mathcal{L}$ with gradient descent. Recalling the unnormalized linear attention formulation:
 
 
 $$
@@ -269,7 +269,7 @@ y _ {t} = \mathcal {M} _ {t} \mathbf {q} _ {t}. \tag {14}
 $$
 
 
-As discussed in earlier studies [58, 59], the recurrence in Equation 13 can be reformulated as the optimization process of a matrix-valued associative memory \(\mathcal{M}_t(\cdot)\), in which, it aims to compress the mappings of keys and values into its parameters. In more details, in Definition 1, if we let \(\tilde{\mathcal{L}} (\mathcal{M}_{t - 1};\mathbf{k}_t,\mathbf{v}_t)\coloneqq -\langle \mathcal{M}_{t - 1}\mathbf{k}_t,\mathbf{v}_t\rangle\) and aim to optimize the memory with gradient descent, the memory update rule is: (Note that \(\nabla \tilde{\mathcal{L}} (\mathcal{M}_{t - 1};\mathbf{k}_t,\mathbf{v}_t) = \mathbf{v}_t\mathbf{k}_t^\top\) and we let learning rate \(\eta_t = 1\))
+As discussed in earlier studies [58, 59], the recurrence in Equation 13 can be reformulated as the optimization process of a matrix-valued associative memory $\mathcal{M}_t(\cdot)$, in which, it aims to compress the mappings of keys and values into its parameters. In more details, in Definition 1, if we let $\tilde{\mathcal{L}} (\mathcal{M}_{t - 1};\mathbf{k}_t,\mathbf{v}_t)\coloneqq -\langle \mathcal{M}_{t - 1}\mathbf{k}_t,\mathbf{v}_t\rangle$ and aim to optimize the memory with gradient descent, the memory update rule is: (Note that $\nabla \tilde{\mathcal{L}} (\mathcal{M}_{t - 1};\mathbf{k}_t,\mathbf{v}_t) = \mathbf{v}_t\mathbf{k}_t^\top$ and we let learning rate $\eta_t = 1$)
 
 
 $$
@@ -277,10 +277,10 @@ $$
 $$
 
 
-which is equivalent to the update rule of an unnormalized linear attention in Equation 13. Also, note that as we observed in the first example, training a linear layer with gradient descent is a 1-layer optimization problem of an associative memory (see Equation 3) and so the general training/updating process of projection layers (i.e., \( W_{\mathbf{k}} \), \( W_{\mathbf{v}} \), and \( W_{\mathbf{q}} \)) is itself an optimization process of associative memory. Accordingly, this setup, i.e., training a linear attention with gradient descent, can be seen as a two-level optimization process, where the outer-loop (also known as training process) optimizes the projection layers with gradient descent, while the inner-loop optimizes the inner memory of \( \mathcal{M}_t \) with gradient descent.
+which is equivalent to the update rule of an unnormalized linear attention in Equation 13. Also, note that as we observed in the first example, training a linear layer with gradient descent is a 1-layer optimization problem of an associative memory (see Equation 3) and so the general training/updating process of projection layers (i.e., $ W_{\mathbf{k}} $, $ W_{\mathbf{v}} $, and $ W_{\mathbf{q}} $) is itself an optimization process of associative memory. Accordingly, this setup, i.e., training a linear attention with gradient descent, can be seen as a two-level optimization process, where the outer-loop (also known as training process) optimizes the projection layers with gradient descent, while the inner-loop optimizes the inner memory of $ \mathcal{M}_t $ with gradient descent.
 
 
-Note that, as discussed above, here, we have two associative memories, and so each of which has their own optimization process and gradient flow. That is, in the optimization of outer-level parameters of \( W_{\mathbf{k}} \), \( W_{\mathbf{v}} \), and \( W_{\mathbf{q}} \) there is no gradient with respect to parameter \( \mathcal{M}(\cdot) \) and so there is no backpropagation through it. Similarly, in the inner-level, there is no backpropagation through projection layers and they are considered frozen. Furthermore, it is notable that in this example, the above formulation is also closely connected to FwPs perspective of linear attentions [63], where projections are considered slow weights, and memory update in Equation 13 is the fast weight update rule.
+Note that, as discussed above, here, we have two associative memories, and so each of which has their own optimization process and gradient flow. That is, in the optimization of outer-level parameters of $ W_{\mathbf{k}} $, $ W_{\mathbf{v}} $, and $ W_{\mathbf{q}} $ there is no gradient with respect to parameter $ \mathcal{M}(\cdot) $ and so there is no backpropagation through it. Similarly, in the inner-level, there is no backpropagation through projection layers and they are considered frozen. Furthermore, it is notable that in this example, the above formulation is also closely connected to FwPs perspective of linear attentions [63], where projections are considered slow weights, and memory update in Equation 13 is the fast weight update rule.
 
 
 Architectural Decomposition with More Levels. In both above examples, we discussed simple cases, where they can be translated into 2-level optimization processes, which also coincides with their FwPs interpretations. In practice, however, we need to use more powerful optimization algorithms to train the model, and/or use more powerful recurrent update rule for memory. As a simple example, assume we use gradient descent with momentum to train a linear attention model. In the above examples, we show that how the linear attention component can be decomposed into two nested optimization problems. Similarly, here the model can be represented as a 2-level optimization problem, where (1) the inner level optimizes the memory to compress the context using gradient descent (see Equation 15), and (2) the outer level optimizes the projection layers with gradient descent with momentum. Interestingly, from the first example, we know that "gradient descent with momentum" algorithm itself is indeed a 2-level optimization problem where the momentum term itself is an associative memory that compresses the past gradients into its parameters.
@@ -298,10 +298,10 @@ In the previous section, we provided examples to demonstrate how one can decompo
 As we observed in the previous section, while we decomposed the model into a set of optimization process, it is still unclear if we can define a hierarchy (or order) over these problems, and uniquely represent the model in this format. Inspired by the hierarchy of brain waves that indicates the information processing frequency rate of each part (discussed in Section 1), we use the update rate of each optimization problem to order the components in multiple levels. To this end, we let the one update step over one data point to be the unit of time, and define the update frequency rate of each component as:
 
 
-Definition 2 (Update Frequency). For any component of \( A \), which can be a parametric component (e.g., learnable weights or momentum term in gradient descent in momentum) or a non-parametric component (e.g., attention block), we define its frequency, denoted as \( f_{A} \), as its number of updates per unit of time.
+Definition 2 (Update Frequency). For any component of $ A $, which can be a parametric component (e.g., learnable weights or momentum term in gradient descent in momentum) or a non-parametric component (e.g., attention block), we define its frequency, denoted as $ f_{A} $, as its number of updates per unit of time.
 
 
-Given the above update frequency, we can order the components of a machine learning algorithm based on operator \((\cdot \succ \cdot)\). We let \(A\) to be faster than \(B\) and denote \(A \succ B\) if: (1) \(f_A > f_B\), or (2) \(f_A = f_B\) but the computation of the \(B\)'s state at time \(t\) requires the computation of \(A\)'s state at time \(t\). In this definition, when \(A \succ B\) and \(B \succ A\), we let \(A \stackrel{f}{=} B\), which indicates that \(A\) and \(B\) has the same frequency update, but their computation is independent of each other (Later, we provide an example of this cases in AdamW optimizer). Based on the above operator, we sort the components into an ordered set of "levels", where (1) components in the same level have the same frequency update, and (2) the higher the level is, the lower its frequency. Notably, based on the above definition, each component has its own optimization problem and so context. While we optimize the component's inner objective with gradient-based optimizers, the above statement is equivalent to having exclusive gradient flow for each component in the model. In general case, however, one can use non-parametric solution (as we later discuss about attention).
+Given the above update frequency, we can order the components of a machine learning algorithm based on operator $(\cdot \succ \cdot)$. We let $A$ to be faster than $B$ and denote $A \succ B$ if: (1) $f_A > f_B$, or (2) $f_A = f_B$ but the computation of the $B$'s state at time $t$ requires the computation of $A$'s state at time $t$. In this definition, when $A \succ B$ and $B \succ A$, we let $A \stackrel{f}{=} B$, which indicates that $A$ and $B$ has the same frequency update, but their computation is independent of each other (Later, we provide an example of this cases in AdamW optimizer). Based on the above operator, we sort the components into an ordered set of "levels", where (1) components in the same level have the same frequency update, and (2) the higher the level is, the lower its frequency. Notably, based on the above definition, each component has its own optimization problem and so context. While we optimize the component's inner objective with gradient-based optimizers, the above statement is equivalent to having exclusive gradient flow for each component in the model. In general case, however, one can use non-parametric solution (as we later discuss about attention).
 
 
 Neural Learning Module. Given the above definition of nested learning problems, we define neural learning module as a new way of representation of machine learning models that shows the model as an interconnected system of components, each of which with its own gradient flow. Note that, orthogonal to deep learning, nested learning allows us to define neural learning models with more levels, resulting in more expressive architecture.
@@ -329,7 +329,7 @@ $$
 $$
 
 
-where matrix (or vector) \(\mathbf{m}_i\) is the momentum at state \(i\) and \(\alpha_{i}\) and \(\eta_{i}\) are adaptive learning and momentum rates, respectively. Assuming \(\alpha_{i + 1} = 1\), the momentum term can be viewed as the result of optimizing the following objective with gradient descent:
+where matrix (or vector) $\mathbf{m}_i$ is the momentum at state $i$ and $\alpha_{i}$ and $\eta_{i}$ are adaptive learning and momentum rates, respectively. Assuming $\alpha_{i + 1} = 1$, the momentum term can be viewed as the result of optimizing the following objective with gradient descent:
 
 
 $$
@@ -346,7 +346,7 @@ This interpretation shows that momentum can indeed be viewed as a meta memory mo
 Section C.4 we show that Adam with a small modification is the optimal associative memory for the models' gradients. Next, we show that how this perspective can result in designing more expressive optimizers:
 
 
-Extension: More Expressive Association. As discussed earlier, momentum is a value-less associative memory and so has limited expressive power. To address this issue, following the original definition of associative memory (i.e., mapping keys to values), we let value parameter \(\mathbf{v}_i = \mathbf{P}_i\) and so the momentum aims to minimize:
+Extension: More Expressive Association. As discussed earlier, momentum is a value-less associative memory and so has limited expressive power. To address this issue, following the original definition of associative memory (i.e., mapping keys to values), we let value parameter $\mathbf{v}_i = \mathbf{P}_i$ and so the momentum aims to minimize:
 
 
 $$
@@ -367,10 +367,10 @@ $$
 $$
 
 
-This formulation is equivalent to using preconditioning the momentum GD. In fact, preconditioning means that the momentum term is an associative memory that learns how to compress the mappings between \(\mathbf{P}_i\) and the gradient term \(\nabla \mathcal{L}(W_i; x_i)\). While any reasonable choice (e.g., random features) of preconditioning can improve the expressivity of the initial version of GD with momentum per se is a value-less memory (i.e., mapping all gradients to a single value), the above perspective gives more intuition about what preconditioning are more useful. That is, the momentum acts as a memory that aims to map gradients to their corresponding values, and so a function of gradients (e.g., information about Hessian) can provide the memory with a more meaningful mappings.
+This formulation is equivalent to using preconditioning the momentum GD. In fact, preconditioning means that the momentum term is an associative memory that learns how to compress the mappings between $\mathbf{P}_i$ and the gradient term $\nabla \mathcal{L}(W_i; x_i)$. While any reasonable choice (e.g., random features) of preconditioning can improve the expressivity of the initial version of GD with momentum per se is a value-less memory (i.e., mapping all gradients to a single value), the above perspective gives more intuition about what preconditioning are more useful. That is, the momentum acts as a memory that aims to map gradients to their corresponding values, and so a function of gradients (e.g., information about Hessian) can provide the memory with a more meaningful mappings.
 
 
-Extension: More Expressive Objectives. As discussed by Behrouz et al. [58], optimizing an inner objective of dot-product similarity results in Hebbian-like update rule, which can cause the memory to be less effective. A natural extension of this internal objective is to use \(\ell_2(\cdot)\) regression loss (for measuring the corresponding key-value mapping fitness) and minimize the loss function \(\| \mathbf{m}\nabla \mathcal{L}(W_i;x_i)^\top -\mathbf{P}_i\| _2^2\), resulting in the update rule of:
+Extension: More Expressive Objectives. As discussed by Behrouz et al. [58], optimizing an inner objective of dot-product similarity results in Hebbian-like update rule, which can cause the memory to be less effective. A natural extension of this internal objective is to use $\ell_2(\cdot)$ regression loss (for measuring the corresponding key-value mapping fitness) and minimize the loss function $\| \mathbf{m}\nabla \mathcal{L}(W_i;x_i)^\top -\mathbf{P}_i\| _2^2$, resulting in the update rule of:
 
 
 $$
@@ -394,7 +394,7 @@ W _ {i + 1} = W _ {i} + \mathbf {m} _ {i + 1} (\mathbf {u} _ {i}), \quad \text {
 $$
 
 
-where \(\mathbf{u}_i = \nabla \mathcal{L}(W_i; x_i)\) and \(\nabla \mathcal{L}^{(2)}(\cdot)\) is the internal objective of momentum (e.g., dot product similarity \(\langle \mathbf{m}(\mathbf{u}_i^\top), \mathbf{1} \rangle\)). We refer to this variant as Deep Momentum Gradient Descent (DMGD).
+where $\mathbf{u}_i = \nabla \mathcal{L}(W_i; x_i)$ and $\nabla \mathcal{L}^{(2)}(\cdot)$ is the internal objective of momentum (e.g., dot product similarity $\langle \mathbf{m}(\mathbf{u}_i^\top), \mathbf{1} \rangle$). We refer to this variant as Deep Momentum Gradient Descent (DMGD).
 
 
 Extension: None Linear Outputs. Building upon the above perspective, in which we see the momentum as a neural architecture, one common technique to enhance the representation power of momentum memory module is to use non-linearity on top of its output [28, 65]. That is, we re-formulate Equation 23 as:
@@ -405,13 +405,13 @@ W _ {i + 1} = W _ {i} + \sigma (\mathbf {m} _ {i + 1} (\mathbf {u} _ {i})), \qua
 $$
 
 
-where \(\sigma(\cdot)\) is an arbitrary non-linearity. As an example, we let \(\sigma(\cdot) = \text{Newton-Schulz}(\cdot)\), where Newton-Schulz is the iterative Newton-Schulz method [66], and \(\mathbf{m}(\cdot)\) be a linear layer; the resulted optimizer is equivalent to Muon optimizer [34].
+where $\sigma(\cdot)$ is an arbitrary non-linearity. As an example, we let $\sigma(\cdot) = \text{Newton-Schulz}(\cdot)$, where Newton-Schulz is the iterative Newton-Schulz method [66], and $\mathbf{m}(\cdot)$ be a linear layer; the resulted optimizer is equivalent to Muon optimizer [34].
 
 
 ---
 
 
-Going Beyond Simple Backpropagation. As discussed earlier in Section 2.1, the pre-training process and backpropagation is a form of associative memory, where input data is mapped to the surprised caused by its predicted output \(\nabla_{y_t}\mathcal{L}(W_t;x_t)\):
+Going Beyond Simple Backpropagation. As discussed earlier in Section 2.1, the pre-training process and backpropagation is a form of associative memory, where input data is mapped to the surprised caused by its predicted output $\nabla_{y_t}\mathcal{L}(W_t;x_t)$:
 
 
 $$
@@ -427,7 +427,7 @@ $$
 $$
 
 
-As we discussed in Appendix C, the above formulation cause ignoring the dependencies of data samples like \( x_{t} \). To extend it to a more powerful formulation where it also consider the dependencies of data points (which is extremely important when we use optimizer in the token space as they are not independent), we use \( L_{2} \) regression objective with one step of gradient descent as follows:
+As we discussed in Appendix C, the above formulation cause ignoring the dependencies of data samples like $ x_{t} $. To extend it to a more powerful formulation where it also consider the dependencies of data points (which is extremely important when we use optimizer in the token space as they are not independent), we use $ L_{2} $ regression objective with one step of gradient descent as follows:
 
 
 $$
@@ -452,7 +452,7 @@ Later, we use this optimizer as the internal optimizer of our HOPE architecture.
 Existing architectural backbones consist of (1) a working memory module (e.g., attention), which is responsible to actively fuse the information across sequence length, and (2) a feed-forward layer (e.g., MLP) that fuse information across features and acts as the persistent memory or knowledge storage of pre-training phase. From the NL perspective, pre-training is the phase that the most outer level of the learning module is updated over its limited context flow. Accordingly, in the continual setup, such pre-training phase is also rarely updated over time, and so its corresponding knowledge storage needs to rarely be updated over time. Given this intuition, we extend the traditional view-point of long-term/short-term memory system and suggest a knowledge storage feed-forward for each level (frequency domain).
 
 
-Given the definition of frequency, Continuum Memory System (CMS) is formalized as a chain of MLP blocks \(\mathbf{MLP}^{(f_1)}(\cdot),\ldots ,\mathbf{MLP}^{(f_k)}(\cdot)\), each of which associated with a chunk size of \(C^{(\ell)} := \frac{\max_{\ell}C^{(\ell)}}{f_{\ell}}\) such that given input \(x = \{x_{1},\dots,x_{T}\}\) the output of the chain is calculated as (we disregard normalizations for the sake of clarity):
+Given the definition of frequency, Continuum Memory System (CMS) is formalized as a chain of MLP blocks $\mathbf{MLP}^{(f_1)}(\cdot),\ldots ,\mathbf{MLP}^{(f_k)}(\cdot)$, each of which associated with a chunk size of $C^{(\ell)} := \frac{\max_{\ell}C^{(\ell)}}{f_{\ell}}$ such that given input $x = \{x_{1},\dots,x_{T}\}$ the output of the chain is calculated as (we disregard normalizations for the sake of clarity):
 
 
 $$
@@ -460,7 +460,7 @@ y _ {t} = \operatorname {M L P} ^ {\left(f _ {k}\right)} \left(\operatorname {M 
 $$
 
 
-where the parameters of \(\ell\)-th MLP block, i.e., \(\pmb{\theta}^{(f_{\ell})}\), are updated every \(C^{(\ell)}\) steps:
+where the parameters of $\ell$-th MLP block, i.e., $\pmb{\theta}^{(f_{\ell})}$, are updated every $C^{(\ell)}$ steps:
 
 
 $$
@@ -468,7 +468,7 @@ $$
 $$
 
 
-In Appendix B.1, we discuss different variants of this formulation, including fully nested MLP layers. Here \(\eta_t^{(\ell)}\) are learning rates corresponding to \(\pmb{\theta}^{(f_{\ell})}\), and \(f(\cdot)\) is the error component of an arbitrary optimizer (e.g., \(\nabla \mathcal{L}(\pmb{\theta}_t^{(f_\ell)}; x_t)\) in gradient descent). The conventional Transformer block [27] is a special instance of this formulation, where \(k = 1\). It is notable that Equation 31 provides an important interpretation: parameters \(\pmb{\theta}_t^{(f_\ell)}\) are responsible for compressing their own context into the their parameters and so they are a representative of abstract knowledge of their context.
+In Appendix B.1, we discuss different variants of this formulation, including fully nested MLP layers. Here $\eta_t^{(\ell)}$ are learning rates corresponding to $\pmb{\theta}^{(f_{\ell})}$, and $f(\cdot)$ is the error component of an arbitrary optimizer (e.g., $\nabla \mathcal{L}(\pmb{\theta}_t^{(f_\ell)}; x_t)$ in gradient descent). The conventional Transformer block [27] is a special instance of this formulation, where $k = 1$. It is notable that Equation 31 provides an important interpretation: parameters $\pmb{\theta}_t^{(f_\ell)}$ are responsible for compressing their own context into the their parameters and so they are a representative of abstract knowledge of their context.
 
 
 HOPE. We further present a self-referential learning module based on Titans [28] and our variant of gradient descent in Section B.1. Combining this self-referential sequence model with continuum memory system results in HOPE architecture.
@@ -535,7 +535,7 @@ _Table 1: Performance of HOPE and baselines on language modeling and common-sens
 For the sake of space, in the main paper, we report the results of the HOPE's evaluation on language modeling, and common-sense reasoning, tasks. However, we report an extensive set of results, including on experiments on optimizers, emergence of in-context learning, continual learning abilities of HOPE, ablation studies, long-context tasks, etc. in the appendix. Details about the experimental setups and other used datasets are in Appendix G
 
 
-Language Modeling and Common-sense Reasoning. We follow recent sequence modeling studies [28, 67, 68] and report the results of HOPE and baselines with size of \(340\mathrm{M}\), \(760\mathrm{M}\), and \(1.3\mathrm{B}\) on language modeling and also commonsense reasoning downstream tasks. These results are reported in Table 1. HOPE demonstrate a very good performance across all the scales and benchmark tasks, outperforming both Transformers and recent modern recurrent neural networks, including Gated DeltaNet and Titans. Comparing HOPE to Titans and Gated DeltaNet, we can see that dynamically changing the key, value, and query projections based on the context as well a deep memory module can result in a model with lower perplexity and higher accuracy in benchmark results.
+Language Modeling and Common-sense Reasoning. We follow recent sequence modeling studies [28, 67, 68] and report the results of HOPE and baselines with size of $340\mathrm{M}$, $760\mathrm{M}$, and $1.3\mathrm{B}$ on language modeling and also commonsense reasoning downstream tasks. These results are reported in Table 1. HOPE demonstrate a very good performance across all the scales and benchmark tasks, outperforming both Transformers and recent modern recurrent neural networks, including Gated DeltaNet and Titans. Comparing HOPE to Titans and Gated DeltaNet, we can see that dynamically changing the key, value, and query projections based on the context as well a deep memory module can result in a model with lower perplexity and higher accuracy in benchmark results.
 
 
 ---

@@ -11,7 +11,7 @@ DeepSeek-AI research@deepseek.com
 # Abstract
 
 
-We present a preview version of DeepSeek-V4 series, including two strong Mixture-of-Experts (MoE) language models — DeepSeek-V4-Pro with 1.6T parameters (49B activated) and DeepSeek-V4-Flash with 284B parameters (13B activated) — both supporting a context length of one million tokens. DeepSeek-V4 series incorporate several key upgrades in architecture and optimization: (1) a hybrid attention architecture that combines Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA) to improve long-context efficiency; (2) Manifold-Constrained Hyper-Connections (mHC) that enhance conventional residual connections; (3) and the Muon optimizer for faster convergence and greater training stability. We pre-train both models on more than 32T diverse and high-quality tokens, followed by a comprehensive post-training pipeline that unlocks and further enhances their capabilities. DeepSeek-V4-ProMax, the maximum reasoning effort mode of DeepSeek-V4-Pro, redefines the state-of-the-art for open models, outperforming its predecessors in core tasks. Meanwhile, DeepSeek-V4 series are highly efficient in long-context scenarios. In the one-million-token context setting, DeepSeek-V4-Pro requires only \(27\%\) of single-token inference FLOPs and \(10\%\) of KV cache compared with DeepSeek-V3.2. This enables us to routinely support one-million-token contexts, thereby making long-horizon tasks and further test-time scaling more feasible. The model checkpoints are available at https://huggingface.cocollections/deepseek-ai/deepseek-v4.
+We present a preview version of DeepSeek-V4 series, including two strong Mixture-of-Experts (MoE) language models — DeepSeek-V4-Pro with 1.6T parameters (49B activated) and DeepSeek-V4-Flash with 284B parameters (13B activated) — both supporting a context length of one million tokens. DeepSeek-V4 series incorporate several key upgrades in architecture and optimization: (1) a hybrid attention architecture that combines Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA) to improve long-context efficiency; (2) Manifold-Constrained Hyper-Connections (mHC) that enhance conventional residual connections; (3) and the Muon optimizer for faster convergence and greater training stability. We pre-train both models on more than 32T diverse and high-quality tokens, followed by a comprehensive post-training pipeline that unlocks and further enhances their capabilities. DeepSeek-V4-ProMax, the maximum reasoning effort mode of DeepSeek-V4-Pro, redefines the state-of-the-art for open models, outperforming its predecessors in core tasks. Meanwhile, DeepSeek-V4 series are highly efficient in long-context scenarios. In the one-million-token context setting, DeepSeek-V4-Pro requires only $27\%$ of single-token inference FLOPs and $10\%$ of KV cache compared with DeepSeek-V3.2. This enables us to routinely support one-million-token contexts, thereby making long-horizon tasks and further test-time scaling more feasible. The model checkpoints are available at https://huggingface.cocollections/deepseek-ai/deepseek-v4.
 
 
 ![图片 page1-7](images/page001_img01.png)
@@ -221,7 +221,7 @@ To enable efficient training and inference for DeepSeek-V4 series as well as pro
 ---
 
 
-By employing hybrid CSA and HCA, along with precision optimizations on computation and storage, DeepSeek-V4 series achieve significantly lower inference FLOPs and a substantially reduced KV cache size compared with DeepSeek-V3.2, especially in long-context settings. The right part of Figure 1 demonstrates the estimated single-token inference FLOPs and accumulated KV cache size of DeepSeek-V3.2 and DeepSeek-V4 series. In the scenario of 1M-token context, even DeepSeek-V4-Pro, which has a larger number of activated parameters, attains only \(27\%\) of the single-token FLOPs (measured in equivalent FP8 FLOPs) and \(10\%\) of the KV cache size relative to DeepSeek-V3.2. Furthermore, DeepSeek-V4-Flash, with its smaller number of activated parameters, pushes efficiency even further: in the 1M-token context setting, it achieves only \(10\%\) of the single-token FLOPs and \(7\%\) of the KV cache size compared with DeepSeek-V3.2. Additionally, for DeepSeek-V4 series, the routed expert parameters utilize FP4 precision. While the peak FLOPs for FP4 \(\times\) FP8 operations are currently the same as FP8 \(\times\) FP8 on existing hardware, they can theoretically be implemented to be 1/3 more efficient on future hardware, which will further enhance the efficiency of DeepSeek-V4 series.
+By employing hybrid CSA and HCA, along with precision optimizations on computation and storage, DeepSeek-V4 series achieve significantly lower inference FLOPs and a substantially reduced KV cache size compared with DeepSeek-V3.2, especially in long-context settings. The right part of Figure 1 demonstrates the estimated single-token inference FLOPs and accumulated KV cache size of DeepSeek-V3.2 and DeepSeek-V4 series. In the scenario of 1M-token context, even DeepSeek-V4-Pro, which has a larger number of activated parameters, attains only $27\%$ of the single-token FLOPs (measured in equivalent FP8 FLOPs) and $10\%$ of the KV cache size relative to DeepSeek-V3.2. Furthermore, DeepSeek-V4-Flash, with its smaller number of activated parameters, pushes efficiency even further: in the 1M-token context setting, it achieves only $10\%$ of the single-token FLOPs and $7\%$ of the KV cache size compared with DeepSeek-V3.2. Additionally, for DeepSeek-V4 series, the routed expert parameters utilize FP4 precision. While the peak FLOPs for FP4 $\times$ FP8 operations are currently the same as FP8 $\times$ FP8 on existing hardware, they can theoretically be implemented to be 1/3 more efficient on future hardware, which will further enhance the efficiency of DeepSeek-V4 series.
 
 
 During pre-training, we train DeepSeek-V4-Flash on 32T tokens and DeepSeek-V4-Pro on 33T tokens, respectively. After pre-training, these two models can natively and efficiently support 1M-length contexts. In our internal evaluations, DeepSeek-V4-Flash-Base already surpasses DeepSeek-V3.2-Base across a majority of benchmarks with its more parameter-efficient design. DeepSeek-V4-Pro-Base further extends this advantage to set a new performance standard among DeepSeek foundation models, achieving comprehensive superiority across reasoning, coding, long-context, and world knowledge tasks.
@@ -275,7 +275,7 @@ Overall, DeepSeek-V4 series retain the Transformer (Vaswani et al., 2017) archit
 # 2.1. Designs Inherited from DeepSeek-V3
 
 
-Mixture-of-Experts. As previous DeepSeek-series models (DeepSeek-AI, 2024; DeepSeek-AI, 2024), DeepSeek-V4 series also adopt the DeepSeekMoE paradigm (Dai et al., 2024) for Feed-Forward Networks (FFNs), which sets fine-grained routed experts and shared experts. Different from DeepSeek-V3, we change the activation function that computes the affinity scores from Sigmoid(\(\cdot\)) into Squrt(Softplus(\(\cdot\))). For load balancing, we also employ the auxiliary-loss-free strategy (DeepSeek-AI, 2024; Wang et al., 2024a), augmented by a slight sequence-wise balance loss that prevents extreme imbalance within individual sequences. For DeepSeek-V4, we remove the constraint on the number of routing target nodes, and carefully redesign the parallelism strategy to maintain training efficiency. Furthermore, compared with DeepSeek-V3, we replace the dense FFN layers in the initial several Transformer blocks with MoE layers that employ Hash routing (Roller et al., 2021). The Hash routing strategy determines the target experts of each token according to a predefined hash function with regard to the input token ID.
+Mixture-of-Experts. As previous DeepSeek-series models (DeepSeek-AI, 2024; DeepSeek-AI, 2024), DeepSeek-V4 series also adopt the DeepSeekMoE paradigm (Dai et al., 2024) for Feed-Forward Networks (FFNs), which sets fine-grained routed experts and shared experts. Different from DeepSeek-V3, we change the activation function that computes the affinity scores from Sigmoid($\cdot$) into Squrt(Softplus($\cdot$)). For load balancing, we also employ the auxiliary-loss-free strategy (DeepSeek-AI, 2024; Wang et al., 2024a), augmented by a slight sequence-wise balance loss that prevents extreme imbalance within individual sequences. For DeepSeek-V4, we remove the constraint on the number of routing target nodes, and carefully redesign the parallelism strategy to maintain training efficiency. Furthermore, compared with DeepSeek-V3, we replace the dense FFN layers in the initial several Transformer blocks with MoE layers that employ Hash routing (Roller et al., 2021). The Hash routing strategy determines the target experts of each token according to a predefined hash function with regard to the input token ID.
 
 
 Multi-Token Prediction. As DeepSeek-V3, DeepSeek-V4 series also set MTP modules and objectives. Given that the MTP strategy has been validated in DeepSeek-V3, we adopt the same strategy for DeepSeek-V4 series without modification.
@@ -287,7 +287,7 @@ Multi-Token Prediction. As DeepSeek-V3, DeepSeek-V4 series also set MTP modules 
 As shown in Figure 2, DeepSeek-V4 series incorporate Manifold-Constrained Hyper-Connections (mHC) (Xie et al., 2026) to strengthen the conventional residual connections between adjacent Transformer blocks. Compared with naive Hyper-Connections (HC) (Zhu et al., 2025), the core idea of mHC is to constrain the residual mapping onto a specific manifold, and thus enhance the stability of signal propagation across layers while preserving model expressivity. This subsection briefly introduces the standard HC and describes how we design mHC for stable training.
 
 
-Standard Hyper-Connections. The standard HC expands the width of the residual stream by a factor of \( n_{\mathrm{hc}} \). Specifically, the shape of the residual stream is expanded from \( \mathbb{R}^d \) to \( \mathbb{R}^{n_{\mathrm{hc}} \times d} \), where \( d \) is the hidden size of the actual layer input. Let \( X_l = [\mathbf{x}_{l,1}; \ldots; \mathbf{x}_{l,n_{\mathrm{hc}}}]^T \in \mathbb{R}^{n_{\mathrm{hc}} \times d} \) be the residual state before the \( l \)-th layer. HC introduces three linear mappings: an input mapping \( A_l \in \mathbb{R}^{1 \times n_{\mathrm{hc}}} \), a residual transformation \( B_l \in \mathbb{R}^{n_{\mathrm{hc}} \times n_{\mathrm{hc}}} \), and an output mapping \( C_l \in \mathbb{R}^{n_{\mathrm{hc}} \times 1} \). The update of the residual state is then formulated as:
+Standard Hyper-Connections. The standard HC expands the width of the residual stream by a factor of $ n_{\mathrm{hc}} $. Specifically, the shape of the residual stream is expanded from $ \mathbb{R}^d $ to $ \mathbb{R}^{n_{\mathrm{hc}} \times d} $, where $ d $ is the hidden size of the actual layer input. Let $ X_l = [\mathbf{x}_{l,1}; \ldots; \mathbf{x}_{l,n_{\mathrm{hc}}}]^T \in \mathbb{R}^{n_{\mathrm{hc}} \times d} $ be the residual state before the $ l $-th layer. HC introduces three linear mappings: an input mapping $ A_l \in \mathbb{R}^{1 \times n_{\mathrm{hc}}} $, a residual transformation $ B_l \in \mathbb{R}^{n_{\mathrm{hc}} \times n_{\mathrm{hc}}} $, and an output mapping $ C_l \in \mathbb{R}^{n_{\mathrm{hc}} \times 1} $. The update of the residual state is then formulated as:
 
 
 $$
@@ -295,16 +295,16 @@ X_{l+1} = B_{l} X_{l} + C_{l} \mathcal{F}_{l}(A_{l} X_{l}), \tag{1}
 $$
 
 
-where \(\mathcal{F}_l\) denotes the \(l\)-th layer (e.g., an MoE layer), whose input and output shapes are both \(\mathbb{R}^d\). Note that the actual layer input \(A_lX_l \in \mathbb{R}^d\) is also \(d\)-dimensional, so the expanded residual
+where $\mathcal{F}_l$ denotes the $l$-th layer (e.g., an MoE layer), whose input and output shapes are both $\mathbb{R}^d$. Note that the actual layer input $A_lX_l \in \mathbb{R}^d$ is also $d$-dimensional, so the expanded residual
 
 
 ---
 
 
-width does not influence the design of the inner layers. HC decouples the residual width from the actual hidden size, offering a complementary scaling axis with minimal computational overhead, as \( n_{\mathrm{hc}} \) is typically much smaller than the hidden size \( d \). However, even though HC has demonstrated potential in improving model performance, we find that the training will frequently exhibit numerical instability when stacking multiple layers, which hinders the scaling of HC.
+width does not influence the design of the inner layers. HC decouples the residual width from the actual hidden size, offering a complementary scaling axis with minimal computational overhead, as $ n_{\mathrm{hc}} $ is typically much smaller than the hidden size $ d $. However, even though HC has demonstrated potential in improving model performance, we find that the training will frequently exhibit numerical instability when stacking multiple layers, which hinders the scaling of HC.
 
 
-Manifold-Constrained Residual Mapping. The core innovation of mHC is to constrain the residual mapping matrix \(B_{l}\) to the manifold of doubly stochastic matrices (the Birkhoff polytope) \(\mathcal{M}\), and thus enhance the stability of signal propagation across layers:
+Manifold-Constrained Residual Mapping. The core innovation of mHC is to constrain the residual mapping matrix $B_{l}$ to the manifold of doubly stochastic matrices (the Birkhoff polytope) $\mathcal{M}$, and thus enhance the stability of signal propagation across layers:
 
 
 $$
@@ -312,10 +312,10 @@ B_{l} \in \mathcal{M} := \{M \in \mathbb{R}^{n \times n} \mid M \mathbf{1}_{n} =
 $$
 
 
-This constraint ensures that the spectral norm of the mapping matrix \(\| B_l\| _2\) is bounded by 1, so the residual transformation is non-expansive, which increases the numerical stability during both the forward pass and backpropagation. Besides, the set \(\mathcal{M}\) is closed under multiplication, which guarantees stability in the scenarios of deep stacks of mHC. In addition, the input transformation \(A_{l}\) and output transformation \(C_l\) are also constrained to be non-negative and bounded via a Sigmoid function to avoid the risk of signal cancellation.
+This constraint ensures that the spectral norm of the mapping matrix $\| B_l\| _2$ is bounded by 1, so the residual transformation is non-expansive, which increases the numerical stability during both the forward pass and backpropagation. Besides, the set $\mathcal{M}$ is closed under multiplication, which guarantees stability in the scenarios of deep stacks of mHC. In addition, the input transformation $A_{l}$ and output transformation $C_l$ are also constrained to be non-negative and bounded via a Sigmoid function to avoid the risk of signal cancellation.
 
 
-Dynamic Parameterization. The parameters of three linear mappings are dynamically generated, which are decomposed into a dynamic (input-dependent) component and a static (input-independent) component. Given the input \( X_{l} \in \mathbb{R}^{n_{\mathrm{hc}} \times d} \), it is first flattened and normalized: \( \hat{X}_{l} = \mathrm{RMSNorm}(\mathrm{vec}(X_{l})) \in \mathbb{R}^{1 \times n_{\mathrm{hc}}d} \). Then, we follow the conventional HC to generate the unconstrained raw parameters \( \tilde{A}_{l} \in \mathbb{R}^{1 \times n_{\mathrm{hc}}}, \tilde{B}_{l} \in \mathbb{R}^{n_{\mathrm{hc}} \times n_{\mathrm{hc}}} \), and \( \tilde{C}_{l} \in \mathbb{R}^{n_{\mathrm{hc}} \times 1} \):
+Dynamic Parameterization. The parameters of three linear mappings are dynamically generated, which are decomposed into a dynamic (input-dependent) component and a static (input-independent) component. Given the input $ X_{l} \in \mathbb{R}^{n_{\mathrm{hc}} \times d} $, it is first flattened and normalized: $ \hat{X}_{l} = \mathrm{RMSNorm}(\mathrm{vec}(X_{l})) \in \mathbb{R}^{1 \times n_{\mathrm{hc}}d} $. Then, we follow the conventional HC to generate the unconstrained raw parameters $ \tilde{A}_{l} \in \mathbb{R}^{1 \times n_{\mathrm{hc}}}, \tilde{B}_{l} \in \mathbb{R}^{n_{\mathrm{hc}} \times n_{\mathrm{hc}}} $, and $ \tilde{C}_{l} \in \mathbb{R}^{n_{\mathrm{hc}} \times 1} $:
 
 
 $$
@@ -333,10 +333,10 @@ $$
 $$
 
 
-where \(W_{l}^{\mathrm{pre}}, W_{l}^{\mathrm{post}} \in \mathbb{R}^{n_{\mathrm{hc}}d \times n_{\mathrm{hc}}}\) and \(W_{l}^{\mathrm{res}} \in \mathbb{R}^{n_{\mathrm{hc}}d \times n_{\mathrm{hc}}^{2}}\) are learnable parameters for generating the dynamic components; \(\operatorname{Mat}(\cdot)\) reshapes a vector of size \(1 \times n_{\mathrm{hc}}^{2}\) into a matrix of size \(n_{\mathrm{hc}} \times n_{\mathrm{hc}}\); \(S_{l}^{\mathrm{pre}} \in \mathbb{R}^{1 \times n_{\mathrm{hc}}}, S_{l}^{\mathrm{post}} \in \mathbb{R}^{n_{\mathrm{hc}} \times 1}\), and \(S_{l}^{\mathrm{res}} \in \mathbb{R}^{n_{\mathrm{hc}} \times n_{\mathrm{hc}}}\) are learnable static biases; and \(\alpha_{l}^{\mathrm{pre}}, \alpha_{l}^{\mathrm{res}}, \alpha_{l}^{\mathrm{post}} \in \mathbb{R}\) are learnable gating factors initialized to small values.
+where $W_{l}^{\mathrm{pre}}, W_{l}^{\mathrm{post}} \in \mathbb{R}^{n_{\mathrm{hc}}d \times n_{\mathrm{hc}}}$ and $W_{l}^{\mathrm{res}} \in \mathbb{R}^{n_{\mathrm{hc}}d \times n_{\mathrm{hc}}^{2}}$ are learnable parameters for generating the dynamic components; $\operatorname{Mat}(\cdot)$ reshapes a vector of size $1 \times n_{\mathrm{hc}}^{2}$ into a matrix of size $n_{\mathrm{hc}} \times n_{\mathrm{hc}}$; $S_{l}^{\mathrm{pre}} \in \mathbb{R}^{1 \times n_{\mathrm{hc}}}, S_{l}^{\mathrm{post}} \in \mathbb{R}^{n_{\mathrm{hc}} \times 1}$, and $S_{l}^{\mathrm{res}} \in \mathbb{R}^{n_{\mathrm{hc}} \times n_{\mathrm{hc}}}$ are learnable static biases; and $\alpha_{l}^{\mathrm{pre}}, \alpha_{l}^{\mathrm{res}}, \alpha_{l}^{\mathrm{post}} \in \mathbb{R}$ are learnable gating factors initialized to small values.
 
 
-Applying Parameter Constraints. After obtaining the unconstrained raw parameters \(\tilde{A}_l, \tilde{B}_l, \tilde{C}_l\), we then apply constraints described earlier to them to enhance the numerical stability. To be specific, for the input and output mappings, we employ a Sigmoid function \(\sigma(\cdot)\) to ensure their non-negativity and boundedness:
+Applying Parameter Constraints. After obtaining the unconstrained raw parameters $\tilde{A}_l, \tilde{B}_l, \tilde{C}_l$, we then apply constraints described earlier to them to enhance the numerical stability. To be specific, for the input and output mappings, we employ a Sigmoid function $\sigma(\cdot)$ to ensure their non-negativity and boundedness:
 
 
 $$
@@ -349,7 +349,7 @@ C_{l} = 2\sigma(\tilde{C}_{l}). \tag{7}
 $$
 
 
-As for the residual mapping \(\tilde{B}_l\), we project it onto the manifold of doubly stochastic matrices \(\mathcal{M}\). This is achieved by the Sinkhorn-Knopp algorithm, which first applies an exponential function to \(\tilde{B}_l\) to ensure positivity, getting \(M^{(0)} = \exp (\tilde{B}_l)\), and then iteratively performs column and row normalization:
+As for the residual mapping $\tilde{B}_l$, we project it onto the manifold of doubly stochastic matrices $\mathcal{M}$. This is achieved by the Sinkhorn-Knopp algorithm, which first applies an exponential function to $\tilde{B}_l$ to ensure positivity, getting $M^{(0)} = \exp (\tilde{B}_l)$, and then iteratively performs column and row normalization:
 
 
 $$
@@ -357,7 +357,7 @@ M^{(t)} = \mathcal{T}_{r}\left(\mathcal{T}_{c}\left(M^{(t-1)}\right)\right), \ta
 $$
 
 
-where \(\mathcal{T}_r\) and \(\mathcal{T}_c\) denote row and column normalization, respectively. This iteration converges to a constrained doubly stochastic matrix \(B_l = M^{(t_{\max})}\). We choose \(t_{\max} = 20\) as a practical value.
+where $\mathcal{T}_r$ and $\mathcal{T}_c$ denote row and column normalization, respectively. This iteration converges to a constrained doubly stochastic matrix $B_l = M^{(t_{\max})}$. We choose $t_{\max} = 20$ as a practical value.
 
 
 ---
@@ -366,22 +366,22 @@ where \(\mathcal{T}_r\) and \(\mathcal{T}_c\) denote row and column normalizatio
 ![图片 page9-0](images/page009_img01.png)
 
 
-_Figure 3 | Core architectures of CSA. It compresses the number of KV entries to \(\frac{1}{m}\) times, and then applies DeepSeek Sparse Attention for further acceleration. Additionally, a small set of sliding window KV entries is combined with the selected compressed KV entries to enhance local fine-grained dependencies._
+_Figure 3 | Core architectures of CSA. It compresses the number of KV entries to $\frac{1}{m}$ times, and then applies DeepSeek Sparse Attention for further acceleration. Additionally, a small set of sliding window KV entries is combined with the selected compressed KV entries to enhance local fine-grained dependencies._
 
 
 # 2.3. Hybrid Attention with CSA and HCA
 
 
-As the context length reaches extreme scales, the attention mechanism emerges as the dominant computational bottleneck in a model. For DeepSeek-V4, we design two efficient attention architectures — Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA) — and employ their interleaved hybrid configuration, which substantially reduces the computational cost of attention in long-text scenarios. CSA integrates both compression and sparse attention strategies: it first compresses the Key-Value (KV) cache of every \( m \) tokens into one entry, and then applies DeepSeek Sparse Attention (DSA) (DeepSeek-AI, 2025) where each query token attends to only \( k \) compressed KV entries. HCA aims for extreme compression by consolidating the KV cache of every \( m' \) (\( \gg m \)) tokens into a single entry. The hybrid architecture of CSA and HCA remarkably improves the long-context efficiency of DeepSeek-V4 series, making one-million-token context feasible in practice. This subsection describes the core techniques of our hybrid attention architecture, and we also provide an open-source implementation<sup>1</sup> to specify more details unambiguously.
+As the context length reaches extreme scales, the attention mechanism emerges as the dominant computational bottleneck in a model. For DeepSeek-V4, we design two efficient attention architectures — Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA) — and employ their interleaved hybrid configuration, which substantially reduces the computational cost of attention in long-text scenarios. CSA integrates both compression and sparse attention strategies: it first compresses the Key-Value (KV) cache of every $ m $ tokens into one entry, and then applies DeepSeek Sparse Attention (DSA) (DeepSeek-AI, 2025) where each query token attends to only $ k $ compressed KV entries. HCA aims for extreme compression by consolidating the KV cache of every $ m' $ ($ \gg m $) tokens into a single entry. The hybrid architecture of CSA and HCA remarkably improves the long-context efficiency of DeepSeek-V4 series, making one-million-token context feasible in practice. This subsection describes the core techniques of our hybrid attention architecture, and we also provide an open-source implementation<sup>1</sup> to specify more details unambiguously.
 
 
 # 2.3.1. Compressed Sparse Attention
 
 
-The core architecture of CSA is illustrated in Figure 3, which first compresses the KV cache of each \( m \) tokens into one entry, and then applies DeepSeek Sparse Attention for further acceleration.
+The core architecture of CSA is illustrated in Figure 3, which first compresses the KV cache of each $ m $ tokens into one entry, and then applies DeepSeek Sparse Attention for further acceleration.
 
 
-Compressed Key-Value Entries. Let \( H \in \mathbb{R}^{n \times d} \) be a sequence of input hidden states, where \( n \) is the sequence length and \( d \) is the hidden size. CSA first computes two series of KV entries \( C^a, C^b \in \mathbb{R}^{n \times c} \) and their corresponding compression weights \( Z^a, Z^b \in \mathbb{R}^{n \times c} \), where \( c \) is the head
+Compressed Key-Value Entries. Let $ H \in \mathbb{R}^{n \times d} $ be a sequence of input hidden states, where $ n $ is the sequence length and $ d $ is the hidden size. CSA first computes two series of KV entries $ C^a, C^b \in \mathbb{R}^{n \times c} $ and their corresponding compression weights $ Z^a, Z^b \in \mathbb{R}^{n \times c} $, where $ c $ is the head
 
 
 <https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/tree/main/inference>
@@ -403,7 +403,7 @@ Z^{a} = H \cdot W^{aZ}, \qquad Z^{b} = H \cdot W^{bZ}, \tag{10}
 $$
 
 
-where \( W^{aKV}, W^{bKV}, W^{aZ}, W^{bZ} \in \mathbb{R}^{d \times c} \) are trainable parameters. Next, each \( m \) KV entries in \( C^a \) and \( C^b \) will be compressed into one entry according to their compression weights and learnable positional biases \( B^a, B^b \in \mathbb{R}^{m \times c} \), producing \( C^{\mathrm{Comp}} \in \mathbb{R}_{\frac{n}{m}}^{\times c} \). Each compressed entry \( C_i^{\mathrm{Comp}} \in \mathbb{R}^c \) is computed by
+where $ W^{aKV}, W^{bKV}, W^{aZ}, W^{bZ} \in \mathbb{R}^{d \times c} $ are trainable parameters. Next, each $ m $ KV entries in $ C^a $ and $ C^b $ will be compressed into one entry according to their compression weights and learnable positional biases $ B^a, B^b \in \mathbb{R}^{m \times c} $, producing $ C^{\mathrm{Comp}} \in \mathbb{R}_{\frac{n}{m}}^{\times c} $. Each compressed entry $ C_i^{\mathrm{Comp}} \in \mathbb{R}^c $ is computed by
 
 
 $$
@@ -416,10 +416,10 @@ C_{i}^{\mathrm{Comp}} = \sum_{j=mi}^{m(i+1)-1} S_{j}^{a} \odot C_{j}^{a} + \sum_
 $$
 
 
-where \(\odot\) denotes the Hadamard product; \(\mathrm{Softmax}_{\mathrm{row}}(\cdot)\) denotes the softmax operation along the row dimension, which performs normalization across the total of \(2m\) elements from both \(Z^a\) and \(Z^b\). When \(i = 0\), \(Z_{m(i - 1):mi - 1}^b\) is padded with negative infinity and \(C_{m(i - 1):mi - 1}^b\) is padded with zeros. Note that each \(C_i^{\mathrm{Comp}}\) is derived from \(2m\mathrm{KV}\) entries, but the indexes of \(C^b\) used for \(C_i^{\mathrm{Comp}}\) and the indexes of \(C^a\) used for \(C_{i - 1}^{\mathrm{Comp}}\) are overlapped. Therefore, CSA in fact compresses the sequence length to \(\frac{1}{m}\) times.
+where $\odot$ denotes the Hadamard product; $\mathrm{Softmax}_{\mathrm{row}}(\cdot)$ denotes the softmax operation along the row dimension, which performs normalization across the total of $2m$ elements from both $Z^a$ and $Z^b$. When $i = 0$, $Z_{m(i - 1):mi - 1}^b$ is padded with negative infinity and $C_{m(i - 1):mi - 1}^b$ is padded with zeros. Note that each $C_i^{\mathrm{Comp}}$ is derived from $2m\mathrm{KV}$ entries, but the indexes of $C^b$ used for $C_i^{\mathrm{Comp}}$ and the indexes of $C^a$ used for $C_{i - 1}^{\mathrm{Comp}}$ are overlapped. Therefore, CSA in fact compresses the sequence length to $\frac{1}{m}$ times.
 
 
-Lightning Indexer for Sparse Selection. After obtaining the compressed KV entries \( C^{\mathrm{Comp}} \), CSA applies the DSA strategy to select top-k compressed KV entries for core attention. First, CSA performs the same compression operation used for \( C^{\mathrm{Comp}} \) to get compressed indexer keys \( K^{\mathrm{IComp}} \in \mathbb{R}_{m}^{\frac{n}{2} \times c^{I}} \), where \( c^{I} \) is the indexer head dimension. Then, for a query token \( t \), we produce the indexer queries \( \{\mathbf{q}_{t,1}^{I}; \mathbf{q}_{t,2}^{I}; \dots; \mathbf{q}_{t,n_{h}^{I}}^{I}\} \) in a low-rank manner:
+Lightning Indexer for Sparse Selection. After obtaining the compressed KV entries $ C^{\mathrm{Comp}} $, CSA applies the DSA strategy to select top-k compressed KV entries for core attention. First, CSA performs the same compression operation used for $ C^{\mathrm{Comp}} $ to get compressed indexer keys $ K^{\mathrm{IComp}} \in \mathbb{R}_{m}^{\frac{n}{2} \times c^{I}} $, where $ c^{I} $ is the indexer head dimension. Then, for a query token $ t $, we produce the indexer queries $ \{\mathbf{q}_{t,1}^{I}; \mathbf{q}_{t,2}^{I}; \dots; \mathbf{q}_{t,n_{h}^{I}}^{I}\} $ in a low-rank manner:
 
 
 $$
@@ -432,7 +432,7 @@ $$
 $$
 
 
-where \(\mathbf{h}_t \in \mathbb{R}^d\) is the input hidden state of the query token \(t\); \(\mathbf{c}_t^Q \in \mathbb{R}^{d_c}\) is the compressed latent vector for queries; \(d_c\) denotes the query compression dimension; \(n_h^I\) denotes the number of indexer query heads; \(W^{DQ} \in \mathbb{R}^{d \times d_c}\) and \(W^{IUQ} \in \mathbb{R}^{d_c \times c^IN_h^I}\) are the down-projection and up-projection matrices for indexer queries, respectively. Next, the index score \(I_{t,s} \in \mathbb{R}\) between the query token \(t\) and a preceding compressed block \(s\) (\(s < \text{Floor}(\frac{t}{m})\)) is computed by
+where $\mathbf{h}_t \in \mathbb{R}^d$ is the input hidden state of the query token $t$; $\mathbf{c}_t^Q \in \mathbb{R}^{d_c}$ is the compressed latent vector for queries; $d_c$ denotes the query compression dimension; $n_h^I$ denotes the number of indexer query heads; $W^{DQ} \in \mathbb{R}^{d \times d_c}$ and $W^{IUQ} \in \mathbb{R}^{d_c \times c^IN_h^I}$ are the down-projection and up-projection matrices for indexer queries, respectively. Next, the index score $I_{t,s} \in \mathbb{R}$ between the query token $t$ and a preceding compressed block $s$ ($s < \text{Floor}(\frac{t}{m})$) is computed by
 
 
 $$
@@ -445,7 +445,7 @@ I_{t,s} = \sum_{h=1}^{n_{h}^{I}} w_{t,h}^{I} \cdot \operatorname{ReLU}\left(\mat
 $$
 
 
-where \( W^{w} \in \mathbb{R}^{d \times n_{h}^{I}} \) is a learnable matrix; \( w_{t,h}^{I} \in \mathbb{R} \) is the weight of the \( h \)-th indexer head. For a query token \( t \), given its index scores \( I_{t,:} \), we employ a top-k selector to selectively retain a subset of compressed KV entries \( C_{t}^{\mathrm{SprsComp}} \) for subsequent core attention:
+where $ W^{w} \in \mathbb{R}^{d \times n_{h}^{I}} $ is a learnable matrix; $ w_{t,h}^{I} \in \mathbb{R} $ is the weight of the $ h $-th indexer head. For a query token $ t $, given its index scores $ I_{t,:} $, we employ a top-k selector to selectively retain a subset of compressed KV entries $ C_{t}^{\mathrm{SprsComp}} $ for subsequent core attention:
 
 
 $$
@@ -459,10 +459,10 @@ $$
 ![图片 page11-0](images/page011_img01.png)
 
 
-_Figure 4 | Core architectures of HCA. It performs heavier compression, where the KV entries of \( m' \) (\( \gg m \)) tokens will be consolidated into one. Also, we additionally introduce a small set of sliding window KV entries to enhance local fine-grained dependencies._
+_Figure 4 | Core architectures of HCA. It performs heavier compression, where the KV entries of $ m' $ ($ \gg m $) tokens will be consolidated into one. Also, we additionally introduce a small set of sliding window KV entries to enhance local fine-grained dependencies._
 
 
-Shared Key-Value MQA. After selecting the sparse KV entries, CSA then performs core attention in a Multi-Query Attention (MQA) (Shazeer, 2019) manner, where each compressed KV entry in \( C_t^{\text{SprsComp}} \) serves as both attention key and value. To be specific, for a query token \( t \), we first produce attention queries \( \{\mathbf{q}_{t,1};\mathbf{q}_{t,2};\dots;\mathbf{q}_{t,n_h}\} \) from the compressed latent vector \( \mathbf{c}_t^Q \):
+Shared Key-Value MQA. After selecting the sparse KV entries, CSA then performs core attention in a Multi-Query Attention (MQA) (Shazeer, 2019) manner, where each compressed KV entry in $ C_t^{\text{SprsComp}} $ serves as both attention key and value. To be specific, for a query token $ t $, we first produce attention queries $ \{\mathbf{q}_{t,1};\mathbf{q}_{t,2};\dots;\mathbf{q}_{t,n_h}\} $ from the compressed latent vector $ \mathbf{c}_t^Q $:
 
 
 $$
@@ -470,7 +470,7 @@ $$
 $$
 
 
-where \(n_h\) denotes the number of query heads; \(W^{UQ} \in \mathbb{R}^{d_c \times cn_h}\) is the up-projection matrices for queries. Note that the latent query vector \(\mathbf{c}_t^Q\) is shared with that used for the indexer queries. Next, we perform MQA on \(\{\mathbf{q}_{t,i}\}\) and \(C_t^{\mathrm{SprsComp}}\):
+where $n_h$ denotes the number of query heads; $W^{UQ} \in \mathbb{R}^{d_c \times cn_h}$ is the up-projection matrices for queries. Note that the latent query vector $\mathbf{c}_t^Q$ is shared with that used for the indexer queries. Next, we perform MQA on $\{\mathbf{q}_{t,i}\}$ and $C_t^{\mathrm{SprsComp}}$:
 
 
 $$
@@ -478,10 +478,10 @@ $$
 $$
 
 
-where \(\mathbf{o}_{t,i} \in \mathbb{R}^c\) is the core attention output of the \(i\)-th head at the \(t\)-th token; CoreAttn(\(\cdot\)) denotes the core attention operation.
+where $\mathbf{o}_{t,i} \in \mathbb{R}^c$ is the core attention output of the $i$-th head at the $t$-th token; CoreAttn($\cdot$) denotes the core attention operation.
 
 
-Grouped Output Projection. In the configuration of DeepSeek-V4, \(cn_h\) is quite large. Therefore, directly projecting the outputs of the core attention operation \([\mathbf{o}_{t,1};\mathbf{o}_{t,2};\dots;\mathbf{o}_{t,n_h}] = \mathbf{o}_t\in \mathbb{R}^{cn_h}\) to a \(d\)-dimensional hidden state will impose a substantial computational burden. To mitigate this cost, we design a grouped output projection strategy. To be specific, we first split \(n_h\) outputs into \(g\) groups, and then for each group of output \(\mathbf{o}_{t,i}^{G}\in \mathbb{R}^{c\frac{n_{h}}{g}}\), we project it to a \(d_g\)-dimensional intermediate output \(\mathbf{o}_{t,i}^{G^{\prime}}\in \mathbb{R}^{d_g}\), where \(d_g < c\frac{n_h}{g}\). Finally, we project the intermediate output \([\mathbf{o}_{t,1}^{G^{\prime}};\mathbf{o}_{t,2}^{G^{\prime}};\dots;\mathbf{o}_{t,g}^{G^{\prime}}]\in \mathbb{R}^{d_{g}g}\) to the final attention output \(\hat{\mathbf{o}}_t\in \mathbb{R}^d\).
+Grouped Output Projection. In the configuration of DeepSeek-V4, $cn_h$ is quite large. Therefore, directly projecting the outputs of the core attention operation $[\mathbf{o}_{t,1};\mathbf{o}_{t,2};\dots;\mathbf{o}_{t,n_h}] = \mathbf{o}_t\in \mathbb{R}^{cn_h}$ to a $d$-dimensional hidden state will impose a substantial computational burden. To mitigate this cost, we design a grouped output projection strategy. To be specific, we first split $n_h$ outputs into $g$ groups, and then for each group of output $\mathbf{o}_{t,i}^{G}\in \mathbb{R}^{c\frac{n_{h}}{g}}$, we project it to a $d_g$-dimensional intermediate output $\mathbf{o}_{t,i}^{G^{\prime}}\in \mathbb{R}^{d_g}$, where $d_g < c\frac{n_h}{g}$. Finally, we project the intermediate output $[\mathbf{o}_{t,1}^{G^{\prime}};\mathbf{o}_{t,2}^{G^{\prime}};\dots;\mathbf{o}_{t,g}^{G^{\prime}}]\in \mathbb{R}^{d_{g}g}$ to the final attention output $\hat{\mathbf{o}}_t\in \mathbb{R}^d$.
 
 
 # 2.3.2. Heavily Compressed Attention
@@ -490,13 +490,13 @@ Grouped Output Projection. In the configuration of DeepSeek-V4, \(cn_h\) is quit
 The core architecture of HCA is illustrated in Figure 4, which compresses the KV cache in a heavier manner, but does not employ sparse attention.
 
 
-Compressed Key-Value Entries. By and large, the compression strategy of HCA is similar to that of CSA, but employs a larger compression rate \( m' \) (\( \gg m \)) and does not perform overlapped
+Compressed Key-Value Entries. By and large, the compression strategy of HCA is similar to that of CSA, but employs a larger compression rate $ m' $ ($ \gg m $) and does not perform overlapped
 
 
 ---
 
 
-compression. Let \( H \in \mathbb{R}^{n \times d} \) be a sequence of input hidden states, HCA first computes the original KV entries \( C \in \mathbb{R}^{n \times c} \) and their corresponding compression weights \( Z \in \mathbb{R}^{n \times c} \):
+compression. Let $ H \in \mathbb{R}^{n \times d} $ be a sequence of input hidden states, HCA first computes the original KV entries $ C \in \mathbb{R}^{n \times c} $ and their corresponding compression weights $ Z \in \mathbb{R}^{n \times c} $:
 
 
 $$
@@ -509,7 +509,7 @@ Z = H \cdot W^{Z}, \tag{21}
 $$
 
 
-where \( W^{KV}, W^{Z} \in \mathbb{R}^{d \times c} \) are trainable parameters. Next, each \( m' \) KV entries in \( C \) will be compressed into one according to the compression weights and learnable positional biases \( B \in \mathbb{R}^{m' \times c} \), producing \( C^{\mathrm{Comp}} \in \mathbb{R}^{\frac{n}{m'} \times c} \). Each compressed entry \( C_i^{\mathrm{Comp}} \in \mathbb{R}^c \) is computed by
+where $ W^{KV}, W^{Z} \in \mathbb{R}^{d \times c} $ are trainable parameters. Next, each $ m' $ KV entries in $ C $ will be compressed into one according to the compression weights and learnable positional biases $ B \in \mathbb{R}^{m' \times c} $, producing $ C^{\mathrm{Comp}} \in \mathbb{R}^{\frac{n}{m'} \times c} $. Each compressed entry $ C_i^{\mathrm{Comp}} \in \mathbb{R}^c $ is computed by
 
 
 $$
@@ -522,10 +522,10 @@ C_{i}^{\mathrm{Comp}} = \sum_{j=m'i}^{m'(i+1)-1} S_{j} \odot C_{j}. \tag{23}
 $$
 
 
-Through this compression operation, HCA compresses the sequence length to \(\frac{1}{m^{\prime}}\) times.
+Through this compression operation, HCA compresses the sequence length to $\frac{1}{m^{\prime}}$ times.
 
 
-Shared Key-Value MQA and Grouped Output Projection. HCA also employs the shared KV MQA and grouped output projection strategies as CSA does. After the KV compression, for a query token \( t \), HCA first produces attention queries \( \{\mathbf{q}_{t,1};\mathbf{q}_{t,2};\dots ;\mathbf{q}_{t,n_h}\} \) in a low-rank manner:
+Shared Key-Value MQA and Grouped Output Projection. HCA also employs the shared KV MQA and grouped output projection strategies as CSA does. After the KV compression, for a query token $ t $, HCA first produces attention queries $ \{\mathbf{q}_{t,1};\mathbf{q}_{t,2};\dots ;\mathbf{q}_{t,n_h}\} $ in a low-rank manner:
 
 
 $$
@@ -538,7 +538,7 @@ $$
 $$
 
 
-where \(\mathbf{h}_t \in \mathbb{R}^d\) is the input hidden state of the query token \(t\); \(n_h\) denotes the number of query heads; \(W^{DQ} \in \mathbb{R}^{d \times d_c}\) and \(W^{UQ} \in \mathbb{R}^{d_c \times cn_h}\) are the down-projection and up-projection matrices for queries, respectively. Next, we perform MQA on \(\{\mathbf{q}_{t,i}\}\) and \(C^{\mathrm{Comp}}\):
+where $\mathbf{h}_t \in \mathbb{R}^d$ is the input hidden state of the query token $t$; $n_h$ denotes the number of query heads; $W^{DQ} \in \mathbb{R}^{d \times d_c}$ and $W^{UQ} \in \mathbb{R}^{d_c \times cn_h}$ are the down-projection and up-projection matrices for queries, respectively. Next, we perform MQA on $\{\mathbf{q}_{t,i}\}$ and $C^{\mathrm{Comp}}$:
 
 
 $$
@@ -546,7 +546,7 @@ $$
 $$
 
 
-where \(\mathbf{o}_{t,i} \in \mathbb{R}^c\) is the core attention output of the \(i\)-th head at the \(t\)-th token. Next, as CSA does, HCA splits \(n_h\) outputs into \(g\) groups, and for each group of output \(\mathbf{o}_{t,i}^G \in \mathbb{R}^{c\frac{n_h}{g}}\), HCA projects it to a \(d_g\)-dimensional intermediate output \(\mathbf{o}_{t,i}^{G'} \in \mathbb{R}^{d_g}\), where \(d_g < c\frac{n_h}{g}\). Finally, HCA projects the intermediate output \([\mathbf{o}_{t,1}^{G'}, \mathbf{o}_{t,2}', \dots; \mathbf{o}_{t,g}^{G'}] \in \mathbb{R}^{d_{g}g}\) to the final attention output \(\hat{\mathbf{o}}_t \in \mathbb{R}^d\).
+where $\mathbf{o}_{t,i} \in \mathbb{R}^c$ is the core attention output of the $i$-th head at the $t$-th token. Next, as CSA does, HCA splits $n_h$ outputs into $g$ groups, and for each group of output $\mathbf{o}_{t,i}^G \in \mathbb{R}^{c\frac{n_h}{g}}$, HCA projects it to a $d_g$-dimensional intermediate output $\mathbf{o}_{t,i}^{G'} \in \mathbb{R}^{d_g}$, where $d_g < c\frac{n_h}{g}$. Finally, HCA projects the intermediate output $[\mathbf{o}_{t,1}^{G'}, \mathbf{o}_{t,2}', \dots; \mathbf{o}_{t,g}^{G'}] \in \mathbb{R}^{d_{g}g}$ to the final attention output $\hat{\mathbf{o}}_t \in \mathbb{R}^d$.
 
 
 # 2.3.3. Other Details
@@ -561,13 +561,13 @@ Query and Key-Value Entry Normalization. For both CSA and HCA, we perform an add
 ---
 
 
-Partial Rotary Positional Embedding. For both CSA and HCA, we partially employ the Rotary Positional Embedding (RoPE) (Su et al., 2024) to the attention queries, KV entries, and the core attention outputs. To be specific, for each query vector and KV entry vector used in CSA and HCA, we apply RoPE to its last 64 dimensions. Since the KV entries serve as both attention keys and values, the naive core attention outputs \(\{\mathbf{o}_{t,i}\}\) will carry absolute position embeddings, derived from the weighted sum of KV entries. As a countermeasure, we also apply RoPE with position \(-i\) on the last 64 dimensions of each \(\mathbf{o}_{t,i}\). In this way, the output of the core attention will also carry relative position embeddings — the contribution of each KV entry to the core attention outputs will also be related to the distance between the query and the KV entry.
+Partial Rotary Positional Embedding. For both CSA and HCA, we partially employ the Rotary Positional Embedding (RoPE) (Su et al., 2024) to the attention queries, KV entries, and the core attention outputs. To be specific, for each query vector and KV entry vector used in CSA and HCA, we apply RoPE to its last 64 dimensions. Since the KV entries serve as both attention keys and values, the naive core attention outputs $\{\mathbf{o}_{t,i}\}$ will carry absolute position embeddings, derived from the weighted sum of KV entries. As a countermeasure, we also apply RoPE with position $-i$ on the last 64 dimensions of each $\mathbf{o}_{t,i}$. In this way, the output of the core attention will also carry relative position embeddings — the contribution of each KV entry to the core attention outputs will also be related to the distance between the query and the KV entry.
 
 
-Additional Branch of Sliding Window Attention. In order to strictly preserve causality in CSA and HCA, each query attends to only preceding compressed KV blocks. Consequently, a query cannot access information from other tokens within its own compressed block. Meanwhile, recent tokens usually possess greater relevance to the query token in language modeling. For these reasons, we introduce a supplementary attention branch to both CSA and HCA in a sliding window manner, for better modeling of local dependencies. To be specific, for each query token, we additionally produce \( n_{\mathrm{win}} \) uncompressed KV entries corresponding to the recent \( n_{\mathrm{win}} \) tokens. In the core attention of CSA and HCA, these KV entries in the sliding window will be used along with the compressed KV entries.
+Additional Branch of Sliding Window Attention. In order to strictly preserve causality in CSA and HCA, each query attends to only preceding compressed KV blocks. Consequently, a query cannot access information from other tokens within its own compressed block. Meanwhile, recent tokens usually possess greater relevance to the query token in language modeling. For these reasons, we introduce a supplementary attention branch to both CSA and HCA in a sliding window manner, for better modeling of local dependencies. To be specific, for each query token, we additionally produce $ n_{\mathrm{win}} $ uncompressed KV entries corresponding to the recent $ n_{\mathrm{win}} $ tokens. In the core attention of CSA and HCA, these KV entries in the sliding window will be used along with the compressed KV entries.
 
 
-Attention Sink. In the core attention of CSA and HCA, we employ the trick of attention sink (OpenAI, 2025; Xiao et al., 2024). To be specific, we set a series of learnable sink logits \(\{z_{1}^{\prime}, z_{2}^{\prime}, \dots, z_{n_{h}}^{\prime}\}\). For the \(h\)-th attention head, \(\mathrm{Exp}(z_{h}^{\prime})\) will be added to the denominator of the attention score:
+Attention Sink. In the core attention of CSA and HCA, we employ the trick of attention sink (OpenAI, 2025; Xiao et al., 2024). To be specific, we set a series of learnable sink logits $\{z_{1}^{\prime}, z_{2}^{\prime}, \dots, z_{n_{h}}^{\prime}\}$. For the $h$-th attention head, $\mathrm{Exp}(z_{h}^{\prime})$ will be added to the denominator of the attention score:
 
 
 $$
@@ -575,7 +575,7 @@ s_{h,i,j} = \frac{\operatorname{Exp}(z_{h,i,j})}{\sum_{k} \operatorname{Exp}(z_{
 $$
 
 
-where \( s_{h,i,j}, z_{h,i,j} \in \mathbb{R} \) denote the attention score and attention logit of the \( h \)-th attention head between the \( i \)-th query token and the \( j \)-th preceding token or compressed block. This technique allows each query head to adjust its total attention scores to be not equal to 1, and even to be near 0.
+where $ s_{h,i,j}, z_{h,i,j} \in \mathbb{R} $ denote the attention score and attention logit of the $ h $-th attention head between the $ i $-th query token and the $ j $-th preceding token or compressed block. This technique allows each query head to adjust its total attention scores to be not equal to 1, and even to be near 0.
 
 
 # 2.3.4. Efficiency Discussion
@@ -584,7 +584,7 @@ where \( s_{h,i,j}, z_{h,i,j} \in \mathbb{R} \) denote the attention score and a
 Due to the employment of hybrid CSA and HCA, together with low-precision computation and storage, the attention module of DeepSeek-V4 series achieves remarkable efficiency in both attention FLOPs and KV cache size, especially in long-context scenarios. First, we adopt a mixed storage format for KV entries: BF16 precision is used for the rotary positional embedding (RoPE) dimensions, while FP8 precision is applied to the remaining dimensions. This hybrid representation reduces the KV cache size by nearly half compared with pure BF16 storage. Second, attention computation within the lightning indexer is performed in FP4 precision, which accelerates the attention operation under extremely long contexts. Third, relative to DeepSeek-V3.2, a smaller attention top-k is chosen in DeepSeek-V4 series, thereby improving model efficiency on short- and medium-length texts. Finally, and most importantly, compressed attention and hybrid attention techniques substantially reduce both the KV cache size and the computational FLOPs.
 
 
-Taking BF16 GQA8 (Ainslie et al., 2023) with a head dimension of 128 as the baseline — one of the common configurations of LLM attention — the KV cache size of DeepSeek-V4 series can be dramatically reduced to approximately \(2\%\) times of that baseline in the 1M-context setting.
+Taking BF16 GQA8 (Ainslie et al., 2023) with a head dimension of 128 as the baseline — one of the common configurations of LLM attention — the KV cache size of DeepSeek-V4 series can be dramatically reduced to approximately $2\%$ times of that baseline in the 1M-context setting.
 
 
 ---
@@ -594,14 +594,14 @@ _Algorithm 1 Muon Optimizer for DeepSeek-V4_
 
 
 ```
-Require: Learning rate \(\eta\), momentum \(\mu\), weight decay \(\lambda\), update rescaling factor \(\gamma\)  
-1: for each training step \(t\) do  
-2: for each logically independent weight \(W \in \mathbb{R}^{n \times m}\) do  
-3: \(G_{t} = \nabla_{W} \mathcal{L}_{t}(W_{t-1})\)  
-4: \(M_{t} = \mu M_{t-1} + G_{t}\)  
-5: \(O_{t}' = \text{Hybrid NewtonSchulz}(\mu M_{t} + G_{t})\)  
-6: \(O_{t} = O_{t}' \cdot \sqrt{\max(n, m)} \cdot \gamma\)  
-7: \(W_{t} = W_{t-1} \cdot (1 - \eta \lambda) - \eta O_{t}\)  
+Require: Learning rate $\eta$, momentum $\mu$, weight decay $\lambda$, update rescaling factor $\gamma$  
+1: for each training step $t$ do  
+2: for each logically independent weight $W \in \mathbb{R}^{n \times m}$ do  
+3: $G_{t} = \nabla_{W} \mathcal{L}_{t}(W_{t-1})$  
+4: $M_{t} = \mu M_{t-1} + G_{t}$  
+5: $O_{t}' = \text{Hybrid NewtonSchulz}(\mu M_{t} + G_{t})$  
+6: $O_{t} = O_{t}' \cdot \sqrt{\max(n, m)} \cdot \gamma$  
+7: $W_{t} = W_{t-1} \cdot (1 - \eta \lambda) - \eta O_{t}$  
 8: end for  
 9: end for
 ```
@@ -619,7 +619,7 @@ We employ the Muon (Jordan et al., 2024; Liu et al., 2025) optimizer for the maj
 Basic Configurations. We maintain the AdamW (Loshchilov and Hutter, 2017) optimizer for the embedding module, the prediction head module, the static biases and gating factors of mHC modules, and the weights of all RMSNorm modules. All other modules are updated with Muon. Following Liu et al. (2025), we also apply weight decay to Muon parameters, use the Nesterov (Jordan et al., 2024; Nesterov, 1983) trick, and rescale the Root Mean Square (RMS) of the update matrix for reutilization of our AdamW hyper-parameters. Different from them, we use hybrid Newton-Schulz iterations for orthogonalization.
 
 
-Hybrid Newton-Schulz Iterations. For a given matrix \(M\), let its Singular Value Decomposition (SVD) be \(M = U\Sigma V^T\). The Newton-Schulz iterations aim to approximately orthogonalize \(M\) to be \(UV^T\). Usually, \(M\) will be first normalized as \(M_0 = M / ||M||_F\) to ensure its maximum singular value does not exceed 1. Then, each Newton-Schulz iteration performs the following operation:
+Hybrid Newton-Schulz Iterations. For a given matrix $M$, let its Singular Value Decomposition (SVD) be $M = U\Sigma V^T$. The Newton-Schulz iterations aim to approximately orthogonalize $M$ to be $UV^T$. Usually, $M$ will be first normalized as $M_0 = M / ||M||_F$ to ensure its maximum singular value does not exceed 1. Then, each Newton-Schulz iteration performs the following operation:
 
 
 $$
@@ -627,7 +627,7 @@ M_{k} = a M_{k-1} + b (M_{k-1} M_{k-1}^{T}) M_{k-1} + c (M_{k-1} M_{k-1}^{T})^{2
 $$
 
 
-Our hybrid Newton-Schulz performs 10 iterations over two distinct stages. During the first 8 steps, we use coefficients \((a,b,c) = (3.4445, -4.7750, 2.0315)\) to drive rapid convergence, bringing the singular values close to 1. In the final 2 steps, we switch to coefficients \((a,b,c) = (2, -1.5, 0.5)\), which stabilize the singular values precisely at 1.
+Our hybrid Newton-Schulz performs 10 iterations over two distinct stages. During the first 8 steps, we use coefficients $(a,b,c) = (3.4445, -4.7750, 2.0315)$ to drive rapid convergence, bringing the singular values close to 1. In the final 2 steps, we switch to coefficients $(a,b,c) = (2, -1.5, 0.5)$, which stabilize the singular values precisely at 1.
 
 
 Avoiding Exploding Attention Logits. The attention architecture of DeepSeek-V4 series allows us to directly apply RMSNorm on the attention queries and KV entries, which effectively prevents attention logits from exploding. Consequently, we do not employ the QK-Clip technique (Liu et al., 2025) in our Muon optimizer.
@@ -678,13 +678,13 @@ Fine-Grained EP Scheme. To further lower the interconnect bandwidth requirement 
 performance on extreme cases such as Reinforcement Learning (RL) rollout, which usually encounters long-tail small batches.
 
 
-Performance and Open-Sourced Mega-Kernel. We validated the fine-grained EP scheme on both NVIDIA GPUs and HUWEI Ascend NPUs platforms. Compared against strong non-fused baselines, it achieves \(1.50 \sim 1.73 \times\) speedup for general inference workloads, and up to \(1.96 \times\) for latency-sensitive scenarios such as RL rollouts and high-speed agent serving. We have open-sourced the CUDA-based mega-kernel implementation named MegaMoE² as a component of DeepGEMM.
+Performance and Open-Sourced Mega-Kernel. We validated the fine-grained EP scheme on both NVIDIA GPUs and HUWEI Ascend NPUs platforms. Compared against strong non-fused baselines, it achieves $1.50 \sim 1.73 \times$ speedup for general inference workloads, and up to $1.96 \times$ for latency-sensitive scenarios such as RL rollouts and high-speed agent serving. We have open-sourced the CUDA-based mega-kernel implementation named MegaMoE² as a component of DeepGEMM.
 
 
 Observations and Proposals. We share observations and lessons from kernel development and offer some proposals to hardware vendors, in the hope of aiding efficient hardware design and achieving better software-hardware co-design:
 
 
-- Computation-Communication Ratio. Full communication-computation overlap hinges on the computation-communication ratio, rather than the bandwidth solely. Denoting peak compute throughput as \(C\) and interconnect bandwidth as \(B\), communication can be fully hidden when \(C / B \leqslant V_{\mathrm{comp}} / V_{\mathrm{comm}}\), where \(V_{\mathrm{comp}}\) denotes the computation volume and \(V_{\mathrm{comm}}\) refers to the communication volume. For DeepSeek-V4-Pro, where each token-expert pair requires 6hd FLOPs (SwiGLU gate, up, and down projections) but only 3h bytes of communication (FP8 Dispatch + BF16 Combine), this simplifies to:
+- Computation-Communication Ratio. Full communication-computation overlap hinges on the computation-communication ratio, rather than the bandwidth solely. Denoting peak compute throughput as $C$ and interconnect bandwidth as $B$, communication can be fully hidden when $C / B \leqslant V_{\mathrm{comp}} / V_{\mathrm{comm}}$, where $V_{\mathrm{comp}}$ denotes the computation volume and $V_{\mathrm{comm}}$ refers to the communication volume. For DeepSeek-V4-Pro, where each token-expert pair requires 6hd FLOPs (SwiGLU gate, up, and down projections) but only 3h bytes of communication (FP8 Dispatch + BF16 Combine), this simplifies to:
 
 
 $$
@@ -701,7 +701,7 @@ That is, each GBps of interconnect bandwidth suffices to hide the communication 
 - Communication Primitives. We adopt a pull-based approach where each GPU actively reads data from remote GPUs, avoiding the high notification latency that fine-grained push entails. Future hardware with lower-latency cross-GPU signaling would make push viable and enable more natural communication patterns.
 
 
-- Activation Function. We propose replacing SwiGLU with a low-cost element-wise activation that involves no exponential or division operations. This lightens the post-GEMM processing directly, and under the same parameter budget, removing the gate projection enlarges the intermediate dimension \(d\), further relaxing the bandwidth requirement.
+- Activation Function. We propose replacing SwiGLU with a low-cost element-wise activation that involves no exponential or division operations. This lightens the post-GEMM processing directly, and under the same parameter budget, removing the gate projection enlarges the intermediate dimension $d$, further relaxing the bandwidth requirement.
 
 
 # 3.2. Flexible and Efficient Kernel Development with TileLang
@@ -710,7 +710,7 @@ That is, each GBps of interconnect bandwidth suffices to hide the communication 
 In practice, our elaborate model architecture would have resulted in hundreds of fine-grained Torch ATen operators. We adopt TileLang (Wang et al., 2026) to develop a set of fused kernels to replace the vast majority of them, delivering optimal performance with minimal effort. It
 
 
-\(^{2}\)https://github.com/deepseek-ai/DeepGEMM/pull/304
+$^{2}$https://github.com/deepseek-ai/DeepGEMM/pull/304
 
 
 ---
@@ -788,10 +788,10 @@ Determinism. Deterministic training is highly beneficial for debugging hardware 
 # 3.4. FP4 Quantization-Aware Training
 
 
-To achieve inference acceleration and memory savings at deployment, we introduce Quantization-Aware Training (QAT) (Jacob et al., 2018) during the post-training stage, enabling the model to adapt to the precision degradation introduced by quantization. We apply FP4 (MXFP4) quantization (Rouhani et al., 2023) to two components: (1) MoE expert weights, which are a major source of GPU memory occupancy (OpenAI, 2025), and (2) the Query-Key (QK) path in the indexer of CSA, where QK activations are cached, loaded, and multiplied entirely in FP4, accelerating attention score computation in long-context scenarios. In addition, we further quantize the index scores \( I_{\cdot \cdot} \) from FP32 to BF16 during this QAT process. This optimization achieves a \( 2 \times \) speedup for the top-k selector, while preserving a \( 99.7\% \) recall rate of KV entries.
+To achieve inference acceleration and memory savings at deployment, we introduce Quantization-Aware Training (QAT) (Jacob et al., 2018) during the post-training stage, enabling the model to adapt to the precision degradation introduced by quantization. We apply FP4 (MXFP4) quantization (Rouhani et al., 2023) to two components: (1) MoE expert weights, which are a major source of GPU memory occupancy (OpenAI, 2025), and (2) the Query-Key (QK) path in the indexer of CSA, where QK activations are cached, loaded, and multiplied entirely in FP4, accelerating attention score computation in long-context scenarios. In addition, we further quantize the index scores $ I_{\cdot \cdot} $ from FP32 to BF16 during this QAT process. This optimization achieves a $ 2 \times $ speedup for the top-k selector, while preserving a $ 99.7\% $ recall rate of KV entries.
 
 
-For MoE expert weights, following the common practice of QAT, the FP32 master weights maintained by the optimizer are first quantized to FP4, then dequantized back to FP8 for computation. Notably, our FP4-to-FP8 dequantization is lossless. This is because FP8 (E4M3) has 2 additional exponent bits compared with FP4 (E2M1), offering a larger dynamic range. Consequently, as long as the ratio between the maximum and minimum scale factors of the FP4 sub-blocks \((1 \times 32\) tiles) within each FP8 quantization block \((128 \times 128\) tiles) does not exceed a certain threshold, the fine-grained scale information can be fully absorbed by the extended dynamic range of FP8. We empirically verify that current weights satisfy this condition. This allows the entire QAT pipeline to fully reuse the existing FP8 training framework without
+For MoE expert weights, following the common practice of QAT, the FP32 master weights maintained by the optimizer are first quantized to FP4, then dequantized back to FP8 for computation. Notably, our FP4-to-FP8 dequantization is lossless. This is because FP8 (E4M3) has 2 additional exponent bits compared with FP4 (E2M1), offering a larger dynamic range. Consequently, as long as the ratio between the maximum and minimum scale factors of the FP4 sub-blocks $(1 \times 32$ tiles) within each FP8 quantization block $(128 \times 128$ tiles) does not exceed a certain threshold, the fine-grained scale information can be fully absorbed by the extended dynamic range of FP8. We empirically verify that current weights satisfy this condition. This allows the entire QAT pipeline to fully reuse the existing FP8 training framework without
 
 
 ---
@@ -815,7 +815,7 @@ Our training framework is built upon the scalable and efficient infrastructure d
 The Muon optimizer requires the full gradient matrix to compute parameter updates, which presents a challenge when combined with the Zero Redundancy Optimizer (ZeRO) (Rajbhandari et al., 2020). Traditional ZeRO is designed for element-wise optimizers like AdamW, where a single parameter matrix can be partitioned and updated across multiple ranks. To address this conflict, we design a hybrid strategy of ZeRO bucket assignment for Muon.
 
 
-For dense parameters, we limit the maximum size of ZeRO parallelism and employ a knapsack algorithm to assign parameter matrices to these ranks, ensuring each rank manages a roughly balanced load. The bucket on each rank is padded to match the size of the largest bucket across ranks, facilitating efficient reduce-scatter operations. This padding typically incurs less than \(10\%\) memory overhead in our setup, where each rank manages no more than five parameter matrices. When the overall size of data parallelism exceeds the limit for ZeRO, we compute the Muon update redundantly across the extra data-parallel groups, trading computation for reduced total bucket memory.
+For dense parameters, we limit the maximum size of ZeRO parallelism and employ a knapsack algorithm to assign parameter matrices to these ranks, ensuring each rank manages a roughly balanced load. The bucket on each rank is padded to match the size of the largest bucket across ranks, facilitating efficient reduce-scatter operations. This padding typically incurs less than $10\%$ memory overhead in our setup, where each rank manages no more than five parameter matrices. When the overall size of data parallelism exceeds the limit for ZeRO, we compute the Muon update redundantly across the extra data-parallel groups, trading computation for reduced total bucket memory.
 
 
 For MoE parameters, we optimize each expert independently. We first flatten all down projection matrices in SwiGLU (Shazeer, 2020) of all experts across all layers, followed by flattened up projection matrices and gate matrices. Then, we pad the flattened vector to ensure we can evenly distribute this vector across all ranks without splitting any logically independent matrix. Given the large number of experts, we do not impose a limit of ZeRO parallelism for MoE parameters, and the padding overhead is also negligible.
@@ -836,16 +836,16 @@ The introduction of mHC increases both activation memory consumption and communi
 Firstly, we carefully design and implement fused kernels of mHC for both training and inference. Secondly, we introduce a recomputation strategy that selectively checkpoints intermediate tensors. Specifically, we recompute most hidden states between layers and all normalized layer inputs, while avoiding recomputation of compute-intensive operations. This achieves a balance between memory saving and computational overhead. Thirdly, we adjust the DualPipe 1F1B overlapping scheme to accommodate the increased pipeline communication and enable concurrent execution of some operations in mHC.
 
 
-Collectively, these optimizations constrain the wall-time overhead of mHC to only \(6.7\%\) of the overlapped 1F1B pipeline stage. More details of the engineering optimization can be found in the dedicated mHC paper (Xie et al., 2026).
+Collectively, these optimizations constrain the wall-time overhead of mHC to only $6.7\%$ of the overlapped 1F1B pipeline stage. More details of the engineering optimization can be found in the dedicated mHC paper (Xie et al., 2026).
 
 
 # 3.5.3. Contextual Parallelism for Long-Context Attention
 
 
-Conventional Context Parallelism (CP) partitions the sequence dimension, with each rank maintaining contiguous \(s\) tokens. This introduces two challenges to our compressed attention mechanisms (i.e., CSA and HCA). On the one hand, training samples are packed from multiple sequences, and each sequence is compressed independently by a factor of \(m\) (or \(m'\)), with any trailing tokens fewer than \(m\) being discarded. Consequently, the compressed KV lengths are typically less than \(\frac{s}{m}\) and vary across ranks. On the other hand, the compression requires \(m\) consecutive KV entries, which may straddle the boundary between two neighboring CP ranks.
+Conventional Context Parallelism (CP) partitions the sequence dimension, with each rank maintaining contiguous $s$ tokens. This introduces two challenges to our compressed attention mechanisms (i.e., CSA and HCA). On the one hand, training samples are packed from multiple sequences, and each sequence is compressed independently by a factor of $m$ (or $m'$), with any trailing tokens fewer than $m$ being discarded. Consequently, the compressed KV lengths are typically less than $\frac{s}{m}$ and vary across ranks. On the other hand, the compression requires $m$ consecutive KV entries, which may straddle the boundary between two neighboring CP ranks.
 
 
-To address these challenges, we design a two-stage communication approach. In the first stage, each rank \( i \) sends its last \( m \) uncompressed KV entries to rank \( i + 1 \). Then, rank \( i + 1 \) compresses some of these received entries together with its local \( s \) uncompressed KV entries, producing a fixed length of \( \frac{s}{m} + 1 \) compressed entries, in which exist some padding entries. In the second stage, an all-gather operation across all CP ranks collects the locally compressed KV entries. Then, a fused select-and-pad operator reorganizes them into the full set of compressed KV entries with a total length of cp_size \(\cdot \frac{s}{m}\). Any padding entries are placed at the tail. For HCA and the indexer in CSA, the visible range of compressed KV entries for each query token can be precomputed by rules. For the sparse attention in CSA, the top-\( k \) selector explicitly specifies the indices of visible compressed KV entries for each query.
+To address these challenges, we design a two-stage communication approach. In the first stage, each rank $ i $ sends its last $ m $ uncompressed KV entries to rank $ i + 1 $. Then, rank $ i + 1 $ compresses some of these received entries together with its local $ s $ uncompressed KV entries, producing a fixed length of $ \frac{s}{m} + 1 $ compressed entries, in which exist some padding entries. In the second stage, an all-gather operation across all CP ranks collects the locally compressed KV entries. Then, a fused select-and-pad operator reorganizes them into the full set of compressed KV entries with a total length of cp_size $\cdot \frac{s}{m}$. Any padding entries are placed at the tail. For HCA and the indexer in CSA, the visible range of compressed KV entries for each query token can be precomputed by rules. For the sparse attention in CSA, the top-$ k $ selector explicitly specifies the indices of visible compressed KV entries for each query.
 
 
 # 3.5.4. Extended Automatic Differentiation for Flexible Activation Checkpointing
@@ -878,7 +878,7 @@ Our inference framework largely inherits from that of DeepSeek-V3, with some dif
 To efficiently manage the heterogeneous KV caches arising from the hybrid attention mechanism in DeepSeek-V4, we design a customized KV cache layout. The layout is illustrated in Figure 6, and we will elaborate on it in detail as follows.
 
 
-Heterogeneous KV Entries in DeepSeek-V4. The hybrid attention mechanism in DeepSeek-V4 series introduces multiple types of KV entries with different Key-Value (KV) cache sizes and update rules. The lightning indexer for sparse selection introduces additional dimensions into the KV cache that possess embedding sizes distinct from those in the primary attention. The compression techniques employed in CSA and HCA reduce the sequence length by factors of \(\frac{1}{m}\) and \(\frac{1}{m'}\), respectively, thereby decreasing the overall KV cache size. As a result, KV cache sizes vary across different layers. Furthermore, Sliding Window Attention (SWA) layers also operate with distinct KV cache sizes, as well as separate cache hit and eviction policies. In the compression branch, one KV entry is generated for every \(m\) tokens. When the number of remaining tokens is insufficient for compression, all pending tokens and their associated hidden states must be retained in a buffer until the compression operation can be executed. These buffered tokens represent a sequence state determined by positional context and are also managed within the KV cache framework.
+Heterogeneous KV Entries in DeepSeek-V4. The hybrid attention mechanism in DeepSeek-V4 series introduces multiple types of KV entries with different Key-Value (KV) cache sizes and update rules. The lightning indexer for sparse selection introduces additional dimensions into the KV cache that possess embedding sizes distinct from those in the primary attention. The compression techniques employed in CSA and HCA reduce the sequence length by factors of $\frac{1}{m}$ and $\frac{1}{m'}$, respectively, thereby decreasing the overall KV cache size. As a result, KV cache sizes vary across different layers. Furthermore, Sliding Window Attention (SWA) layers also operate with distinct KV cache sizes, as well as separate cache hit and eviction policies. In the compression branch, one KV entry is generated for every $m$ tokens. When the number of remaining tokens is insufficient for compression, all pending tokens and their associated hidden states must be retained in a buffer until the compression operation can be executed. These buffered tokens represent a sequence state determined by positional context and are also managed within the KV cache framework.
 
 
 Challenges in Managing Hybrid Attention KV Cache. The hybrid attention mechanism violates fundamental assumptions behind PagedAttention and its variants. Although recent hybrid KV cache managing algorithms (e.g., Jenga (Zhang et al., 2025a), Hymba (Dong et al., 2025)) target general hybrid attention models or specific structures, two principal obstacles prevent consolidating KV caches across all layers under the PagedAttention framework:
@@ -899,7 +899,7 @@ Challenges in Managing Hybrid Attention KV Cache. The hybrid attention mechanism
 ![图片 page23-1](images/page023_img02.png)
 
 
-_Figure 6 | Illustration of the KV cache Layout for DeepSeek-V4. The KV cache is organized into two primary components: a classical KV cache for CSA/HCA, and a state cache for SWA and unready-for-compression tokens in CSA/HCA. In the state cache, each request is assigned a fixed-size cache block. Within this block, the SWA segment stores the KV entries corresponding to the most recent \( n_{\mathrm{win}} \) tokens, while the CSA/HCA segment stores uncompressed tail states that are not yet ready for compression. In the classical KV cache, we allocate multiple blocks per request. Each cache block covers \( \operatorname{lcm}(m,m') \) original tokens, producing \( k_{1} = \frac{\operatorname{lcm}(m,m')}{m} \) CSA compressed tokens and \( k_{2} = \frac{\operatorname{lcm}(m,m')}{m'} \) HCA compressed tokens._
+_Figure 6 | Illustration of the KV cache Layout for DeepSeek-V4. The KV cache is organized into two primary components: a classical KV cache for CSA/HCA, and a state cache for SWA and unready-for-compression tokens in CSA/HCA. In the state cache, each request is assigned a fixed-size cache block. Within this block, the SWA segment stores the KV entries corresponding to the most recent $ n_{\mathrm{win}} $ tokens, while the CSA/HCA segment stores uncompressed tail states that are not yet ready for compression. In the classical KV cache, we allocate multiple blocks per request. Each cache block covers $ \operatorname{lcm}(m,m') $ original tokens, producing $ k_{1} = \frac{\operatorname{lcm}(m,m')}{m} $ CSA compressed tokens and $ k_{2} = \frac{\operatorname{lcm}(m,m')}{m'} $ HCA compressed tokens._
 
 
 For efficient KV cache management of DeepSeek-V4, we design corresponding strategies to overcome these two challenges.
@@ -908,7 +908,7 @@ For efficient KV cache management of DeepSeek-V4, we design corresponding strate
 State Cache for SWA and Uncompressed Tail Tokens. To address the first obstacle, we adopt an alternative cache management mechanism. Since SWA is designed to enhance performance under a limited KV cache size, it is reasonable to treat it, along with the uncompressed tail tokens from the compression branch, as a state-space model. The corresponding KV cache can thus be regarded as a sequence-specific state that depends solely on the current position. Accordingly, we pre-allocate a fixed- and limited-size pool of state caches, and dynamically assign it to each sequence.
 
 
-Sparse Attention Kernel Co-Design. Regarding the second obstacle, conventional high-performance attention kernels typically assume a fixed number \( B \) of tokens per block to optimize performance, corresponding to \( B \cdot m \) original tokens in CSA and \( B \cdot m' \) in HCA. Through employing a high-performance sparse-attention kernel, different layers can accommodate variable tokens per block without performance degradation. Achieving this requires co-designing the KV cache layout and the sparse attention kernel. For instance, padding blocks to align with cache lines can improve performance. Thus, for CSA with compression ratio \( m \) and HCA with ratio \( m' \), the number of original tokens per block can be any multiple of \( \operatorname{lcm}(m, m') \), the least common multiple of these two compression ratios.
+Sparse Attention Kernel Co-Design. Regarding the second obstacle, conventional high-performance attention kernels typically assume a fixed number $ B $ of tokens per block to optimize performance, corresponding to $ B \cdot m $ original tokens in CSA and $ B \cdot m' $ in HCA. Through employing a high-performance sparse-attention kernel, different layers can accommodate variable tokens per block without performance degradation. Achieving this requires co-designing the KV cache layout and the sparse attention kernel. For instance, padding blocks to align with cache lines can improve performance. Thus, for CSA with compression ratio $ m $ and HCA with ratio $ m' $, the number of original tokens per block can be any multiple of $ \operatorname{lcm}(m, m') $, the least common multiple of these two compression ratios.
 
 
 # 3.6.2. On-Disk KV Cache Storage
@@ -926,13 +926,13 @@ For CSA and HCA, we simply store all of the compressed KV entries to the disk. W
 For the SWA KV entries, since they are not compressed and exist in every layer, their volume is approximately 8 times larger than the compressed CSA and HCA KV entries. To handle these large SWA KV entries efficiently, we propose and implement three distinct strategies for managing on-disk SWA KV entries, each offering a different trade-off between storage overhead and computational redundancy:
 
 
-- Full SWA Caching. This strategy stores the complete SWA KV entries for all tokens, ensuring computational zero-redundancy. Under this strategy, the SWA KV entries of the hitting prefix can be reconstructed by just reading the on-disk cache of the last \( n_{\mathrm{win}} \) tokens within that prefix. Despite computational zero-redundancy, this strategy is inefficient for modern SSD-based storage systems — only a small subset of the stored SWA KV cache will be accessed for each hitting request, which leads to an unbalanced write-intensive access pattern.
+- Full SWA Caching. This strategy stores the complete SWA KV entries for all tokens, ensuring computational zero-redundancy. Under this strategy, the SWA KV entries of the hitting prefix can be reconstructed by just reading the on-disk cache of the last $ n_{\mathrm{win}} $ tokens within that prefix. Despite computational zero-redundancy, this strategy is inefficient for modern SSD-based storage systems — only a small subset of the stored SWA KV cache will be accessed for each hitting request, which leads to an unbalanced write-intensive access pattern.
 
 
-- Periodic Checkpointing. This strategy checkpoints SWA KV entries of the last \( n_{\mathrm{win}} \) tokens within every \( p \) tokens, where \( p \) is a tunable parameter. For a hitting prefix, we load the most recent checkpointed state, and then recompute the remaining tail tokens. Through tuning \( p \), this strategy enables an on-demand trade-off between storage and computation
+- Periodic Checkpointing. This strategy checkpoints SWA KV entries of the last $ n_{\mathrm{win}} $ tokens within every $ p $ tokens, where $ p $ is a tunable parameter. For a hitting prefix, we load the most recent checkpointed state, and then recompute the remaining tail tokens. Through tuning $ p $, this strategy enables an on-demand trade-off between storage and computation
 
 
-- Zero SWA Caching. This strategy does not store any SWA KV entries. For a hitting prefix, we need to perform more recomputation to restore the SWA KV entries. To be specific, in each attention layer, the SWA KV entry of each token depends on the SWA KV entries of only the most recent \( n_{\mathrm{win}} \) tokens from the previous layer. Therefore, leveraging cached CSA and HCA KV entries, recomputing the last \( n_{\mathrm{win}} \cdot L \) tokens is enough to restore the last \( n_{\mathrm{win}} \) SWA KV entries for an \( L \)-layer model.
+- Zero SWA Caching. This strategy does not store any SWA KV entries. For a hitting prefix, we need to perform more recomputation to restore the SWA KV entries. To be specific, in each attention layer, the SWA KV entry of each token depends on the SWA KV entries of only the most recent $ n_{\mathrm{win}} $ tokens from the previous layer. Therefore, leveraging cached CSA and HCA KV entries, recomputing the last $ n_{\mathrm{win}} \cdot L $ tokens is enough to restore the last $ n_{\mathrm{win}} $ SWA KV entries for an $ L $-layer model.
 
 
 Depending on specific deployment scenarios, we select the most suitable strategy to achieve the desired trade-off between storage and computation.
@@ -962,10 +962,10 @@ V3. For tokenization, on top of the DeepSeek-V3 tokenizer, we introduce a few sp
 # 4.2.1. Model Setups
 
 
-DeepSeek-V4-Flash. We set the number of Transformer layers to 43 and the hidden dimension \(d\) to 4096. For the first two layers, we use pure sliding window attention. For the subsequent layers, CSA and HCA are used in an interleaved manner. For CSA, we set the compression rate \(m\) to 4, the number of indexer query heads \(n_h^I\) to 64, the indexer head dimension \(c^I\) to 128, and the number of KV entries selected for sparse attention (i.e., attention top-k) to 512. For HCA, we set the compression rate \(m'\) to 128. For both CSA and HCA, we set the number of query heads \(n_h\) to 64, the head dimension \(c\) to 512, and the query compression dimension \(d_c\) to 1024. The number of output projection groups \(g\) is set to 8, and the dimension of each intermediate attention output \(d_g\) is set to 1024. For the additional branch of sliding window attention, the window size \(n_{\mathrm{win}}\) is set to 128. We employ MoE layers in all Transformer blocks, but use the Hash routing strategy for the first 3 MoE layers. Each MoE layer consists of 1 shared expert and 256 routed experts, where the intermediate hidden dimension of each expert is 2048. Among the routed experts, 6 experts will be activated for each token. The multi-token prediction depth is set to 1. As for mHC, the expansion factor \(n_{\mathrm{hc}}\) is set to 4, and the number of Sinkhorn-Knopp iterations \(t_{\mathrm{max}}\) is set to 20. Under this configuration, DeepSeek-V4-Flash comprises 284B total parameters, of which 13B are activated for each token.
+DeepSeek-V4-Flash. We set the number of Transformer layers to 43 and the hidden dimension $d$ to 4096. For the first two layers, we use pure sliding window attention. For the subsequent layers, CSA and HCA are used in an interleaved manner. For CSA, we set the compression rate $m$ to 4, the number of indexer query heads $n_h^I$ to 64, the indexer head dimension $c^I$ to 128, and the number of KV entries selected for sparse attention (i.e., attention top-k) to 512. For HCA, we set the compression rate $m'$ to 128. For both CSA and HCA, we set the number of query heads $n_h$ to 64, the head dimension $c$ to 512, and the query compression dimension $d_c$ to 1024. The number of output projection groups $g$ is set to 8, and the dimension of each intermediate attention output $d_g$ is set to 1024. For the additional branch of sliding window attention, the window size $n_{\mathrm{win}}$ is set to 128. We employ MoE layers in all Transformer blocks, but use the Hash routing strategy for the first 3 MoE layers. Each MoE layer consists of 1 shared expert and 256 routed experts, where the intermediate hidden dimension of each expert is 2048. Among the routed experts, 6 experts will be activated for each token. The multi-token prediction depth is set to 1. As for mHC, the expansion factor $n_{\mathrm{hc}}$ is set to 4, and the number of Sinkhorn-Knopp iterations $t_{\mathrm{max}}$ is set to 20. Under this configuration, DeepSeek-V4-Flash comprises 284B total parameters, of which 13B are activated for each token.
 
 
-DeepSeek-V4-Pro. We set the number of Transformer layers to 61 and the hidden dimension \(d\) to 7168. For the first two layers, we use HCA. For the subsequent layers, CSA and HCA are used in an interleaved manner. For CSA, we set the compression rate \(m\) to 4, the number of indexer query heads \(n_h^I\) to 64, the indexer head dimension \(c^I\) to 128, and the number of KV entries selected for sparse attention (i.e., attention top-k) to 1024. For HCA, we set the compression rate \(m'\) to 128. For both CSA and HCA, we set the number of query heads \(n_h\) to 128, the head dimension \(c\) to 512, and the query compression dimension \(d_c\) to 1536. The number of output projection groups \(g\) is set to 16, and the dimension of each intermediate attention output \(d_g\) is set to 1024. For the additional branch of sliding window attention, the window size \(n_{\mathrm{win}}\) is set to 128. We employ MoE layers in all Transformer blocks, but use the Hash routing strategy for the first 3 MoE layers. Each MoE layer consists of 1 shared expert and 384 routed experts, where the intermediate hidden dimension of each expert is 3072. Among the routed experts, 6 experts will be activated for each token. The multi-token prediction depth is set to 1. As for mHC, the expansion factor \(n_{\mathrm{hc}}\) is set to 4, and the number of Sinkhorn-Knopp iterations \(t_{\mathrm{max}}\) is set to 20. Under this configuration, DeepSeek-V4-Flash comprises 1.6T total parameters, of which 49B are activated for each token.
+DeepSeek-V4-Pro. We set the number of Transformer layers to 61 and the hidden dimension $d$ to 7168. For the first two layers, we use HCA. For the subsequent layers, CSA and HCA are used in an interleaved manner. For CSA, we set the compression rate $m$ to 4, the number of indexer query heads $n_h^I$ to 64, the indexer head dimension $c^I$ to 128, and the number of KV entries selected for sparse attention (i.e., attention top-k) to 1024. For HCA, we set the compression rate $m'$ to 128. For both CSA and HCA, we set the number of query heads $n_h$ to 128, the head dimension $c$ to 512, and the query compression dimension $d_c$ to 1536. The number of output projection groups $g$ is set to 16, and the dimension of each intermediate attention output $d_g$ is set to 1024. For the additional branch of sliding window attention, the window size $n_{\mathrm{win}}$ is set to 128. We employ MoE layers in all Transformer blocks, but use the Hash routing strategy for the first 3 MoE layers. Each MoE layer consists of 1 shared expert and 384 routed experts, where the intermediate hidden dimension of each expert is 3072. Among the routed experts, 6 experts will be activated for each token. The multi-token prediction depth is set to 1. As for mHC, the expansion factor $n_{\mathrm{hc}}$ is set to 4, and the number of Sinkhorn-Knopp iterations $t_{\mathrm{max}}$ is set to 20. Under this configuration, DeepSeek-V4-Flash comprises 1.6T total parameters, of which 49B are activated for each token.
 
 
 # 4.2.2. Training Setups
@@ -977,10 +977,10 @@ DeepSeek-V4-Flash. We employ the Muon optimizer (Jordan et al., 2024; Liu et al.
 ---
 
 
-embedding module, the prediction head module, and the weights of all RMSNorm modules. For AdamW, we set its hyper-parameters to \(\beta_{1} = 0.9\), \(\beta_{2} = 0.95\), \(\varepsilon = 10^{-20}\), and weight Decay = 0.1. For Muon, we set the momentum to 0.95 and the weight decay to 0.1, and rescale the RMS of each update matrix to 0.18 for reutilization of the AdamW learning rate. We train DeepSeek-V4-Flash on 32T tokens, and as in DeepSeek-V3, we also employ a batch size scheduling strategy that increases the batch size (in tokens) from a small size to 75.5M and then keeps it at 75.5M during most of the training. The learning rate is linearly warmed up in the first 2000 steps, maintained at \(2.7 \times 10^{-4}\) for most of the training. Near the end of the training, we finally decay the learning rate to \(2.7 \times 10^{-5}\) following a cosine schedule. The training starts with a sequence length of 4K, and we gradually extend the training sequence length to 16K, 64K, and 1M. As for the setups of sparse attention, we first warm up the model with dense attention for the first 1T tokens, and introduce sparse attention at the sequence length of 64K and keep sparse attention during the rest of the training. When introducing attention sparsity, we first set a short stage to warm up the lightning indexer in CSA, and then train the model with sparse attention for most of the training. For auxiliary-loss-free load balancing, we set the bias update speed to 0.001. For the balance loss, we set its loss weight to 0.0001 to avoid extreme imbalance within single sequences. The MTP loss weight is set to 0.3 for most of the training, and to 0.1 upon the start of learning rate decay.
+embedding module, the prediction head module, and the weights of all RMSNorm modules. For AdamW, we set its hyper-parameters to $\beta_{1} = 0.9$, $\beta_{2} = 0.95$, $\varepsilon = 10^{-20}$, and weight Decay = 0.1. For Muon, we set the momentum to 0.95 and the weight decay to 0.1, and rescale the RMS of each update matrix to 0.18 for reutilization of the AdamW learning rate. We train DeepSeek-V4-Flash on 32T tokens, and as in DeepSeek-V3, we also employ a batch size scheduling strategy that increases the batch size (in tokens) from a small size to 75.5M and then keeps it at 75.5M during most of the training. The learning rate is linearly warmed up in the first 2000 steps, maintained at $2.7 \times 10^{-4}$ for most of the training. Near the end of the training, we finally decay the learning rate to $2.7 \times 10^{-5}$ following a cosine schedule. The training starts with a sequence length of 4K, and we gradually extend the training sequence length to 16K, 64K, and 1M. As for the setups of sparse attention, we first warm up the model with dense attention for the first 1T tokens, and introduce sparse attention at the sequence length of 64K and keep sparse attention during the rest of the training. When introducing attention sparsity, we first set a short stage to warm up the lightning indexer in CSA, and then train the model with sparse attention for most of the training. For auxiliary-loss-free load balancing, we set the bias update speed to 0.001. For the balance loss, we set its loss weight to 0.0001 to avoid extreme imbalance within single sequences. The MTP loss weight is set to 0.3 for most of the training, and to 0.1 upon the start of learning rate decay.
 
 
-DeepSeek-V4-Pro. Except for specific values of hyper-parameters, the training setup of DeepSeek-V4-Pro is largely consistent with that of DeepSeek-V4-Flash. We employ the Muon optimizer for the majority of parameters, but use the AdamW optimizer for the embedding module, the prediction head module, and the weights of all RMSNorm modules. The hyper-parameters of AdamW and Muon are the same as those of DeepSeek-V4-Flash. We train DeepSeek-V4-Pro on 33T tokens, and also employ a batch size scheduling strategy, with the maximum batch size being 94.4M tokens. The learning rate scheduling strategy is largely the same as that of DeepSeek-V4-Flash, but the peak learning rate is set to \(2.0 \times 10^{-4}\) and the end learning rate is set to \(2.0 \times 10^{-5}\). The training also starts with a sequence length of 4K, and the length is gradually extended to 16K, 64K, and 1M. Compared with DeepSeek-V4-Flash, DeepSeek-V4-Pro starts with a longer stage of dense attention, and the strategy of introducing sparse attention is the same as DeepSeek-V4-Flash, following a two-stage training method. For auxiliary-loss-free load balancing, we set the bias update speed to 0.001. For the balance loss, we set its loss weight to 0.0001 to avoid extreme imbalance within single sequences. The MTP loss weight is set to 0.3 for most of the training, and to 0.1 upon the start of learning rate decay.
+DeepSeek-V4-Pro. Except for specific values of hyper-parameters, the training setup of DeepSeek-V4-Pro is largely consistent with that of DeepSeek-V4-Flash. We employ the Muon optimizer for the majority of parameters, but use the AdamW optimizer for the embedding module, the prediction head module, and the weights of all RMSNorm modules. The hyper-parameters of AdamW and Muon are the same as those of DeepSeek-V4-Flash. We train DeepSeek-V4-Pro on 33T tokens, and also employ a batch size scheduling strategy, with the maximum batch size being 94.4M tokens. The learning rate scheduling strategy is largely the same as that of DeepSeek-V4-Flash, but the peak learning rate is set to $2.0 \times 10^{-4}$ and the end learning rate is set to $2.0 \times 10^{-5}$. The training also starts with a sequence length of 4K, and the length is gradually extended to 16K, 64K, and 1M. Compared with DeepSeek-V4-Flash, DeepSeek-V4-Pro starts with a longer stage of dense attention, and the strategy of introducing sparse attention is the same as DeepSeek-V4-Flash, following a two-stage training method. For auxiliary-loss-free load balancing, we set the bias update speed to 0.001. For the balance loss, we set its loss weight to 0.0001 to avoid extreme imbalance within single sequences. The MTP loss weight is set to 0.3 for most of the training, and to 0.1 upon the start of learning rate decay.
 
 
 # 4.2.3. Mitigating Training Instability
@@ -992,10 +992,10 @@ Training trillion-parameter MoE models presents significant stability challenges
 ---
 
 
-Anticipatory Routing. We found that decoupling the synchronous updates of the backbone network and the routing network significantly improves training stability. Consequently, at step \( t \), we use the current network parameters \( \theta_t \) for feature computation, but the routing indices are computed and applied using the historical network parameters \( \theta_{t - \Delta t} \). In practice, to circumvent the overhead of loading model parameters twice, we fetch the data for step \( t \) in advance at step \( t - \Delta t \). We "anticipatorily" compute and cache the routing indices to be used later at step \( t \), which is why we name this approach Anticipatory Routing. We also heavily optimized this at the infrastructure level. First, given that pre-computing the routing indices only requires a single forward pass over the data, we carefully orchestrated the pipeline execution and the overlapping of computation with Expert Parallelism (EP) communication, successfully bounding the additional wall-clock time overhead of Anticipatory Routing to approximately 20%. Second, we introduced an automatic detection mechanism that triggers a short rollback and activates Anticipatory Routing exclusively when a loss spike occurs; after operating in this mode for a certain period, the system reverts to standard training. Ultimately, this dynamic application allows us to avert loss spikes with negligible overall additional training overhead, all without compromising model performance.
+Anticipatory Routing. We found that decoupling the synchronous updates of the backbone network and the routing network significantly improves training stability. Consequently, at step $ t $, we use the current network parameters $ \theta_t $ for feature computation, but the routing indices are computed and applied using the historical network parameters $ \theta_{t - \Delta t} $. In practice, to circumvent the overhead of loading model parameters twice, we fetch the data for step $ t $ in advance at step $ t - \Delta t $. We "anticipatorily" compute and cache the routing indices to be used later at step $ t $, which is why we name this approach Anticipatory Routing. We also heavily optimized this at the infrastructure level. First, given that pre-computing the routing indices only requires a single forward pass over the data, we carefully orchestrated the pipeline execution and the overlapping of computation with Expert Parallelism (EP) communication, successfully bounding the additional wall-clock time overhead of Anticipatory Routing to approximately 20%. Second, we introduced an automatic detection mechanism that triggers a short rollback and activates Anticipatory Routing exclusively when a loss spike occurs; after operating in this mode for a certain period, the system reverts to standard training. Ultimately, this dynamic application allows us to avert loss spikes with negligible overall additional training overhead, all without compromising model performance.
 
 
-SwiGLU Clamping. In previous literature (Bello et al., 2017; Riviere et al., 2024), clamping has been explicitly utilized to constrain numerical ranges, thereby enhancing training stability. In our actual training runs, we empirically found that applying SwiGLU clamping (OpenAI, 2025) effectively eliminates outliers and substantially aids in stabilizing the training process, without compromising performance. Throughout the training of both DeepSeek-V4-Flash and DeepSeek-V4-Pro, we clamped the linear component of SwiGLU to the range of \([-10, 10]\), while capping the upper bound of the gate component at 10.
+SwiGLU Clamping. In previous literature (Bello et al., 2017; Riviere et al., 2024), clamping has been explicitly utilized to constrain numerical ranges, thereby enhancing training stability. In our actual training runs, we empirically found that applying SwiGLU clamping (OpenAI, 2025) effectively eliminates outliers and substantially aids in stabilizing the training process, without compromising performance. Throughout the training of both DeepSeek-V4-Flash and DeepSeek-V4-Pro, we clamped the linear component of SwiGLU to the range of $[-10, 10]$, while capping the upper bound of the gate component at 10.
 
 
 # 4.3. Evaluations
@@ -1168,7 +1168,7 @@ Quick Instruction. In chatbot scenarios, a number of auxiliary tasks (e.g., dete
 # 5.1.2. On-Policy Distillation
 
 
-After training multiple domain-specific experts via specialized fine-tuning and reinforcement learning, we employ multi-teacher On-Policy Distillation (OPD) as the primary technique for merging expert capabilities into the final model. OPD has emerged as an effective post-training paradigm for efficiently transferring the knowledge and capabilities of domain experts to a single, unified model. This is achieved by having the student learn from the output distributions of teacher models on its own generated trajectories. Formally, given a set of \(N\) expert models
+After training multiple domain-specific experts via specialized fine-tuning and reinforcement learning, we employ multi-teacher On-Policy Distillation (OPD) as the primary technique for merging expert capabilities into the final model. OPD has emerged as an effective post-training paradigm for efficiently transferring the knowledge and capabilities of domain experts to a single, unified model. This is achieved by having the student learn from the output distributions of teacher models on its own generated trajectories. Formally, given a set of $N$ expert models
 
 
 ---
@@ -1180,7 +1180,7 @@ _Table 5 | Quick Instruction special tokens for auxiliary tasks._
 <table><tr><td>Special Token</td><td>Description</td><td>Format</td></tr><tr><td>&lt;|action|&gt;</td><td>Determines whether the user prompt requires a web search or can be answered directly.</td><td>...&lt;|User|&gt;{prompt}&lt;|Assistant|&gt;&lt;think&gt;&lt;|action|&gt;</td></tr><tr><td>&lt;|title|&gt;</td><td>Generates a concise conversa-tion title after the first assis-tant response.</td><td>...&lt;|Assistant|&gt;{response}&lt;|end_ofsentence|&gt;&lt;|title|&gt;</td></tr><tr><td>&lt;|query|&gt;</td><td>Generates search queries for the user prompt.</td><td>...&lt;|User|&gt;{prompt}&lt;|query|&gt;</td></tr><tr><td>&lt;|authority|&gt;</td><td>Classifies the user prompt&#x27;s demand for source authorita-tiveness.</td><td>...&lt;|User|&gt;{prompt}&lt;|authority|&gt;</td></tr><tr><td>&lt;|domain|&gt;</td><td>Identifies the domain of the user prompt.</td><td>...&lt;|User|&gt;{prompt}&lt;|domain|&gt;</td></tr><tr><td>&lt;|extracted_url|&gt;</td><td>Determines whether each URL in the user prompt should be fetched and read.</td><td>...&lt;|User|&gt;{prompt}&lt;|extracted_url|&gt;{url}&lt;|read_url|&gt;</td></tr></table>
 
 
-\(\{\pi_{E_1}, \pi_{E_2}, \ldots, \pi_{E_N}\}\), the OPD objective function is defined as:
+$\{\pi_{E_1}, \pi_{E_2}, \ldots, \pi_{E_N}\}$, the OPD objective function is defined as:
 
 
 $$
@@ -1188,10 +1188,10 @@ $$
 $$
 
 
-In this formulation, \(w_{i}\) represents the assigned weight for each expert, typically determined by the relative importance of the expert. Computing the reverse KL loss \(\mathrm{D}_{\mathrm{KL}}\left(\pi_{\theta} \parallel \pi_{E_i}\right)\) requires sampling training trajectories from the student \(\pi_{\theta}\) to maintain on-policy learning. The underlying logic ensures that the unified policy \(\pi_{\theta}\) selectively learns from the specialized expert relevant to the current task context (e.g., aligning with the mathematics expert for math reasoning tasks and the coding expert for programming tasks). Through this mechanism, the knowledge from physically distinct expert weights is consolidated into a unified parameter space via logits-level alignment, practically circumventing the performance degradation often encountered in traditional weight-merging or mixed RL techniques. In this stage, more than ten teacher models covering various domains are employed to distill a single student model.
+In this formulation, $w_{i}$ represents the assigned weight for each expert, typically determined by the relative importance of the expert. Computing the reverse KL loss $\mathrm{D}_{\mathrm{KL}}\left(\pi_{\theta} \parallel \pi_{E_i}\right)$ requires sampling training trajectories from the student $\pi_{\theta}$ to maintain on-policy learning. The underlying logic ensures that the unified policy $\pi_{\theta}$ selectively learns from the specialized expert relevant to the current task context (e.g., aligning with the mathematics expert for math reasoning tasks and the coding expert for programming tasks). Through this mechanism, the knowledge from physically distinct expert weights is consolidated into a unified parameter space via logits-level alignment, practically circumventing the performance degradation often encountered in traditional weight-merging or mixed RL techniques. In this stage, more than ten teacher models covering various domains are employed to distill a single student model.
 
 
-In handling the above OPD objective, prior works usually simplify the full-vocabulary KL loss into a token-level KL estimate at each token position, and reuse RL framework by replacing \(\mathsf{sg}\big[\log \frac{\pi_{E_i}(y_t|x,y_{< t})}{\pi_\theta(y_t|x,y_{< t})}\big]\) (sg represents the stop gradient operation) as the per-token advantage estimate in the policy loss calculation. Although this approach is resource-efficient, it leads to high variance in gradient estimation and often causes training instability. Therefore, we adopt full-vocabulary logit distillation in our OPD. Preserving the complete logit distribution in calculating reverse KL loss yields more stable gradient estimates and ensures faithful distillation of the teachers' knowledge. In the following subsection, we describe the engineering efforts that make full-vocabulary OPD feasible at scale.
+In handling the above OPD objective, prior works usually simplify the full-vocabulary KL loss into a token-level KL estimate at each token position, and reuse RL framework by replacing $\mathsf{sg}\big[\log \frac{\pi_{E_i}(y_t|x,y_{< t})}{\pi_\theta(y_t|x,y_{< t})}\big]$ (sg represents the stop gradient operation) as the per-token advantage estimate in the policy loss calculation. Although this approach is resource-efficient, it leads to high variance in gradient estimation and often causes training instability. Therefore, we adopt full-vocabulary logit distillation in our OPD. Preserving the complete logit distribution in calculating reverse KL loss yields more stable gradient estimates and ensures faithful distillation of the teachers' knowledge. In the following subsection, we describe the engineering efforts that make full-vocabulary OPD feasible at scale.
 
 
 ---
@@ -1212,7 +1212,7 @@ We apply FP4 (MXFP4) quantization to accelerate both rollouts and all inference-
 # 5.2.2. Efficient Teacher Scheduling for Full-Vocabulary OPD
 
 
-Our framework supports full-vocabulary On-Policy Distillation (OPD) with an effectively unbounded number of teachers, each potentially comprising trillions of parameters. To enable this, all teacher weights are offloaded to a centralized distributed storage and are loaded on demand during the teacher forward pass with ZeRO-like parameter sharding to alleviate both I/O and DRAM pressure. Furthermore, naively materializing logits for a vocabulary size \( |V| > 100k \) across all teachers is prohibitive, even when spooled to disk. We address this by caching only the last-layer teacher hidden states in a centralized buffer during the forward pass. At training time, these cached states are retrieved and passed through the corresponding prediction head module to reconstruct the full logits on the fly. This design incurs negligible recomputation overhead while completely circumventing the memory burden associated with explicit logits materialization. To mitigate the GPU memory footprint of the teacher prediction head, we order training samples by teacher index during data dispatching. This arrangement ensures that each distinct teacher head is loaded only once per mini-batch and that at most one teacher head resides in device memory at any given time. All parameters and hidden state loading/offloading operations proceed asynchronously in the background, without blocking computation on the critical path. Finally, the exact KL divergences between teacher and student logits are computed using a specialized TileLang kernel, which accelerates the computation and curtails dynamic memory allocation.
+Our framework supports full-vocabulary On-Policy Distillation (OPD) with an effectively unbounded number of teachers, each potentially comprising trillions of parameters. To enable this, all teacher weights are offloaded to a centralized distributed storage and are loaded on demand during the teacher forward pass with ZeRO-like parameter sharding to alleviate both I/O and DRAM pressure. Furthermore, naively materializing logits for a vocabulary size $ |V| > 100k $ across all teachers is prohibitive, even when spooled to disk. We address this by caching only the last-layer teacher hidden states in a centralized buffer during the forward pass. At training time, these cached states are retrieved and passed through the corresponding prediction head module to reconstruct the full logits on the fly. This design incurs negligible recomputation overhead while completely circumventing the memory burden associated with explicit logits materialization. To mitigate the GPU memory footprint of the teacher prediction head, we order training samples by teacher index during data dispatching. This arrangement ensures that each distinct teacher head is loaded only once per mini-batch and that at most one teacher head resides in device memory at any given time. All parameters and hidden state loading/offloading operations proceed asynchronously in the background, without blocking computation on the critical path. Finally, the exact KL divergences between teacher and student logits are computed using a specialized TileLang kernel, which accelerates the computation and curtails dynamic memory allocation.
 
 
 # 5.2.3. Preemptible and Fault-Tolerant Rollout Service
@@ -1396,10 +1396,10 @@ Standardized benchmarks often struggle to capture the complexities of diverse, r
 # 5.4.1. Chinese Writing
 
 
-One of the primary use cases for DeepSeek is Chinese writing. We conducted a rigorous evaluation on functional writing and creative writing. Table 12 presents a pairwise comparison between DeepSeek-V4-Pro and Gemini-3.1-Pro on functional writing tasks. These tasks consist of common daily writing queries, where prompts are typically concise and straightforward. Gemini-3.1-Pro was selected as the baseline, as it stands as the top-performing external model for Chinese writing in our evaluations. The results indicate that DeepSeek-V4-Pro outperforms the baseline with an overall win rate of \(62.7\%\) versus \(34.1\%\); this is primarily because Gemini occasionally allows its inherent stylistic preferences to override the user's explicit requirements in Chinese writing scenarios.
+One of the primary use cases for DeepSeek is Chinese writing. We conducted a rigorous evaluation on functional writing and creative writing. Table 12 presents a pairwise comparison between DeepSeek-V4-Pro and Gemini-3.1-Pro on functional writing tasks. These tasks consist of common daily writing queries, where prompts are typically concise and straightforward. Gemini-3.1-Pro was selected as the baseline, as it stands as the top-performing external model for Chinese writing in our evaluations. The results indicate that DeepSeek-V4-Pro outperforms the baseline with an overall win rate of $62.7\%$ versus $34.1\%$; this is primarily because Gemini occasionally allows its inherent stylistic preferences to override the user's explicit requirements in Chinese writing scenarios.
 
 
-Table 13 presents the creative writing comparison, which is evaluated along two axes: instruction following and writing quality. Compared with Gemini-3.1-Pro, DeepSeek-V4-Pro achieves a \(60.0\%\) win rate in instruction following and \(77.5\%\) in writing quality, demonstrating a marginal improvement in instruction following and a substantial gain in writing quality. Although DeepSeek-V4-Pro yields superior results in aggregate user case analysis, an evaluation restricted to the most challenging prompts — specifically those involving high-complexity constraints or multi-turn scenarios — reveals that Claude Opus 4.5 retains a performance advantage over DeepSeek-V4-Pro. As shown in Table 14, Claude Opus 4.5 achieves a \(52.0\%\) win rate versus \(45.9\%\).
+Table 13 presents the creative writing comparison, which is evaluated along two axes: instruction following and writing quality. Compared with Gemini-3.1-Pro, DeepSeek-V4-Pro achieves a $60.0\%$ win rate in instruction following and $77.5\%$ in writing quality, demonstrating a marginal improvement in instruction following and a substantial gain in writing quality. Although DeepSeek-V4-Pro yields superior results in aggregate user case analysis, an evaluation restricted to the most challenging prompts — specifically those involving high-complexity constraints or multi-turn scenarios — reveals that Claude Opus 4.5 retains a performance advantage over DeepSeek-V4-Pro. As shown in Table 14, Claude Opus 4.5 achieves a $52.0\%$ win rate versus $45.9\%$.
 
 
 ---
@@ -1438,7 +1438,7 @@ Given the open-ended nature of these tasks, automated metrics usually fall short
 - Formatting Aesthetics: Layout readability and visual presentation.
 
 
-As illustrated in Figure 11, DeepSeek-V4-Pro-Max outperforms Opus-4.6-Max on diverse Chinese white-collar tasks, achieving an impressive non-loss rate of \(63\%\), and demonstrating consistent advantages across analysis, generation, and editing tasks. The detailed dimension scores shown in Figure 12 highlight the model's primary strengths in Task Completion and
+As illustrated in Figure 11, DeepSeek-V4-Pro-Max outperforms Opus-4.6-Max on diverse Chinese white-collar tasks, achieving an impressive non-loss rate of $63\%$, and demonstrating consistent advantages across analysis, generation, and editing tasks. The detailed dimension scores shown in Figure 12 highlight the model's primary strengths in Task Completion and
 
 
 ---
@@ -1474,7 +1474,7 @@ _Figure 13 | Example output of a task which requires drafting a joint marketing 
 # 5.4.4. Code Agent
 
 
-To benchmark our coding agent capability, we curate tasks from real internal R&D workloads. We collect \(\sim 200\) challenging tasks from \(50+\) internal engineers, spanning feature development, bug fixing, refactoring, and diagnostics across diverse technology stacks including PyTorch, CUDA, Rust, and C++. Each task is accompanied by its original repository, the corresponding execution environment, and human-annotated scoring rubrics; after rigorous quality filtering, 30 tasks are retained as the evaluation set. As shown in Table 8, DeepSeek-V4-Pro significantly outperforms Claude Sonnet 4.5 and approaches the level of Claude Opus 4.5.
+To benchmark our coding agent capability, we curate tasks from real internal R&D workloads. We collect $\sim 200$ challenging tasks from $50+$ internal engineers, spanning feature development, bug fixing, refactoring, and diagnostics across diverse technology stacks including PyTorch, CUDA, Rust, and C++. Each task is accompanied by its original repository, the corresponding execution environment, and human-annotated scoring rubrics; after rigorous quality filtering, 30 tasks are retained as the evaluation set. As shown in Table 8, DeepSeek-V4-Pro significantly outperforms Claude Sonnet 4.5 and approaches the level of Claude Opus 4.5.
 
 
 _Table 8 | Comparison on R&D Coding Benchmark (external models included strictly for evaluation purposes)._
@@ -1483,7 +1483,7 @@ _Table 8 | Comparison on R&D Coding Benchmark (external models included strictly
 <table><tr><td>Model</td><td>Haiku 4.5</td><td>Sonnet 4.5</td><td>DeepSeek-V4-Pro-Max</td><td>Opus 4.5</td><td>Opus 4.5 Thinking</td><td>Opus 4.6 Thinking</td></tr><tr><td>Pass Rate (%)</td><td>13</td><td>47</td><td>67</td><td>70</td><td>73</td><td>80</td></tr></table>
 
 
-In a survey asking DeepSeek developers and researchers (\(N = 85\)) — all with experience of using DeepSeek-V4-Pro for agentic coding in their daily work — whether DeepSeek-V4-Pro is ready to serve as their default and primary coding model compared to other frontier models, \(52\%\) said yes, \(39\%\) leaned toward yes, and fewer than \(9\%\) said no. Respondents find DeepSeek-V4-Pro to deliver satisfactory results across most tasks, but note trivial mistakes, misinterpretation of vague prompts, and occasional over-thinking.
+In a survey asking DeepSeek developers and researchers ($N = 85$) — all with experience of using DeepSeek-V4-Pro for agentic coding in their daily work — whether DeepSeek-V4-Pro is ready to serve as their default and primary coding model compared to other frontier models, $52\%$ said yes, $39\%$ leaned toward yes, and fewer than $9\%$ said no. Respondents find DeepSeek-V4-Pro to deliver satisfactory results across most tasks, but note trivial mistakes, misinterpretation of vague prompts, and occasional over-thinking.
 
 
 # 6. Conclusion, Limitations, and Future Directions
@@ -1687,7 +1687,7 @@ MiniMax. Meet minimax-m2, 2025. URL https://github.com/MiniMax-AI/MiniMax-M2.
 L. d. Moura and S. Ullrich. The lean 4 theorem prover and programming language. In International Conference on Automated Deduction, pages 625-635. Springer, 2021.
 
 
-Y. Nesterov. A method of solving a convex programming problem with convergence rate \( O(1 / k^2) \). Soviet Mathematics Doklady, 27:372-376, 1983.
+Y. Nesterov. A method of solving a convex programming problem with convergence rate $ O(1 / k^2) $. Soviet Mathematics Doklady, 27:372-376, 1983.
 
 
 NVIDIA Corporation. cublas documentation, 2024. URL https://docs.nvidia.com/cuda /cublas/. Version 12.4. Accessed: 2024-09-16.

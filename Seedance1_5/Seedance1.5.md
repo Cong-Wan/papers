@@ -8,11 +8,11 @@ ByteDance Seed
 # Abstract
 
 
-Recent strides in video generation have paved the way for unified audio-visual generation. In this work, we present Seedance 1.5 pro, a foundational model engineered specifically for native, joint audio-video generation. Leveraging a dual-branch Diffusion Transformer architecture, the model integrates a cross-modal joint module with a specialized multi-stage data pipeline, achieving exceptional audio-visual synchronization and superior generation quality. To ensure practical utility, we implement meticulous post-training optimizations, including Supervised Fine-Tuning (SFT) on high-quality datasets and Reinforcement Learning from Human Feedback (RLHF) with multi-dimensional reward models. Furthermore, we introduce an acceleration framework that boosts inference speed by over \(10 \times\). Seedance 1.5 pro distinguishes itself through precise multilingual and dialect lip-syncing, dynamic cinematic camera control, and enhanced narrative coherence, positioning it as a robust engine for professional-grade content creation. Seedance 1.5 pro is now accessible on Volcano Engine<sup>α</sup>.
+Recent strides in video generation have paved the way for unified audio-visual generation. In this work, we present Seedance 1.5 pro, a foundational model engineered specifically for native, joint audio-video generation. Leveraging a dual-branch Diffusion Transformer architecture, the model integrates a cross-modal joint module with a specialized multi-stage data pipeline, achieving exceptional audio-visual synchronization and superior generation quality. To ensure practical utility, we implement meticulous post-training optimizations, including Supervised Fine-Tuning (SFT) on high-quality datasets and Reinforcement Learning from Human Feedback (RLHF) with multi-dimensional reward models. Furthermore, we introduce an acceleration framework that boosts inference speed by over $10 \times$. Seedance 1.5 pro distinguishes itself through precise multilingual and dialect lip-syncing, dynamic cinematic camera control, and enhanced narrative coherence, positioning it as a robust engine for professional-grade content creation. Seedance 1.5 pro is now accessible on Volcano Engine<sup>α</sup>.
 
 
 Official Page: https://seed.bytedance.com/seedance1_5_pro
-\(^{\alpha}\)Model ID: Doubao-Seedance-1.5-pro
+$^{\alpha}$Model ID: Doubao-Seedance-1.5-pro
 
 
 _Video Capabilities Evaluation_
@@ -48,10 +48,10 @@ In this work, we present Seedance 1.5 pro, a foundational model designed with na
 - Unified Multimodal Joint Generation Architecture. To achieve native video-audio joint synthesis, we propose a unified framework based on the MMDiT [1] architecture. This design facilitates deep cross-modal interaction, ensuring precise temporal synchronization and semantic consistency between visual and auditory streams. By leveraging multi-task pre-training on large-scale mixed-modality datasets, our model achieves robust generalization across diverse downstream tasks, including Text-to-Video-Audio (T2VA), Image-to-Video-Audio (I2VA), and unimodal video generation (T2V, I2V).
 
 
-- Meticulous Post-training Optimization. We utilized high-quality audio-video datasets for Supervised Fine-Tuning (SFT), followed by a Reinforcement Learning from Human Feedback (RLHF[7, 14-16]) algorithm specifically tailored for audio-video contexts. Specifically, our multi-dimensional reward model enhances performance in Text-to-Video (T2V) and Image-to-Video (I2V) tasks, improving motion quality, visual aesthetics, and audio fidelity. Moreover, targeted infrastructure optimizations to our RLHF pipeline have yielded a nearly \(3 \times\) improvement in training speed.
+- Meticulous Post-training Optimization. We utilized high-quality audio-video datasets for Supervised Fine-Tuning (SFT), followed by a Reinforcement Learning from Human Feedback (RLHF[7, 14-16]) algorithm specifically tailored for audio-video contexts. Specifically, our multi-dimensional reward model enhances performance in Text-to-Video (T2V) and Image-to-Video (I2V) tasks, improving motion quality, visual aesthetics, and audio fidelity. Moreover, targeted infrastructure optimizations to our RLHF pipeline have yielded a nearly $3 \times$ improvement in training speed.
 
 
-- Efficient Inference Acceleration. We further optimized a multi-stage distillation framework [4, 8, 10] to substantially reduce the Number of Function Evaluations (NFE) required during generation. By integrating inference infrastructure optimizations—such as quantization and parallelism, we achieved an end-to-end acceleration exceeding \(10 \times\) while preserving model performance.
+- Efficient Inference Acceleration. We further optimized a multi-stage distillation framework [4, 8, 10] to substantially reduce the Number of Function Evaluations (NFE) required during generation. By integrating inference infrastructure optimizations—such as quantization and parallelism, we achieved an end-to-end acceleration exceeding $10 \times$ while preserving model performance.
 
 
 ![图片 page2-8](images/page002_img01.png)
@@ -105,7 +105,7 @@ For the video dimension, we provide a detailed taxonomy of evaluation cases and 
 <sup>1</sup>https://www.doubao.com/chat/create-video
 
 
-\(^{2}\)https://jimeng.jianying.com/ai-tool/video/generate
+$^{2}$https://jimeng.jianying.com/ai-tool/video/generate
 
 
 ---

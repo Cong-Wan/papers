@@ -2,12 +2,12 @@
 # Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse Attention
 
 
-Jingyang Yuan\*1,2, Huazuo Gao\(^{1}\), Damai Dai\(^{1}\), Junyu Luo\(^{2}\), Liang Zhao\(^{1}\), Zhengyan Zhang\(^{1}\), Zhenda Xie\(^{1}\), Y. X. Wei\(^{1}\), Lean Wang\(^{1}\), Zhiping Xiao\(^{3}\), Yuqing Wang\(^{1}\), Chong Ruan\(^{1}\), Ming Zhang\(^{2}\), Wenfeng Liang\(^{1}\), Wangding Zeng\(^{1}\)
+Jingyang Yuan\*1,2, Huazuo Gao$^{1}$, Damai Dai$^{1}$, Junyu Luo$^{2}$, Liang Zhao$^{1}$, Zhengyan Zhang$^{1}$, Zhenda Xie$^{1}$, Y. X. Wei$^{1}$, Lean Wang$^{1}$, Zhiping Xiao$^{3}$, Yuqing Wang$^{1}$, Chong Ruan$^{1}$, Ming Zhang$^{2}$, Wenfeng Liang$^{1}$, Wangding Zeng$^{1}$
 
 
-\(^{1}\)DeepSeek-AI  
-\(^{2}\)Key Laboratory for Multimedia Information Processing, School of Computer Science, Peking University, PKU-Anker LLM Lab  
-\(^{3}\)University of Washington
+$^{1}$DeepSeek-AI  
+$^{2}$Key Laboratory for Multimedia Information Processing, School of Computer Science, Peking University, PKU-Anker LLM Lab  
+$^{3}$University of Washington
 
 
 {yuanjy, mzhang_cs}@pku.edu.cn, {zengwangding, wenfeng.liang}@deepseek.com
@@ -62,7 +62,7 @@ The research community increasingly recognizes long-context modeling as a crucia
 _Figure 1 | Comparison of performance and efficiency between Full Attention model and our NSA. Left: Despite being sparse, NSA surpasses Full Attention baseline on average across general benchmarks, long-context tasks, and reasoning evaluation. Right: For 64k-length sequence processing, NSA achieves substantial computational speedup compared to Full Attention in all stages: decoding, forward propagation, and backward propagation._
 
 
-latency bottleneck as sequence length increases. Theoretical estimates indicate that attention computation with softmax architectures accounts for \(70 - 80\%\) of total latency when decoding 64k-length contexts, underscoring the urgent need for more efficient attention mechanisms.
+latency bottleneck as sequence length increases. Theoretical estimates indicate that attention computation with softmax architectures accounts for $70 - 80\%$ of total latency when decoding 64k-length contexts, underscoring the urgent need for more efficient attention mechanisms.
 
 
 A natural approach to efficient long-context modeling is to take advantage of the inherent sparsity of softmax attention (Ge et al., 2023; Jiang et al., 2023), where selectively computing critical query-key pairs can significantly reduce computational overhead while preserving performance. Recent advances demonstrate this potential through diverse strategies: KV-cache eviction methods (Li et al., 2024; Zhang et al., 2023b; Zhou et al., 2024), blockwise KV-cache selection methods (Gao et al., 2024; Tang et al., 2024; Xiao et al., 2024a), and sampling, clustering or hashing-based selection methods (Chen et al., 2024b; Desai et al., 2024; Liu et al., 2024). Despite these promising strategies, existing sparse attention methods often fall short in practical deployments. Many approaches fail to achieve speedups comparable to their theoretical gains; moreover, most methods lack effective training-time support to fully exploit the sparsity patterns of attention.
@@ -164,7 +164,7 @@ These limitations arise because many existing sparse attention methods focus on 
 # 2.2. The Myth of Trainable Sparsity
 
 
-Our pursuit of native trainable sparse attention is motivated by two key insights from analyzing inference-only approaches: (1) Performance Degradation: Applying sparsity post-hoc forces models to deviate from their pretrained optimization trajectory. As demonstrated by Chen et al. (2024b), top \(20\%\) attention can only cover \(70\%\) of the total attention scores, rendering structures like retrieval heads in pretrained models vulnerable to pruning during inference. (2) Training Efficiency Demands: Efficient handling of long-sequence training is crucial for modern LLM development. This includes both pretraining on longer documents to enhance model capacity, and subsequent adaptation phases such as long-context fine-tuning and reinforcement learning. However, existing sparse attention methods primarily target inference, leaving the computational challenges in training largely unaddressed. This limitation hinders the development of more capable long-context models through efficient training. Additionally, efforts to adapt existing sparse attention for training also expose challenges:
+Our pursuit of native trainable sparse attention is motivated by two key insights from analyzing inference-only approaches: (1) Performance Degradation: Applying sparsity post-hoc forces models to deviate from their pretrained optimization trajectory. As demonstrated by Chen et al. (2024b), top $20\%$ attention can only cover $70\%$ of the total attention scores, rendering structures like retrieval heads in pretrained models vulnerable to pruning during inference. (2) Training Efficiency Demands: Efficient handling of long-sequence training is crucial for modern LLM development. This includes both pretraining on longer documents to enhance model capacity, and subsequent adaptation phases such as long-context fine-tuning and reinforcement learning. However, existing sparse attention methods primarily target inference, leaving the computational challenges in training largely unaddressed. This limitation hinders the development of more capable long-context models through efficient training. Additionally, efforts to adapt existing sparse attention for training also expose challenges:
 
 
 Non-Trainable Components. Discrete operations in methods like ClusterKV (Liu et al., 2024) (includes k-means clustering) and MagicPIG (Chen et al., 2024b) (includes SimHash-based selecting) create discontinuities in the computational graph. These non-trainable components prevent gradient flow through the token selection process, limiting the model's ability to learn optimal sparse patterns.
@@ -194,7 +194,7 @@ Our technical approach spans algorithm design and kernel optimization. In the fo
 # 3.1. Background
 
 
-Attention Mechanism is widely used in language modeling where each query token \(\mathbf{q}_t\) computes relevance scores against all preceding keys \(\mathbf{k}_{:t}\) to generate a weighted sum of values \(\mathbf{v}_{:t}\). Formally, for an input sequence of length \(t\), the attention operation is defined as:
+Attention Mechanism is widely used in language modeling where each query token $\mathbf{q}_t$ computes relevance scores against all preceding keys $\mathbf{k}_{:t}$ to generate a weighted sum of values $\mathbf{v}_{:t}$. Formally, for an input sequence of length $t$, the attention operation is defined as:
 
 
 $$
@@ -210,7 +210,7 @@ $$
 $$
 
 
-Here, \(\alpha_{t,i}\) represents the attention weight between \(\mathbf{q}_t\) and \(\mathbf{k}_i\), and \(d_k\) is the feature dimension of keys. As sequence length increases, attention computation becomes increasingly dominant in the overall computational cost, presenting significant challenges for long-context processing.
+Here, $\alpha_{t,i}$ represents the attention weight between $\mathbf{q}_t$ and $\mathbf{k}_i$, and $d_k$ is the feature dimension of keys. As sequence length increases, attention computation becomes increasingly dominant in the overall computational cost, presenting significant challenges for long-context processing.
 
 
 Arithmetic Intensity is the ratio of compute operations to memory accesses. It intrinsically shapes algorithm optimization on hardware. Each GPU has a critical arithmetic intensity determined by its peak compute capability and memory bandwidth, calculated as the ratio of these two hardware limits. For computation tasks, arithmetic intensity above this critical threshold becomes compute-bound (limited by GPU FLOPS), while below it becomes memory-bound (limited by memory bandwidth).
@@ -228,7 +228,7 @@ This leads to different optimization goals — reducing computation cost during 
 # 3.2. Overall Framework
 
 
-To leverage the potential of attention with natural sparse pattern, we propose replacing the original key-value pairs \(\mathbf{k}_{:t},\mathbf{v}_{:t}\) in Equation (1) with a more compact and information-dense set of representation key-value pairs \(\tilde{K}_t,\tilde{V}_t\) given each query \(\mathbf{q}_t\). Specifically, we formally define the optimized attention output as follows:
+To leverage the potential of attention with natural sparse pattern, we propose replacing the original key-value pairs $\mathbf{k}_{:t},\mathbf{v}_{:t}$ in Equation (1) with a more compact and information-dense set of representation key-value pairs $\tilde{K}_t,\tilde{V}_t$ given each query $\mathbf{q}_t$. Specifically, we formally define the optimized attention output as follows:
 
 
 $$
@@ -241,7 +241,7 @@ $$
 $$
 
 
-where \(\tilde{K}_t, \tilde{V}_t\) are dynamically constructed based on the current query \(\mathbf{q}_t\) and the contextual memory \(\mathbf{k}_{:t}, \mathbf{v}_{:t}\). We can design various mapping strategies to get different categories of \(\tilde{K}_t^c, \tilde{V}_t^c\), and combine them as follows:
+where $\tilde{K}_t, \tilde{V}_t$ are dynamically constructed based on the current query $\mathbf{q}_t$ and the contextual memory $\mathbf{k}_{:t}, \mathbf{v}_{:t}$. We can design various mapping strategies to get different categories of $\tilde{K}_t^c, \tilde{V}_t^c$, and combine them as follows:
 
 
 $$
@@ -249,7 +249,7 @@ $$
 $$
 
 
-As illustrated in Figure 2, NSA have three mapping strategies \( C = \{\mathrm{cmp}, \mathrm{slc}, \mathrm{win}\} \), representing compression, selection, and sliding window for keys and values. \( g_{t}^{c} \in [0,1] \) is the gate score for corresponding strategy \( c \), derived from input features via an MLP and sigmoid activation. Let \( N_{t} \) denote the total number of remapped keys/values:
+As illustrated in Figure 2, NSA have three mapping strategies $ C = \{\mathrm{cmp}, \mathrm{slc}, \mathrm{win}\} $, representing compression, selection, and sliding window for keys and values. $ g_{t}^{c} \in [0,1] $ is the gate score for corresponding strategy $ c $, derived from input features via an MLP and sigmoid activation. Let $ N_{t} $ denote the total number of remapped keys/values:
 
 
 $$
@@ -257,13 +257,13 @@ N _ {t} = \sum_ {c \in \mathcal {C}} \operatorname {s i z e} \left[ \tilde {K} _
 $$
 
 
-We maintain a high sparsity ratio by ensuring \(N_{t} \ll t\).
+We maintain a high sparsity ratio by ensuring $N_{t} \ll t$.
 
 
 # 3.3. Algorithm Design
 
 
-In this subsection, we introduce the design of our remapping strategies \( f_{K} \) and \( f_{V} \): token compression, token selection, and sliding window.
+In this subsection, we introduce the design of our remapping strategies $ f_{K} $ and $ f_{V} $: token compression, token selection, and sliding window.
 
 
 # 3.3.1. Token Compression
@@ -277,7 +277,7 @@ $$
 $$
 
 
-where \(l\) is the block length, \(d\) is the sliding stride between adjacent blocks, and \(\varphi\) is a learnable MLP with intra-block position encoding to map keys in a block to a single compressed key. \(\tilde{K}_t^{\mathrm{cmp}}\in \mathbb{R}^{d_k\times \left\lfloor \frac{t - l}{d}\right\rfloor}\) is tensor composed by compression keys. Usually, we adopt \(d < l\) to mitigate information fragmentation. An analogous formulation holds for the compressed value representation \(\tilde{V}_t^{\mathrm{cmp}}\). Compressed representations capture coarser-grained higher-level semantic information and reduce computational burden of attention.
+where $l$ is the block length, $d$ is the sliding stride between adjacent blocks, and $\varphi$ is a learnable MLP with intra-block position encoding to map keys in a block to a single compressed key. $\tilde{K}_t^{\mathrm{cmp}}\in \mathbb{R}^{d_k\times \left\lfloor \frac{t - l}{d}\right\rfloor}$ is tensor composed by compression keys. Usually, we adopt $d < l$ to mitigate information fragmentation. An analogous formulation holds for the compressed value representation $\tilde{V}_t^{\mathrm{cmp}}$. Compressed representations capture coarser-grained higher-level semantic information and reduce computational burden of attention.
 
 
 ---
@@ -303,7 +303,7 @@ $$
 $$
 
 
-where \(\mathbf{p}_t^{\mathrm{cmp}}\in \mathbb{R}^{\lfloor \frac{t - l}{d}\rfloor +1}\) is the attention scores between \(q_{t}\) and compression keys \(\tilde{K}_t^{\mathrm{cmp}}\). Let \(l'\) denote the selection block size. When compression blocks and selection blocks share the same blocking scheme, i.e., \(l' = l = d\), we can directly obtain the selection block importance scores \(\mathbf{p}_t^{\mathrm{slc}}\) by \(\mathbf{p}_t^{\mathrm{slc}} = \mathbf{p}_t^{\mathrm{cmp}}\) straightforwardly. For cases where the blocking schemes differ, we derive the importance scores for selection blocks according to their spatial relationship. Given \(l\leqslant l'\), \(d\mid l\) and \(d\mid l'\), we have:
+where $\mathbf{p}_t^{\mathrm{cmp}}\in \mathbb{R}^{\lfloor \frac{t - l}{d}\rfloor +1}$ is the attention scores between $q_{t}$ and compression keys $\tilde{K}_t^{\mathrm{cmp}}$. Let $l'$ denote the selection block size. When compression blocks and selection blocks share the same blocking scheme, i.e., $l' = l = d$, we can directly obtain the selection block importance scores $\mathbf{p}_t^{\mathrm{slc}}$ by $\mathbf{p}_t^{\mathrm{slc}} = \mathbf{p}_t^{\mathrm{cmp}}$ straightforwardly. For cases where the blocking schemes differ, we derive the importance scores for selection blocks according to their spatial relationship. Given $l\leqslant l'$, $d\mid l$ and $d\mid l'$, we have:
 
 
 $$
@@ -311,7 +311,7 @@ $$
 $$
 
 
-where \([\cdot]\) denotes the indexing operator for accessing vector element. For models employing GQA or MQA where key-value caches are shared across query heads, consistent block selection across these heads has to be ensured to minimize KV cache loading during decoding. The shared importance scores across heads in a group are formally defined as:
+where $[\cdot]$ denotes the indexing operator for accessing vector element. For models employing GQA or MQA where key-value caches are shared across query heads, consistent block selection across these heads has to be ensured to minimize KV cache loading during decoding. The shared importance scores across heads in a group are formally defined as:
 
 
 $$
@@ -319,13 +319,13 @@ $$
 $$
 
 
-where \((h)\) in the superscript denotes the head index, and \(H\) is the number of query heads in each group. This aggregation ensures consistent block selection across heads within the same group.
+where $(h)$ in the superscript denotes the head index, and $H$ is the number of query heads in each group. This aggregation ensures consistent block selection across heads within the same group.
 
 
 ---
 
 
-Top-\(n\) Block Selection. After obtaining the selection block importance scores, We retain tokens within the top-\(n\) sparse blocks ranked by block importance scores, formulated as:
+Top-$n$ Block Selection. After obtaining the selection block importance scores, We retain tokens within the top-$n$ sparse blocks ranked by block importance scores, formulated as:
 
 
 $$
@@ -338,16 +338,16 @@ $$
 $$
 
 
-where \(\mathrm{rank}(\cdot)\) denotes the ranking position in descending order, with \(\mathrm{rank} = 1\) corresponding to the highest score, \(I_{t}\) is the set of selected blocks' indices, Cat denotes the concatenation operation. \(\tilde{K}_t^{\mathrm{slc}}\in \mathbb{R}^{d_k\times nl'}\) is tensor composed by compression keys. An analogous formulation applies to the fine-grained value \(\tilde{V}_{t}^{\mathrm{slc}}\). The selected keys and values then participate in the attention computation with \(\mathbf{q}_t\) as defined in Equation (5).
+where $\mathrm{rank}(\cdot)$ denotes the ranking position in descending order, with $\mathrm{rank} = 1$ corresponding to the highest score, $I_{t}$ is the set of selected blocks' indices, Cat denotes the concatenation operation. $\tilde{K}_t^{\mathrm{slc}}\in \mathbb{R}^{d_k\times nl'}$ is tensor composed by compression keys. An analogous formulation applies to the fine-grained value $\tilde{V}_{t}^{\mathrm{slc}}$. The selected keys and values then participate in the attention computation with $\mathbf{q}_t$ as defined in Equation (5).
 
 
 # 3.3.3. Sliding Window
 
 
-In attention mechanisms, local patterns typically adapt faster and can dominate the learning process, potentially preventing the model from effectively learning from compression and selection tokens. To address this issue, we introduce a dedicated sliding window branch that explicitly handles local context, allowing other branches (compression and selection) to focus on learning their respective features without being shortcutted by local patterns. Specifically, we maintain recent tokens \(\tilde{K}_t^{\mathrm{win}} = \mathbf{k}_{t - w:t},\tilde{V}_t^{\mathrm{win}} = \mathbf{v}_{t - w:t}\) in a window \(w\), and isolate attention computations of different information sources (compression tokens, and selected tokens, sliding window) into separate branches. These branch outputs are then aggregated through a learned gating mechanism. To further prevent shortcut learning across attention branches with marginal computational overhead, we provide independent keys and values for three branches. This architectural design enables stable learning by preventing gradient interference between local and long-range pattern recognition, while introducing minimal overhead.
+In attention mechanisms, local patterns typically adapt faster and can dominate the learning process, potentially preventing the model from effectively learning from compression and selection tokens. To address this issue, we introduce a dedicated sliding window branch that explicitly handles local context, allowing other branches (compression and selection) to focus on learning their respective features without being shortcutted by local patterns. Specifically, we maintain recent tokens $\tilde{K}_t^{\mathrm{win}} = \mathbf{k}_{t - w:t},\tilde{V}_t^{\mathrm{win}} = \mathbf{v}_{t - w:t}$ in a window $w$, and isolate attention computations of different information sources (compression tokens, and selected tokens, sliding window) into separate branches. These branch outputs are then aggregated through a learned gating mechanism. To further prevent shortcut learning across attention branches with marginal computational overhead, we provide independent keys and values for three branches. This architectural design enables stable learning by preventing gradient interference between local and long-range pattern recognition, while introducing minimal overhead.
 
 
-After obtaining all three categories of keys and values \((\tilde{K}_t^{\mathrm{cmp}},\tilde{V}_t^{\mathrm{cmp}};\tilde{K}_t^{\mathrm{slc}},\tilde{V}_t^{\mathrm{slc}};\) and \(\tilde{K}_t^{\mathrm{win}},\tilde{V}_t^{\mathrm{win}})\), we compute the final attention output following Equation (5). Together with the compression, selection, and sliding window mechanisms described above, this forms the complete algorithmic framework of NSA.
+After obtaining all three categories of keys and values $(\tilde{K}_t^{\mathrm{cmp}},\tilde{V}_t^{\mathrm{cmp}};\tilde{K}_t^{\mathrm{slc}},\tilde{V}_t^{\mathrm{slc}};$ and $\tilde{K}_t^{\mathrm{win}},\tilde{V}_t^{\mathrm{win}})$, we compute the final attention output following Equation (5). Together with the compression, selection, and sliding window mechanisms described above, this forms the complete algorithmic framework of NSA.
 
 
 # 3.4. Kernel Design
@@ -356,16 +356,16 @@ After obtaining all three categories of keys and values \((\tilde{K}_t^{\mathrm{
 To achieve FlashAttention-level speedup during the training and prefetching, we implement hardware-aligned sparse attention kernels upon Triton. Given MHA is memory-intensive and inefficient for decoding, we focus on architectures with shared KV caches like GQA and MQA following the current state-of-the-art LLMs. While compression and sliding window attention computations are readily compatible with existing FlashAttention-2 kernels, we introduce the specialized kernel design for sparse selection attention. If we were to follow FlashAttention's strategy of loading temporally continuous query blocks into SRAM, it would result in inefficient memory access since queries within a block may require disjoint KV blocks. To address this, our key optimization lies in a different query grouping strategy: for each position on the query sequence, we load all query heads within a GQA group (they share the same sparse KV blocks) into SRAM. Figure 3 illustrates our forward pass implementation. The proposed kernel architecture is characterized by the following key features:
 
 
-1. Group-Centric Data Loading. For each inner loop, load all heads' queries \( Q \in \mathbb{R}^{[h,d_k]} \) in the group at position \( t \) and their shared sparse key/value block indices \( \mathcal{I}_t \).
+1. Group-Centric Data Loading. For each inner loop, load all heads' queries $ Q \in \mathbb{R}^{[h,d_k]} $ in the group at position $ t $ and their shared sparse key/value block indices $ \mathcal{I}_t $.
 
 
 ---
 
 
-2. Shared KV Fetching. In the inner loop, Sequentially load continuous key/value blocks indexed by \(\mathcal{I}_t\) into SRAM as \(K \in \mathbb{R}^{[B_k,d_k]}\), \(V \in \mathbb{R}^{[B_k,d_v]}\) to minimize memory loading, where \(B_k\) is the kernel block size satisfying \(B_k|l'\).
+2. Shared KV Fetching. In the inner loop, Sequentially load continuous key/value blocks indexed by $\mathcal{I}_t$ into SRAM as $K \in \mathbb{R}^{[B_k,d_k]}$, $V \in \mathbb{R}^{[B_k,d_v]}$ to minimize memory loading, where $B_k$ is the kernel block size satisfying $B_k|l'$.
 
 
-3. Outer Loop on Grid. Since the inner-loop length (proportional to the selected block count \( n \)) remains nearly identical for different query blocks, we put query/output loops in Triton's grid scheduler to simplify and optimize the kernel.
+3. Outer Loop on Grid. Since the inner-loop length (proportional to the selected block count $ n $) remains nearly identical for different query blocks, we put query/output loops in Triton's grid scheduler to simplify and optimize the kernel.
 
 
 This design achieves near-optimal arithmetic intensity by (1) eliminating redundant KV transfers through group-wise sharing, and (2) balancing compute workloads across GPU streaming multiprocessors.
@@ -414,7 +414,7 @@ We evaluate NSA through three lenses: (1) general benchmarks performance, (2) lo
 # 4.1. Pretraining Setup
 
 
-Following the common practice in state-of-the-art LLMs, our experiments adopt a backbone combining Grouped-Query Attention (GQA) and Mixture-of-Experts (MoE), featuring 27B total parameters with 3B active parameters. The model consists of 30 layers with a hidden dimension of 2560. For GQA, we set the number of groups to 4, with a total of 64 attention heads. For each head, the hidden dimensions of the query, key, and value are configured as \( d_{q} = d_{k} = 192 \) and \( d_{\nu} = 128 \), respectively. For MoE, we utilize the DeepSeekMoE (Dai et al., 2024; DeepSeek-AI, 2024) structure, with 72 routed experts and 2 shared experts, and set the top-k experts to 6. To ensure training stability, the MoE in the first layer is replaced by an MLP in the form of SwiGLU.
+Following the common practice in state-of-the-art LLMs, our experiments adopt a backbone combining Grouped-Query Attention (GQA) and Mixture-of-Experts (MoE), featuring 27B total parameters with 3B active parameters. The model consists of 30 layers with a hidden dimension of 2560. For GQA, we set the number of groups to 4, with a total of 64 attention heads. For each head, the hidden dimensions of the query, key, and value are configured as $ d_{q} = d_{k} = 192 $ and $ d_{\nu} = 128 $, respectively. For MoE, we utilize the DeepSeekMoE (Dai et al., 2024; DeepSeek-AI, 2024) structure, with 72 routed experts and 2 shared experts, and set the top-k experts to 6. To ensure training stability, the MoE in the first layer is replaced by an MLP in the form of SwiGLU.
 
 
 ---
@@ -446,13 +446,13 @@ _Figure 4 | Pretraining loss comparison between Full Attention and our NSA on 27
 _Table 1 | Pretraining performance comparison between the full attention baseline and NSA on general benchmarks, across knowledge (MMLU, MMLU-PRO, CMMLU), reasoning (BBH, GSM8K, MATH, DROP), and coding (MBPP, HumanEval) tasks. NSA achieves superior average performance on most benchmarks despite high sparsity._
 
 
-The proposed architecture achieves an effective trade-off between computation cost and model performance. For NSA, we set compression block size \( l = 32 \), sliding stride \( d = 16 \), selected block size \( l' = 64 \), selected block count \( n = 16 \) (including fixed activating the 1 initial block and 2 local blocks), and sliding window size \( w = 512 \). Both Full Attention and sparse attention models are pretrained on 270B tokens of 8k-length texts, followed by continued training and supervised fine-tuning on 32k-length texts with YaRN (Peng et al., 2024) to achieve long-context adaptation. Both models are trained to full convergence to ensure fair comparison. As shown in Figure 4, the pretraining loss curve of our NSA and Full Attention baseline demonstrates stable and smooth decline, with NSA consistently outperforming the Full Attention model.
+The proposed architecture achieves an effective trade-off between computation cost and model performance. For NSA, we set compression block size $ l = 32 $, sliding stride $ d = 16 $, selected block size $ l' = 64 $, selected block count $ n = 16 $ (including fixed activating the 1 initial block and 2 local blocks), and sliding window size $ w = 512 $. Both Full Attention and sparse attention models are pretrained on 270B tokens of 8k-length texts, followed by continued training and supervised fine-tuning on 32k-length texts with YaRN (Peng et al., 2024) to achieve long-context adaptation. Both models are trained to full convergence to ensure fair comparison. As shown in Figure 4, the pretraining loss curve of our NSA and Full Attention baseline demonstrates stable and smooth decline, with NSA consistently outperforming the Full Attention model.
 
 
 # 4.2. Baselines Methods
 
 
-In addition to comparing with Full Attention, we evaluate several state-of-the-art inference-stage sparse attention methods: H2O (Zhang et al., 2023b), infLLM (Xiao et al., 2024a), Quest (Tang et al., 2024), and Exact-Top, which first computes full attention score and select the top-\(n\) scores keys corresponding to each query and then calculates attention on these positions. These
+In addition to comparing with Full Attention, we evaluate several state-of-the-art inference-stage sparse attention methods: H2O (Zhang et al., 2023b), infLLM (Xiao et al., 2024a), Quest (Tang et al., 2024), and Exact-Top, which first computes full attention score and select the top-$n$ scores keys corresponding to each query and then calculates attention on these positions. These
 
 
 ---
@@ -470,13 +470,13 @@ _Figure 4 | Pretraining loss comparison between Full Attention and our NSA on 27
 _Table 1 | Pretraining performance comparison between the full attention baseline and NSA on general benchmarks, across knowledge (MMLU, MMLU-PRO, CMMLU), reasoning (BBH, GSM8K, MATH, DROP), and coding (MBPP, HumanEval) tasks. NSA achieves superior average performance on most benchmarks despite high sparsity._
 
 
-The proposed architecture achieves an effective trade-off between computation cost and model performance. For NSA, we set compression block size \( l = 32 \), sliding stride \( d = 16 \), selected block size \( l' = 64 \), selected block count \( n = 16 \) (including fixed activating the 1 initial block and 2 local blocks), and sliding window size \( w = 512 \). Both Full Attention and sparse attention models are pretrained on 270B tokens of 8k-length texts, followed by continued training and supervised fine-tuning on 32k-length texts with YaRN (Peng et al., 2024) to achieve long-context adaptation. Both models are trained to full convergence to ensure fair comparison. As shown in Figure 4, the pretraining loss curve of our NSA and Full Attention baseline demonstrates stable and smooth decline, with NSA consistently outperforming the Full Attention model.
+The proposed architecture achieves an effective trade-off between computation cost and model performance. For NSA, we set compression block size $ l = 32 $, sliding stride $ d = 16 $, selected block size $ l' = 64 $, selected block count $ n = 16 $ (including fixed activating the 1 initial block and 2 local blocks), and sliding window size $ w = 512 $. Both Full Attention and sparse attention models are pretrained on 270B tokens of 8k-length texts, followed by continued training and supervised fine-tuning on 32k-length texts with YaRN (Peng et al., 2024) to achieve long-context adaptation. Both models are trained to full convergence to ensure fair comparison. As shown in Figure 4, the pretraining loss curve of our NSA and Full Attention baseline demonstrates stable and smooth decline, with NSA consistently outperforming the Full Attention model.
 
 
 # 4.2. Baselines Methods
 
 
-In addition to comparing with Full Attention, we evaluate several state-of-the-art inference-stage sparse attention methods: H2O (Zhang et al., 2023b), infLLM (Xiao et al., 2024a), Quest (Tang et al., 2024), and Exact-Top, which first computes full attention score and select the top-\(n\) scores keys corresponding to each query and then calculates attention on these positions. These
+In addition to comparing with Full Attention, we evaluate several state-of-the-art inference-stage sparse attention methods: H2O (Zhang et al., 2023b), infLLM (Xiao et al., 2024a), Quest (Tang et al., 2024), and Exact-Top, which first computes full attention score and select the top-$n$ scores keys corresponding to each query and then calculates attention on these positions. These
 
 
 ---
@@ -488,7 +488,7 @@ In addition to comparing with Full Attention, we evaluate several state-of-the-a
 _Table 2 | Performance comparison between our NSA and baselines on LongBench, including subsets in single document QA, multi-document QA, synthetic and code task categories. NSA outperformed most of the baselines including Full Attention._
 
 
-methods span diverse sparse attention paradigms, including KV-cache eviction, query-aware selection, and exact top-\(n\) sparse selection.
+methods span diverse sparse attention paradigms, including KV-cache eviction, query-aware selection, and exact top-$n$ sparse selection.
 
 
 For general evaluation, where most samples have lengths within the local context window of sparse attention baselines, these methods are effectively equivalent to Full Attention. Therefore, we present only the comparison results between NSA and Full Attention baseline in this setting. In the long-context evaluation, we conduct comparisons across all baseline methods, with the sparsity of all sparse attention methods set to the same to ensure a fair comparison. For chain-of-thought reasoning evaluation, which requires long-text supervised fine-tuning, we limit our comparison to Full Attention, as sparse attention baselines do not support training.
@@ -549,10 +549,10 @@ _Figure 5 | Needle-in-a-Haystack retrieval accuracy across context positions wit
 methods and Full Attention baseline. To ensure consistent sparsity, we set the token activated by each query in all sparse attention baselines to 2560 tokens, which corresponds to the average number of tokens activated in NSA when handling 32k sequence lengths. Following Stream-LLM (Xiao et al., 2023), this token budget includes the leading 128 tokens and 512 local tokens. We exclude certain subsets from LongBench due to their low scores across all models, which may not provide meaningful comparisons. As shown in Table 2, NSA achieves the highest average score 0.469, outperforming all baselines (+0.032 over Full Attention and +0.046 over Exact-Top). This improvement arises from two key innovations: (1) our native sparse attention design, which enables end-to-end optimization of sparse patterns during pretraining, facilitates synchronized adaptation between the sparse attention module and other model components; and (2) the hierarchical sparse attention mechanism achieves a balance between local and global information processing.
 
 
-Notably, NSA demonstrates exceptional performance on tasks requiring complex reasoning over long contexts, achieving \(+0.087\) and \(+0.051\) improvements over Full Attention on multi-hop QA tasks (HPQ and 2Wiki), exceeding the performance of baselines on code understanding (LCC: \(+0.069\)), and outperforming other methods on passage retrieval (PassR-en: \(+0.075\)). These results validate NSA's capability to handle diverse long-context challenges, with its natively pretrained sparse attention providing additional benefits in learning task-optimal patterns.
+Notably, NSA demonstrates exceptional performance on tasks requiring complex reasoning over long contexts, achieving $+0.087$ and $+0.051$ improvements over Full Attention on multi-hop QA tasks (HPQ and 2Wiki), exceeding the performance of baselines on code understanding (LCC: $+0.069$), and outperforming other methods on passage retrieval (PassR-en: $+0.075$). These results validate NSA's capability to handle diverse long-context challenges, with its natively pretrained sparse attention providing additional benefits in learning task-optimal patterns.
 
 
-Chain-of-Thought Reasoning Evaluation. To evaluate NSA's compatibility with advanced downstream training paradigms, we investigate its capacity to acquire chain-of-thought mathematical reasoning abilities via post-training. Given the limited effectiveness of reinforcement learning on smaller-scale models, we employ knowledge distillation from DeepSeek-R1, conducting supervised fine-tuning (SFT) with 10B tokens of \(32k\)-length mathematical reasoning traces. This produces two comparable models: Full Attention-R (Full Attention baseline) and NSA-R (our sparse variant). We assess both models on the challenging American Invitational Mathematics Examination (AIME 24) benchmark. We use a sampling temperature of 0.7 and a top-\(p\) value of 0.95 to generate 16 responses for each question and obtain the average score. To validate the impact of reasoning depth, we conduct experiments with two generation context limits: 8k and 16k tokens, measuring whether extended reasoning chains improve accuracy. Example comparisons of model predictions are provided in Appendix A.
+Chain-of-Thought Reasoning Evaluation. To evaluate NSA's compatibility with advanced downstream training paradigms, we investigate its capacity to acquire chain-of-thought mathematical reasoning abilities via post-training. Given the limited effectiveness of reinforcement learning on smaller-scale models, we employ knowledge distillation from DeepSeek-R1, conducting supervised fine-tuning (SFT) with 10B tokens of $32k$-length mathematical reasoning traces. This produces two comparable models: Full Attention-R (Full Attention baseline) and NSA-R (our sparse variant). We assess both models on the challenging American Invitational Mathematics Examination (AIME 24) benchmark. We use a sampling temperature of 0.7 and a top-$p$ value of 0.95 to generate 16 responses for each question and obtain the average score. To validate the impact of reasoning depth, we conduct experiments with two generation context limits: 8k and 16k tokens, measuring whether extended reasoning chains improve accuracy. Example comparisons of model predictions are provided in Appendix A.
 
 
 ---
@@ -619,13 +619,13 @@ As shown in Table 3, NSA-R achieves significantly higher accuracy than Full Atte
 # 5. Efficiency Analysis
 
 
-We evaluate the computational efficiency of NSA against Full Attention on an 8-GPU A100 system. In efficiency analysis, we also configure the model with GQA group \( g = 4 \), heads per group \( h = 16 \), query/key dimension \( d_k = 192 \), and value dimension \( d_\nu = 128 \). Following the same settings in Section 4, we set NSA compression block size \( l = 32 \), sliding stride \( d = 16 \), selected block size \( l' = 64 \), selected block count \( n = 16 \), and sliding window size \( w = 512 \).
+We evaluate the computational efficiency of NSA against Full Attention on an 8-GPU A100 system. In efficiency analysis, we also configure the model with GQA group $ g = 4 $, heads per group $ h = 16 $, query/key dimension $ d_k = 192 $, and value dimension $ d_\nu = 128 $. Following the same settings in Section 4, we set NSA compression block size $ l = 32 $, sliding stride $ d = 16 $, selected block size $ l' = 64 $, selected block count $ n = 16 $, and sliding window size $ w = 512 $.
 
 
 # 5.1. Training Speed
 
 
-We compare the Triton-based implementations of our NSA attention and Full Attention with Triton-based FlashAttention-2 to ensure fair speed comparison across the same backend. As shown in Figure 6, our NSA achieves progressively greater speedups as context length increases, up to \(9.0 \times\) forward and \(6.0 \times\) backward speedup at 64k context-length. Notably, the speed advantage becomes more pronounced with longer sequences. This speedup stems from our
+We compare the Triton-based implementations of our NSA attention and Full Attention with Triton-based FlashAttention-2 to ensure fair speed comparison across the same backend. As shown in Figure 6, our NSA achieves progressively greater speedups as context length increases, up to $9.0 \times$ forward and $6.0 \times$ backward speedup at 64k context-length. Notably, the speed advantage becomes more pronounced with longer sequences. This speedup stems from our
 
 
 ---
@@ -643,7 +643,7 @@ hardware-aligned algorithm design to maximize the efficiency of sparse attention
 # 5.2. Decoding Speed
 
 
-The decoding speed of Attention is primarily determined by the memory access bottleneck, which is closely tied to the amount of KV cache loading. In each decoding step, Our NSA just needs to load at most \(\left\lfloor \frac{s - l}{d} \right\rfloor\) compression tokens, \(nl'\) selected tokens, and \(w\) neighbor tokens, where \(s\) is the cached sequence length. As shown in Table 4, our method exhibits a significant reduction in latency as the decoding length increases, achieving up to \(11.6 \times\) speedup at 64k context-length. This advantage in memory access efficiency also amplifies with longer sequences.
+The decoding speed of Attention is primarily determined by the memory access bottleneck, which is closely tied to the amount of KV cache loading. In each decoding step, Our NSA just needs to load at most $\left\lfloor \frac{s - l}{d} \right\rfloor$ compression tokens, $nl'$ selected tokens, and $w$ neighbor tokens, where $s$ is the cached sequence length. As shown in Table 4, our method exhibits a significant reduction in latency as the decoding length increases, achieving up to $11.6 \times$ speedup at 64k context-length. This advantage in memory access efficiency also amplifies with longer sequences.
 
 
 # 6. Discussion
@@ -717,7 +717,7 @@ _Figure 7 | Compare training loss on a 3B-parameter model with Full Attention an
 _Figure 8 | Visualization of Attention Map on a Full Attention transformer. Light-colored regions indicate higher attention values. As shown in the figure, attention scores exhibit blockwise clustering distribution._
 
 
-Other Blockwise Selection Strategies. We also considered blockwise key, value selection strategies different from NSA, such as Quest (Tang et al., 2024) and InfLLM (Xiao et al., 2024a). These methods rely on computing an importance score for each KV block and selecting the top-\(n\) blocks based on their similarity with \(q_{t}\). However, existing methods face two critical issues: (1) Since the selection operation is non-differentiable, importance score computation based on neural networks relies on auxiliary loss, which increases operator overhead and often degrades model performance; (2) Heuristic parameter-free importance score computation strategy suffers from low recall rates, leading to suboptimal performance. We evaluate both approaches on a 3B-parameter model with similar architecture and compare their loss curve with NSA and Full Attention. For the auxiliary loss-based selection method, we introduce additional queries for each token and representative keys for each block to estimate the block importance scores. We compute block-level supervision signals by mean-pooling attention scores within each key block, and use KL divergence to supervise block importance prediction. We maintain individual query granularity instead of block-averaged queries to accommodate efficient decoding. This auxiliary loss-based importance estimation shares conceptual similarity with SeerAttention (Gao et al., 2024). For the heuristic parameter-free selection method, following the strategy of Quest, we implement direct selection using the product between queries and coordinate-wise min-max of the key chunks, without introducing additional parameters. We also explore a cold-start training approach where Full Attention is applied for the initial 1000 steps before transitioning to the heuristic blockwise selection. As shown in Figure 7, both methods exhibited inferior loss.
+Other Blockwise Selection Strategies. We also considered blockwise key, value selection strategies different from NSA, such as Quest (Tang et al., 2024) and InfLLM (Xiao et al., 2024a). These methods rely on computing an importance score for each KV block and selecting the top-$n$ blocks based on their similarity with $q_{t}$. However, existing methods face two critical issues: (1) Since the selection operation is non-differentiable, importance score computation based on neural networks relies on auxiliary loss, which increases operator overhead and often degrades model performance; (2) Heuristic parameter-free importance score computation strategy suffers from low recall rates, leading to suboptimal performance. We evaluate both approaches on a 3B-parameter model with similar architecture and compare their loss curve with NSA and Full Attention. For the auxiliary loss-based selection method, we introduce additional queries for each token and representative keys for each block to estimate the block importance scores. We compute block-level supervision signals by mean-pooling attention scores within each key block, and use KL divergence to supervise block importance prediction. We maintain individual query granularity instead of block-averaged queries to accommodate efficient decoding. This auxiliary loss-based importance estimation shares conceptual similarity with SeerAttention (Gao et al., 2024). For the heuristic parameter-free selection method, following the strategy of Quest, we implement direct selection using the product between queries and coordinate-wise min-max of the key chunks, without introducing additional parameters. We also explore a cold-start training approach where Full Attention is applied for the initial 1000 steps before transitioning to the heuristic blockwise selection. As shown in Figure 7, both methods exhibited inferior loss.
 
 
 # 6.2. Visualization
@@ -924,7 +924,7 @@ Z. Zhou, C. Li, X. Chen, S. Wang, Y. Chao, Z. Li, H. Wang, R. An, Q. Shi, Z. Tan
 # Prompt:
 
 
-" | User | Let \( x, y \) and \( z \) be positive real numbers that satisfy the following system of equations:
+" | User | Let $ x, y $ and $ z $ be positive real numbers that satisfy the following system of equations:
 
 
 $$
@@ -942,7 +942,7 @@ $$
 $$
 
 
-Then the value of \( \left| \log_2(x^4 y^3 z^2) \right| \) is \( \frac{m}{n} \) where \( m \) and \( n \) are relatively prime positive integers. Find \( m + n \). Please reason step by step, and put your final answer within \( \square \). | Assistant |
+Then the value of $ \left| \log_2(x^4 y^3 z^2) \right| $ is $ \frac{m}{n} $ where $ m $ and $ n $ are relatively prime positive integers. Find $ m + n $. Please reason step by step, and put your final answer within $ \square $. | Assistant |
 
 
 # Our Result:
@@ -954,28 +954,28 @@ Then the value of \( \left| \log_2(x^4 y^3 z^2) \right| \) is \( \frac{m}{n} \) 
 Given the system of equations:
 
 
-1. \(\log_2\left(\frac{x}{yz}\right) = \frac{1}{2}\) 2. \(\log_2\left(\frac{y}{xz}\right) = \frac{1}{3}\) 3. \(\log_2\left(\frac{z}{xy}\right) = \frac{1}{4}\)
+1. $\log_2\left(\frac{x}{yz}\right) = \frac{1}{2}$ 2. $\log_2\left(\frac{y}{xz}\right) = \frac{1}{3}$ 3. $\log_2\left(\frac{z}{xy}\right) = \frac{1}{4}$
 
 
 We convert these logarithmic equations to their exponential forms:
 
 
-1. \(\frac{x}{yz} = \sqrt{2} 2\). \(\frac{y}{xz} = 2^{1/3} 3\). \(\frac{z}{xy} = 2^{1/4}\)
+1. $\frac{x}{yz} = \sqrt{2} 2$. $\frac{y}{xz} = 2^{1/3} 3$. $\frac{z}{xy} = 2^{1/4}$
 
 
-Expressing each variable in terms of \( x, y \), and \( z \):
+Expressing each variable in terms of $ x, y $, and $ z $:
 
 
-1. \(x = \sqrt{2} \cdot y \cdot z\). 2. \(y = 2^{1/3} \cdot x \cdot z\). 3. \(z = 2^{1/4} \cdot xy\)
+1. $x = \sqrt{2} \cdot y \cdot z$. 2. $y = 2^{1/3} \cdot x \cdot z$. 3. $z = 2^{1/4} \cdot xy$
 
 
 Substituting these expressions into each other, we find:
 
 
-- From \( x = \sqrt{2} \cdot yz \) and \( y = 2^{1/3} \cdot xz \), we get \( x = \sqrt{2} \cdot (2^{1/3} \cdot xz) \cdot z \), leading to \( z = 2^{-5/12} \). - Substituting \( z \) into the equation for \( y \), we get \( y = 2^{-3/8} \). - Substituting \( z \) and \( y \) into the equation for \( x \), we get \( x = 2^{-7/24} \).
+- From $ x = \sqrt{2} \cdot yz $ and $ y = 2^{1/3} \cdot xz $, we get $ x = \sqrt{2} \cdot (2^{1/3} \cdot xz) \cdot z $, leading to $ z = 2^{-5/12} $. - Substituting $ z $ into the equation for $ y $, we get $ y = 2^{-3/8} $. - Substituting $ z $ and $ y $ into the equation for $ x $, we get $ x = 2^{-7/24} $.
 
 
-Next, we compute \( x^4 y^3 z^2 \):
+Next, we compute $ x^4 y^3 z^2 $:
 
 
 $$
@@ -1010,7 +1010,7 @@ $$
 ---
 
 
-Thus, \( m = 25 \) and \( n = 8 \), giving \( m + n = 33 \).
+Thus, $ m = 25 $ and $ n = 8 $, giving $ m + n = 33 $.
 
 
 33
@@ -1082,7 +1082,7 @@ $$
 $$
 
 
-Let \( A = \log_2(x) \), \( B = \log_2(y) \), \( C = \log_2(z) \). The system becomes:
+Let $ A = \log_2(x) $, $ B = \log_2(y) $, $ C = \log_2(z) $. The system becomes:
 
 
 $$
@@ -1109,7 +1109,7 @@ x = 2 ^ {6 1 / 4 8}, \quad y = 2 ^ {1 3 / 1 6}, \quad z = 2 ^ {- 1 / 6}
 $$
 
 
-We need to find \( \left| \log_2(x^4 y^3 z^2) \right| \):
+We need to find $ \left| \log_2(x^4 y^3 z^2) \right| $:
 
 
 $$
@@ -1133,7 +1133,7 @@ $$
 $$
 
 
-The fraction \(\frac{115}{16}\) is in simplest form, so \(m = 115\) and \(n = 16\). Therefore, \(m + n = 115 + 16 = 131\).
+The fraction $\frac{115}{16}$ is in simplest form, so $m = 115$ and $n = 16$. Therefore, $m + n = 115 + 16 = 131$.
 
 
 131
@@ -1142,10 +1142,10 @@ The fraction \(\frac{115}{16}\) is in simplest form, so \(m = 115\) and \(n = 16
 # Prompt:
 
 
-" | User | Real numbers \( x \) and \( y \) with \( x, y > 1 \) satisfy \( \log_x(y^x) = \log_y(x^{4y}) = 10 \). What is the value of \( xy \)?
+" | User | Real numbers $ x $ and $ y $ with $ x, y > 1 $ satisfy $ \log_x(y^x) = \log_y(x^{4y}) = 10 $. What is the value of $ xy $?
 
 
-Please reason step by step, and put your final answer within \(\square\). | Assistant |
+Please reason step by step, and put your final answer within $\square$. | Assistant |
 
 
 # Our Result:
@@ -1160,10 +1160,10 @@ Given the equations:
 ---
 
 
-1. \(\log_{x}(y^{x}) = 10\)
+1. $\log_{x}(y^{x}) = 10$
 
 
-2. \(\log_{y}(x^{4y}) = 10\)
+2. $\log_{y}(x^{4y}) = 10$
 
 
 We start by applying the logarithm power rule to both equations.
@@ -1177,7 +1177,7 @@ $$
 $$
 
 
-Let \( z = \log_y(x) \). Then, \( \log_x(y) = \frac{1}{z} \). Substituting this into the equation, we get:
+Let $ z = \log_y(x) $. Then, $ \log_x(y) = \frac{1}{z} $. Substituting this into the equation, we get:
 
 
 $$
@@ -1201,7 +1201,7 @@ y \cdot 4 \log_ {y} (x) = 1 0 \Longrightarrow 4 y \log_ {y} (x) = 1 0
 $$
 
 
-Since \(\log_y(x) = z\), this simplifies to:
+Since $\log_y(x) = z$, this simplifies to:
 
 
 $$
@@ -1212,13 +1212,13 @@ $$
 We now have two expressions:
 
 
-1. \(x = 10z\)
+1. $x = 10z$
 
 
-2. \(y = \frac{5 / 2}{z}\)
+2. $y = \frac{5 / 2}{z}$
 
 
-Substituting \( x = 10z \) and \( y = \frac{5/2}{z} \) into the product \( xy \), we get:
+Substituting $ x = 10z $ and $ y = \frac{5/2}{z} $ into the product $ xy $, we get:
 
 
 $$
@@ -1226,7 +1226,7 @@ x y = (1 0 z) \cdot \left(\frac {5 / 2}{z}\right) = 1 0 z \cdot \frac {5}{2 z} =
 $$
 
 
-Thus, the value of \( xy \) is 25.
+Thus, the value of $ xy $ is 25.
 
 
 # Baseline Result:
@@ -1235,7 +1235,7 @@ Thus, the value of \( xy \) is 25.
 <think>...</think> (16223 tokens)
 
 
-Given the problem where real numbers \( x \) and \( y \) with \( x, y > 1 \) satisfy the equations \( \log_x(y^x) = 10 \) and \( \log_y(x^4 y) = 10 \), we need to find the value of \( xy \).
+Given the problem where real numbers $ x $ and $ y $ with $ x, y > 1 $ satisfy the equations $ \log_x(y^x) = 10 $ and $ \log_y(x^4 y) = 10 $, we need to find the value of $ xy $.
 
 
 First, we convert the logarithmic equations to their exponential forms using the change of base formula.
@@ -1244,7 +1244,7 @@ First, we convert the logarithmic equations to their exponential forms using the
 ---
 
 
-1. \(\log_{x}(y^{x}) = 10\)
+1. $\log_{x}(y^{x}) = 10$
 
 
 $$
@@ -1252,7 +1252,7 @@ x \log_ {x} (y) = 1 0
 $$
 
 
-Using the change of base formula, \(\log_x(y) = \frac{\ln y}{\ln x}\). Since \(\log_yx = \frac{9}{4}\), we have \(\log_xy = \frac{4}{9}\). Thus,
+Using the change of base formula, $\log_x(y) = \frac{\ln y}{\ln x}$. Since $\log_yx = \frac{9}{4}$, we have $\log_xy = \frac{4}{9}$. Thus,
 
 
 $$
@@ -1260,7 +1260,7 @@ x \cdot \frac {4}{9} = 1 0 \Longrightarrow x = \frac {1 0 \cdot 9}{4} = \frac {9
 $$
 
 
-2. \(\log_{y}(x^{4}y) = 10\)
+2. $\log_{y}(x^{4}y) = 10$
 
 
 $$
@@ -1268,10 +1268,10 @@ $$
 $$
 
 
-Again, using the change of base formula, \(\log_x y = \frac{4}{9}\).
+Again, using the change of base formula, $\log_x y = \frac{4}{9}$.
 
 
-Next, we express \( x \) and \( y \) in terms of each other:
+Next, we express $ x $ and $ y $ in terms of each other:
 
 
 $$
@@ -1279,7 +1279,7 @@ x = \frac {4 5}{2} \quad \mathrm {a n d} \quad y = \left(\frac {4 5}{2}\right) ^
 $$
 
 
-We then compute the product \( xy \):
+We then compute the product $ xy $:
 
 
 $$
@@ -1287,7 +1287,7 @@ x y = \left(\frac {4 5}{2}\right) \cdot \left(\frac {4 5}{2}\right) ^ {4 / 9} = 
 $$
 
 
-However, upon re-evaluating and using another approach by setting \( x = 2^a \) and \( y = 2^b \), we find:
+However, upon re-evaluating and using another approach by setting $ x = 2^a $ and $ y = 2^b $, we find:
 
 
 $$
@@ -1300,7 +1300,7 @@ $$
 $$
 
 
-Finally, we find that the product \( xy \) simplifies to:
+Finally, we find that the product $ xy $ simplifies to:
 
 
 $$
@@ -1323,13 +1323,13 @@ _Figure 4 | Pretraining loss comparison between Full Attention and our NSA on 27
 _Table 1 | Pretraining performance comparison between the full attention baseline and NSA on general benchmarks, across knowledge (MMLU, MMLU-PRO, CMMLU), reasoning (BBH, GSM8K, MATH, DROP), and coding (MBPP, HumanEval) tasks. NSA achieves superior average performance on most benchmarks despite high sparsity._
 
 
-The proposed architecture achieves an effective trade-off between computation cost and model performance. For NSA, we set compression block size \( l = 32 \), sliding stride \( d = 16 \), selected block size \( l' = 64 \), selected block count \( n = 16 \) (including fixed activating the 1 initial block and 2 local blocks), and sliding window size \( w = 512 \). Both Full Attention and sparse attention models are pretrained on 270B tokens of 8k-length texts, followed by continued training and supervised fine-tuning on 32k-length texts with YaRN (Peng et al., 2024) to achieve long-context adaptation. Both models are trained to full convergence to ensure fair comparison. As shown in Figure 4, the pretraining loss curve of our NSA and Full Attention baseline demonstrates stable and smooth decline, with NSA consistently outperforming the Full Attention model.
+The proposed architecture achieves an effective trade-off between computation cost and model performance. For NSA, we set compression block size $ l = 32 $, sliding stride $ d = 16 $, selected block size $ l' = 64 $, selected block count $ n = 16 $ (including fixed activating the 1 initial block and 2 local blocks), and sliding window size $ w = 512 $. Both Full Attention and sparse attention models are pretrained on 270B tokens of 8k-length texts, followed by continued training and supervised fine-tuning on 32k-length texts with YaRN (Peng et al., 2024) to achieve long-context adaptation. Both models are trained to full convergence to ensure fair comparison. As shown in Figure 4, the pretraining loss curve of our NSA and Full Attention baseline demonstrates stable and smooth decline, with NSA consistently outperforming the Full Attention model.
 
 
 # 4.2. Baselines Methods
 
 
-In addition to comparing with Full Attention, we evaluate several state-of-the-art inference-stage sparse attention methods: H2O (Zhang et al., 2023b), infLLM (Xiao et al., 2024a), Quest (Tang et al., 2024), and Exact-Top, which first computes full attention score and select the top-\(n\) scores keys corresponding to each query and then calculates attention on these positions. These
+In addition to comparing with Full Attention, we evaluate several state-of-the-art inference-stage sparse attention methods: H2O (Zhang et al., 2023b), infLLM (Xiao et al., 2024a), Quest (Tang et al., 2024), and Exact-Top, which first computes full attention score and select the top-$n$ scores keys corresponding to each query and then calculates attention on these positions. These
 
 
 ---
@@ -1341,7 +1341,7 @@ In addition to comparing with Full Attention, we evaluate several state-of-the-a
 _Table 2 | Performance comparison between our NSA and baselines on LongBench, including subsets in single document QA, multi-document QA, synthetic and code task categories. NSA outperformed most of the baselines including Full Attention._
 
 
-methods span diverse sparse attention paradigms, including KV-cache eviction, query-aware selection, and exact top-\(n\) sparse selection.
+methods span diverse sparse attention paradigms, including KV-cache eviction, query-aware selection, and exact top-$n$ sparse selection.
 
 
 For general evaluation, where most samples have lengths within the local context window of sparse attention baselines, these methods are effectively equivalent to Full Attention. Therefore, we present only the comparison results between NSA and Full Attention baseline in this setting. In the long-context evaluation, we conduct comparisons across all baseline methods, with the sparsity of all sparse attention methods set to the same to ensure a fair comparison. For chain-of-thought reasoning evaluation, which requires long-text supervised fine-tuning, we limit our comparison to Full Attention, as sparse attention baselines do not support training.
@@ -1371,10 +1371,10 @@ _Figure 5 | Needle-in-a-Haystack retrieval accuracy across context positions wit
 methods and Full Attention baseline. To ensure consistent sparsity, we set the token activated by each query in all sparse attention baselines to 2560 tokens, which corresponds to the average number of tokens activated in NSA when handling 32k sequence lengths. Following Stream-LLM (Xiao et al., 2023), this token budget includes the leading 128 tokens and 512 local tokens. We exclude certain subsets from LongBench due to their low scores across all models, which may not provide meaningful comparisons. As shown in Table 2, NSA achieves the highest average score 0.469, outperforming all baselines (+0.032 over Full Attention and +0.046 over Exact-Top). This improvement arises from two key innovations: (1) our native sparse attention design, which enables end-to-end optimization of sparse patterns during pretraining, facilitates synchronized adaptation between the sparse attention module and other model components; and (2) the hierarchical sparse attention mechanism achieves a balance between local and global information processing.
 
 
-Notably, NSA demonstrates exceptional performance on tasks requiring complex reasoning over long contexts, achieving \(+0.087\) and \(+0.051\) improvements over Full Attention on multi-hop QA tasks (HPQ and 2Wiki), exceeding the performance of baselines on code understanding (LCC: \(+0.069\)), and outperforming other methods on passage retrieval (PassR-en: \(+0.075\)). These results validate NSA's capability to handle diverse long-context challenges, with its natively pretrained sparse attention providing additional benefits in learning task-optimal patterns.
+Notably, NSA demonstrates exceptional performance on tasks requiring complex reasoning over long contexts, achieving $+0.087$ and $+0.051$ improvements over Full Attention on multi-hop QA tasks (HPQ and 2Wiki), exceeding the performance of baselines on code understanding (LCC: $+0.069$), and outperforming other methods on passage retrieval (PassR-en: $+0.075$). These results validate NSA's capability to handle diverse long-context challenges, with its natively pretrained sparse attention providing additional benefits in learning task-optimal patterns.
 
 
-Chain-of-Thought Reasoning Evaluation. To evaluate NSA's compatibility with advanced downstream training paradigms, we investigate its capacity to acquire chain-of-thought mathematical reasoning abilities via post-training. Given the limited effectiveness of reinforcement learning on smaller-scale models, we employ knowledge distillation from DeepSeek-R1, conducting supervised fine-tuning (SFT) with 10B tokens of \(32k\)-length mathematical reasoning traces. This produces two comparable models: Full Attention-R (Full Attention baseline) and NSA-R (our sparse variant). We assess both models on the challenging American Invitational Mathematics Examination (AIME 24) benchmark. We use a sampling temperature of 0.7 and a top-\(p\) value of 0.95 to generate 16 responses for each question and obtain the average score. To validate the impact of reasoning depth, we conduct experiments with two generation context limits: 8k and 16k tokens, measuring whether extended reasoning chains improve accuracy. Example comparisons of model predictions are provided in Appendix A.
+Chain-of-Thought Reasoning Evaluation. To evaluate NSA's compatibility with advanced downstream training paradigms, we investigate its capacity to acquire chain-of-thought mathematical reasoning abilities via post-training. Given the limited effectiveness of reinforcement learning on smaller-scale models, we employ knowledge distillation from DeepSeek-R1, conducting supervised fine-tuning (SFT) with 10B tokens of $32k$-length mathematical reasoning traces. This produces two comparable models: Full Attention-R (Full Attention baseline) and NSA-R (our sparse variant). We assess both models on the challenging American Invitational Mathematics Examination (AIME 24) benchmark. We use a sampling temperature of 0.7 and a top-$p$ value of 0.95 to generate 16 responses for each question and obtain the average score. To validate the impact of reasoning depth, we conduct experiments with two generation context limits: 8k and 16k tokens, measuring whether extended reasoning chains improve accuracy. Example comparisons of model predictions are provided in Appendix A.
 
 
 ---
@@ -1407,13 +1407,13 @@ As shown in Table 3, NSA-R achieves significantly higher accuracy than Full Atte
 # 5. Efficiency Analysis
 
 
-We evaluate the computational efficiency of NSA against Full Attention on an 8-GPU A100 system. In efficiency analysis, we also configure the model with GQA group \( g = 4 \), heads per group \( h = 16 \), query/key dimension \( d_k = 192 \), and value dimension \( d_\nu = 128 \). Following the same settings in Section 4, we set NSA compression block size \( l = 32 \), sliding stride \( d = 16 \), selected block size \( l' = 64 \), selected block count \( n = 16 \), and sliding window size \( w = 512 \).
+We evaluate the computational efficiency of NSA against Full Attention on an 8-GPU A100 system. In efficiency analysis, we also configure the model with GQA group $ g = 4 $, heads per group $ h = 16 $, query/key dimension $ d_k = 192 $, and value dimension $ d_\nu = 128 $. Following the same settings in Section 4, we set NSA compression block size $ l = 32 $, sliding stride $ d = 16 $, selected block size $ l' = 64 $, selected block count $ n = 16 $, and sliding window size $ w = 512 $.
 
 
 # 5.1. Training Speed
 
 
-We compare the Triton-based implementations of our NSA attention and Full Attention with Triton-based FlashAttention-2 to ensure fair speed comparison across the same backend. As shown in Figure 6, our NSA achieves progressively greater speedups as context length increases, up to \(9.0 \times\) forward and \(6.0 \times\) backward speedup at 64k context-length. Notably, the speed advantage becomes more pronounced with longer sequences. This speedup stems from our
+We compare the Triton-based implementations of our NSA attention and Full Attention with Triton-based FlashAttention-2 to ensure fair speed comparison across the same backend. As shown in Figure 6, our NSA achieves progressively greater speedups as context length increases, up to $9.0 \times$ forward and $6.0 \times$ backward speedup at 64k context-length. Notably, the speed advantage becomes more pronounced with longer sequences. This speedup stems from our
 
 
 ---
@@ -1431,7 +1431,7 @@ hardware-aligned algorithm design to maximize the efficiency of sparse attention
 # 5.2. Decoding Speed
 
 
-The decoding speed of Attention is primarily determined by the memory access bottleneck, which is closely tied to the amount of KV cache loading. In each decoding step, Our NSA just needs to load at most \(\left\lfloor \frac{s - l}{d} \right\rfloor\) compression tokens, \(nl'\) selected tokens, and \(w\) neighbor tokens, where \(s\) is the cached sequence length. As shown in Table 4, our method exhibits a significant reduction in latency as the decoding length increases, achieving up to \(11.6 \times\) speedup at 64k context-length. This advantage in memory access efficiency also amplifies with longer sequences.
+The decoding speed of Attention is primarily determined by the memory access bottleneck, which is closely tied to the amount of KV cache loading. In each decoding step, Our NSA just needs to load at most $\left\lfloor \frac{s - l}{d} \right\rfloor$ compression tokens, $nl'$ selected tokens, and $w$ neighbor tokens, where $s$ is the cached sequence length. As shown in Table 4, our method exhibits a significant reduction in latency as the decoding length increases, achieving up to $11.6 \times$ speedup at 64k context-length. This advantage in memory access efficiency also amplifies with longer sequences.
 
 
 # 6. Discussion
@@ -1464,7 +1464,7 @@ _Figure 7 | Compare training loss on a 3B-parameter model with Full Attention an
 _Figure 8 | Visualization of Attention Map on a Full Attention transformer. Light-colored regions indicate higher attention values. As shown in the figure, attention scores exhibit blockwise clustering distribution._
 
 
-Other Blockwise Selection Strategies. We also considered blockwise key, value selection strategies different from NSA, such as Quest (Tang et al., 2024) and InfLLM (Xiao et al., 2024a). These methods rely on computing an importance score for each KV block and selecting the top-\(n\) blocks based on their similarity with \(q_{t}\). However, existing methods face two critical issues: (1) Since the selection operation is non-differentiable, importance score computation based on neural networks relies on auxiliary loss, which increases operator overhead and often degrades model performance; (2) Heuristic parameter-free importance score computation strategy suffers from low recall rates, leading to suboptimal performance. We evaluate both approaches on a 3B-parameter model with similar architecture and compare their loss curve with NSA and Full Attention. For the auxiliary loss-based selection method, we introduce additional queries for each token and representative keys for each block to estimate the block importance scores. We compute block-level supervision signals by mean-pooling attention scores within each key block, and use KL divergence to supervise block importance prediction. We maintain individual query granularity instead of block-averaged queries to accommodate efficient decoding. This auxiliary loss-based importance estimation shares conceptual similarity with SeerAttention (Gao et al., 2024). For the heuristic parameter-free selection method, following the strategy of Quest, we implement direct selection using the product between queries and coordinate-wise min-max of the key chunks, without introducing additional parameters. We also explore a cold-start training approach where Full Attention is applied for the initial 1000 steps before transitioning to the heuristic blockwise selection. As shown in Figure 7, both methods exhibited inferior loss.
+Other Blockwise Selection Strategies. We also considered blockwise key, value selection strategies different from NSA, such as Quest (Tang et al., 2024) and InfLLM (Xiao et al., 2024a). These methods rely on computing an importance score for each KV block and selecting the top-$n$ blocks based on their similarity with $q_{t}$. However, existing methods face two critical issues: (1) Since the selection operation is non-differentiable, importance score computation based on neural networks relies on auxiliary loss, which increases operator overhead and often degrades model performance; (2) Heuristic parameter-free importance score computation strategy suffers from low recall rates, leading to suboptimal performance. We evaluate both approaches on a 3B-parameter model with similar architecture and compare their loss curve with NSA and Full Attention. For the auxiliary loss-based selection method, we introduce additional queries for each token and representative keys for each block to estimate the block importance scores. We compute block-level supervision signals by mean-pooling attention scores within each key block, and use KL divergence to supervise block importance prediction. We maintain individual query granularity instead of block-averaged queries to accommodate efficient decoding. This auxiliary loss-based importance estimation shares conceptual similarity with SeerAttention (Gao et al., 2024). For the heuristic parameter-free selection method, following the strategy of Quest, we implement direct selection using the product between queries and coordinate-wise min-max of the key chunks, without introducing additional parameters. We also explore a cold-start training approach where Full Attention is applied for the initial 1000 steps before transitioning to the heuristic blockwise selection. As shown in Figure 7, both methods exhibited inferior loss.
 
 
 # 6.2. Visualization
@@ -1671,7 +1671,7 @@ Z. Zhou, C. Li, X. Chen, S. Wang, Y. Chao, Z. Li, H. Wang, R. An, Q. Shi, Z. Tan
 # Prompt:
 
 
-" | User | Let \( x, y \) and \( z \) be positive real numbers that satisfy the following system of equations:
+" | User | Let $ x, y $ and $ z $ be positive real numbers that satisfy the following system of equations:
 
 
 $$
@@ -1689,7 +1689,7 @@ $$
 $$
 
 
-Then the value of \( \left| \log_2(x^4 y^3 z^2) \right| \) is \( \frac{m}{n} \) where \( m \) and \( n \) are relatively prime positive integers. Find \( m + n \). Please reason step by step, and put your final answer within \( \square \). | Assistant |
+Then the value of $ \left| \log_2(x^4 y^3 z^2) \right| $ is $ \frac{m}{n} $ where $ m $ and $ n $ are relatively prime positive integers. Find $ m + n $. Please reason step by step, and put your final answer within $ \square $. | Assistant |
 
 
 # Our Result:
@@ -1701,28 +1701,28 @@ Then the value of \( \left| \log_2(x^4 y^3 z^2) \right| \) is \( \frac{m}{n} \) 
 Given the system of equations:
 
 
-1. \(\log_2\left(\frac{x}{yz}\right) = \frac{1}{2}\) 2. \(\log_2\left(\frac{y}{xz}\right) = \frac{1}{3}\) 3. \(\log_2\left(\frac{z}{xy}\right) = \frac{1}{4}\)
+1. $\log_2\left(\frac{x}{yz}\right) = \frac{1}{2}$ 2. $\log_2\left(\frac{y}{xz}\right) = \frac{1}{3}$ 3. $\log_2\left(\frac{z}{xy}\right) = \frac{1}{4}$
 
 
 We convert these logarithmic equations to their exponential forms:
 
 
-1. \(\frac{x}{yz} = \sqrt{2} 2\). \(\frac{y}{xz} = 2^{1/3} 3\). \(\frac{z}{xy} = 2^{1/4}\)
+1. $\frac{x}{yz} = \sqrt{2} 2$. $\frac{y}{xz} = 2^{1/3} 3$. $\frac{z}{xy} = 2^{1/4}$
 
 
-Expressing each variable in terms of \( x, y \), and \( z \):
+Expressing each variable in terms of $ x, y $, and $ z $:
 
 
-1. \(x = \sqrt{2} \cdot y \cdot z\). 2. \(y = 2^{1/3} \cdot x \cdot z\). 3. \(z = 2^{1/4} \cdot xy\)
+1. $x = \sqrt{2} \cdot y \cdot z$. 2. $y = 2^{1/3} \cdot x \cdot z$. 3. $z = 2^{1/4} \cdot xy$
 
 
 Substituting these expressions into each other, we find:
 
 
-- From \( x = \sqrt{2} \cdot yz \) and \( y = 2^{1/3} \cdot xz \), we get \( x = \sqrt{2} \cdot (2^{1/3} \cdot xz) \cdot z \), leading to \( z = 2^{-5/12} \). - Substituting \( z \) into the equation for \( y \), we get \( y = 2^{-3/8} \). - Substituting \( z \) and \( y \) into the equation for \( x \), we get \( x = 2^{-7/24} \).
+- From $ x = \sqrt{2} \cdot yz $ and $ y = 2^{1/3} \cdot xz $, we get $ x = \sqrt{2} \cdot (2^{1/3} \cdot xz) \cdot z $, leading to $ z = 2^{-5/12} $. - Substituting $ z $ into the equation for $ y $, we get $ y = 2^{-3/8} $. - Substituting $ z $ and $ y $ into the equation for $ x $, we get $ x = 2^{-7/24} $.
 
 
-Next, we compute \( x^{4}y^{3}z^{2} \):
+Next, we compute $ x^{4}y^{3}z^{2} $:
 
 
 $$
@@ -1757,7 +1757,7 @@ $$
 ---
 
 
-Thus, \( m = 25 \) and \( n = 8 \), giving \( m + n = 33 \).
+Thus, $ m = 25 $ and $ n = 8 $, giving $ m + n = 33 $.
 
 
 33
@@ -1829,7 +1829,7 @@ $$
 $$
 
 
-Let \( A = \log_2(x) \), \( B = \log_2(y) \), \( C = \log_2(z) \). The system becomes:
+Let $ A = \log_2(x) $, $ B = \log_2(y) $, $ C = \log_2(z) $. The system becomes:
 
 
 $$
@@ -1856,7 +1856,7 @@ x = 2 ^ {6 1 / 4 8}, \quad y = 2 ^ {1 3 / 1 6}, \quad z = 2 ^ {- 1 / 6}
 $$
 
 
-We need to find \( \left| \log_2(x^4 y^3 z^2) \right| \):
+We need to find $ \left| \log_2(x^4 y^3 z^2) \right| $:
 
 
 $$
@@ -1880,7 +1880,7 @@ $$
 $$
 
 
-The fraction \(\frac{115}{16}\) is in simplest form, so \(m = 115\) and \(n = 16\). Therefore, \(m + n = 115 + 16 = 131\).
+The fraction $\frac{115}{16}$ is in simplest form, so $m = 115$ and $n = 16$. Therefore, $m + n = 115 + 16 = 131$.
 
 
 131
@@ -1889,10 +1889,10 @@ The fraction \(\frac{115}{16}\) is in simplest form, so \(m = 115\) and \(n = 16
 # Prompt:
 
 
-" | User | Real numbers \( x \) and \( y \) with \( x, y > 1 \) satisfy \( \log_x(y^x) = \log_y(x^{4y}) = 10 \). What is the value of \( xy \)?
+" | User | Real numbers $ x $ and $ y $ with $ x, y > 1 $ satisfy $ \log_x(y^x) = \log_y(x^{4y}) = 10 $. What is the value of $ xy $?
 
 
-Please reason step by step, and put your final answer within \(\square\). | Assistant |
+Please reason step by step, and put your final answer within $\square$. | Assistant |
 
 
 # Our Result:
@@ -1907,10 +1907,10 @@ Given the equations:
 ---
 
 
-1. \(\log_{x}(y^{x}) = 10\)
+1. $\log_{x}(y^{x}) = 10$
 
 
-2. \(\log_{y}(x^{4y}) = 10\)
+2. $\log_{y}(x^{4y}) = 10$
 
 
 We start by applying the logarithm power rule to both equations.
@@ -1924,7 +1924,7 @@ $$
 $$
 
 
-Let \( z = \log_y(x) \). Then, \( \log_x(y) = \frac{1}{z} \). Substituting this into the equation, we get:
+Let $ z = \log_y(x) $. Then, $ \log_x(y) = \frac{1}{z} $. Substituting this into the equation, we get:
 
 
 $$
@@ -1948,7 +1948,7 @@ y \cdot 4 \log_ {y} (x) = 1 0 \Longrightarrow 4 y \log_ {y} (x) = 1 0
 $$
 
 
-Since \(\log_y(x) = z\), this simplifies to:
+Since $\log_y(x) = z$, this simplifies to:
 
 
 $$
@@ -1959,13 +1959,13 @@ $$
 We now have two expressions:
 
 
-1. \(x = 10z\)
+1. $x = 10z$
 
 
-2. \(y = \frac{5 / 2}{z}\)
+2. $y = \frac{5 / 2}{z}$
 
 
-Substituting \( x = 10z \) and \( y = \frac{5/2}{z} \) into the product \( xy \), we get:
+Substituting $ x = 10z $ and $ y = \frac{5/2}{z} $ into the product $ xy $, we get:
 
 
 $$
@@ -1973,7 +1973,7 @@ x y = (1 0 z) \cdot \left(\frac {5 / 2}{z}\right) = 1 0 z \cdot \frac {5}{2 z} =
 $$
 
 
-Thus, the value of \( xy \) is 25.
+Thus, the value of $ xy $ is 25.
 
 
 # Baseline Result:
@@ -1982,7 +1982,7 @@ Thus, the value of \( xy \) is 25.
 <think>...</think> (16223 tokens)
 
 
-Given the problem where real numbers \( x \) and \( y \) with \( x, y > 1 \) satisfy the equations \( \log_x(y^x) = 10 \) and \( \log_y(x^4 y) = 10 \), we need to find the value of \( xy \).
+Given the problem where real numbers $ x $ and $ y $ with $ x, y > 1 $ satisfy the equations $ \log_x(y^x) = 10 $ and $ \log_y(x^4 y) = 10 $, we need to find the value of $ xy $.
 
 
 First, we convert the logarithmic equations to their exponential forms using the change of base formula.
@@ -1991,7 +1991,7 @@ First, we convert the logarithmic equations to their exponential forms using the
 ---
 
 
-1. \(\log_{x}(y^{x}) = 10\)
+1. $\log_{x}(y^{x}) = 10$
 
 
 $$
@@ -1999,7 +1999,7 @@ x \log_ {x} (y) = 1 0
 $$
 
 
-Using the change of base formula, \(\log_x(y) = \frac{\ln y}{\ln x}\). Since \(\log_yx = \frac{9}{4}\), we have \(\log_xy = \frac{4}{9}\). Thus,
+Using the change of base formula, $\log_x(y) = \frac{\ln y}{\ln x}$. Since $\log_yx = \frac{9}{4}$, we have $\log_xy = \frac{4}{9}$. Thus,
 
 
 $$
@@ -2007,7 +2007,7 @@ x \cdot \frac {4}{9} = 1 0 \Longrightarrow x = \frac {1 0 \cdot 9}{4} = \frac {9
 $$
 
 
-2. \(\log_{y}(x^{4}y) = 10\)
+2. $\log_{y}(x^{4}y) = 10$
 
 
 $$
@@ -2015,10 +2015,10 @@ $$
 $$
 
 
-Again, using the change of base formula, \(\log_x y = \frac{4}{9}\).
+Again, using the change of base formula, $\log_x y = \frac{4}{9}$.
 
 
-Next, we express \( x \) and \( y \) in terms of each other:
+Next, we express $ x $ and $ y $ in terms of each other:
 
 
 $$
@@ -2026,7 +2026,7 @@ x = \frac {4 5}{2} \quad \mathrm {a n d} \quad y = \left(\frac {4 5}{2}\right) ^
 $$
 
 
-We then compute the product \( xy \):
+We then compute the product $ xy $:
 
 
 $$
@@ -2034,7 +2034,7 @@ x y = \left(\frac {4 5}{2}\right) \cdot \left(\frac {4 5}{2}\right) ^ {4 / 9} = 
 $$
 
 
-However, upon re-evaluating and using another approach by setting \( x = 2^a \) and \( y = 2^b \), we find:
+However, upon re-evaluating and using another approach by setting $ x = 2^a $ and $ y = 2^b $, we find:
 
 
 $$
@@ -2047,7 +2047,7 @@ $$
 $$
 
 
-Finally, we find that the product \( xy \) simplifies to:
+Finally, we find that the product $ xy $ simplifies to:
 
 
 $$

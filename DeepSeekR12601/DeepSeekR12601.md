@@ -49,7 +49,7 @@ GRPO (Shao et al., 2024) is the reinforcement learning algorithm that we adopt t
 ---
 
 
-For each question \( q \), GRPO samples a group of outputs \( \{o_1, o_2, \dots, o_G\} \) from the old policy \( \pi_{\theta_{old}} \) and then optimizes the policy model \( \pi_{\theta} \) by maximizing the following objective:
+For each question $ q $, GRPO samples a group of outputs $ \{o_1, o_2, \dots, o_G\} $ from the old policy $ \pi_{\theta_{old}} $ and then optimizes the policy model $ \pi_{\theta} $ by maximizing the following objective:
 
 
 $$
@@ -57,7 +57,7 @@ $$
 $$
 
 
-where \(\pi_{ref}\) is a reference policy, \(\varepsilon\) and \(\beta\) are hyper-parameters, and \(A_{i}\) is the advantage, computed using a group of rewards \(\{r_1,r_2,\ldots ,r_G\}\) corresponding to the outputs within each group:
+where $\pi_{ref}$ is a reference policy, $\varepsilon$ and $\beta$ are hyper-parameters, and $A_{i}$ is the advantage, computed using a group of rewards $\{r_1,r_2,\ldots ,r_G\}$ corresponding to the outputs within each group:
 
 
 $$
@@ -145,7 +145,7 @@ The accuracy, reward and format reward are combined with the same weight. Notabl
 Specifically, we apply the RL technique on the DeepSeek-V3 base to train DeepSeek-R1-Zero. During training, we design a straightforward template, to require DeepSeek-R1-Zero to first produce a reasoning process, followed by the final answer. We intentionally limit our constraints to this structural format, avoiding any content-specific biases to ensure that we can accurately observe the model's natural progression during the RL process.
 
 
-Figure 1(a) depicts the performance trajectory of DeepSeek-R1-Zero on the AIME 2024 benchmark throughout the RL training process, where the average pass@1 score on AIME 2024 shows a significant increase, jumping from an initial \(15.6\%\) to \(77.9\%\). In addition, by leveraging the self-consistency decoding (Wang et al., 2023c), the model's performance can be
+Figure 1(a) depicts the performance trajectory of DeepSeek-R1-Zero on the AIME 2024 benchmark throughout the RL training process, where the average pass@1 score on AIME 2024 shows a significant increase, jumping from an initial $15.6\%$ to $77.9\%$. In addition, by leveraging the self-consistency decoding (Wang et al., 2023c), the model's performance can be
 
 
 ---
@@ -161,7 +161,7 @@ _Table 2 | An interesting “aha moment” of an intermediate version of DeepSee
 a - √a + x = x2 ⇒ √a + x = a - x2</td></tr><tr><td>Next, I could square both sides again, treating the equation: …</td></tr><tr><td>…</td></tr></table>
 
 
-further improved, achieving an accuracy of \(86.7\%\). This performance significantly surpasses the average performance across all human competitors. Besides the math competitions, as shown in Figure 10, DeepSeek-R1-Zero also achieves remarkable performance in coding competitions and graduate-level biology, physics, and chemistry problems. These results underscore the effectiveness of RL in enhancing the reasoning capabilities of large language models.
+further improved, achieving an accuracy of $86.7\%$. This performance significantly surpasses the average performance across all human competitors. Besides the math competitions, as shown in Figure 10, DeepSeek-R1-Zero also achieves remarkable performance in coding competitions and graduate-level biology, physics, and chemistry problems. These results underscore the effectiveness of RL in enhancing the reasoning capabilities of large language models.
 
 
 The self-evolution of DeepSeek-R1-Zero exemplifies how RL can autonomously enhance a model's reasoning capabilities.
@@ -259,7 +259,7 @@ For general data, we resort to reward models to capture human preferences in com
 during the generation process.
 
 
-Helpful Reward Model Regarding helpful reward model training, we first generate preference pairs by prompting DeepSeek-V3 using the arena-hard prompt format, listed in Supplementary B.2, where each pair consists of a user query along with two candidate responses. For each preference pair, we query DeepSeek-V3 four times, randomly assigning the responses as either Response A or Response B to mitigate positional bias. The final preference score is determined by averaging the four independent judgments, retaining only those pairs where the score difference \((\Delta)\) exceeds 1 to ensure meaningful distinctions. Additionally, to minimize length-related biases, we ensure that the chosen and rejected responses of the whole dataset have comparable lengths. In total, we curated 66,000 data pairs for training the reward model. The prompts used in this dataset are all non-reasoning questions and are sourced either from publicly available open-source datasets or from users who have explicitly consented to share their data for the purpose of model improvement. The architecture of our reward model is consistent with that of DeepSeek-R1, with the addition of a reward head designed to predict scalar preference scores.
+Helpful Reward Model Regarding helpful reward model training, we first generate preference pairs by prompting DeepSeek-V3 using the arena-hard prompt format, listed in Supplementary B.2, where each pair consists of a user query along with two candidate responses. For each preference pair, we query DeepSeek-V3 four times, randomly assigning the responses as either Response A or Response B to mitigate positional bias. The final preference score is determined by averaging the four independent judgments, retaining only those pairs where the score difference $(\Delta)$ exceeds 1 to ensure meaningful distinctions. Additionally, to minimize length-related biases, we ensure that the chosen and rejected responses of the whole dataset have comparable lengths. In total, we curated 66,000 data pairs for training the reward model. The prompts used in this dataset are all non-reasoning questions and are sourced either from publicly available open-source datasets or from users who have explicitly consented to share their data for the purpose of model improvement. The architecture of our reward model is consistent with that of DeepSeek-R1, with the addition of a reward head designed to predict scalar preference scores.
 
 
 $$
@@ -278,7 +278,7 @@ R e w a r d _ {s a f e t y} = R M _ {s a f e t y} (R e s p o n s e) \tag {6}
 $$
 
 
-For general queries, each instance is categorized as belonging to either the safety dataset or the helpfulness dataset. The general reward, \( Reward_{General} \), assigned to each query corresponds to the respective reward defined within the associated dataset.
+For general queries, each instance is categorized as belonging to either the safety dataset or the helpfulness dataset. The general reward, $ Reward_{General} $, assigned to each query corresponds to the respective reward defined within the associated dataset.
 
 
 # 3.2. Training Details
@@ -287,7 +287,7 @@ For general queries, each instance is categorized as belonging to either the saf
 # 3.2.1. Training Details of the First RL Stage
 
 
-In the first stage of RL, we set the learning rate to 3e-6, the KL coefficient to 0.001, the GRPO clip ratio \(\varepsilon\) to 10, and the sampling temperature to 1 for rollout. For each question, we sample 16 outputs with a maximum length of 32,768. Each training step consists of 32 unique questions, resulting in a training batch size of 512 per step. Every 400 steps, we replace the reference model with the latest policy model. To accelerate training, each rollout generates 8,192 outputs, which are randomly split into 16 minibatches and trained for only a single inner epoch. However, to mitigate the issue of language mixing, we introduce a language consistency reward during RL training, which is calculated as the proportion of target language words in the CoT.
+In the first stage of RL, we set the learning rate to 3e-6, the KL coefficient to 0.001, the GRPO clip ratio $\varepsilon$ to 10, and the sampling temperature to 1 for rollout. For each question, we sample 16 outputs with a maximum length of 32,768. Each training step consists of 32 unique questions, resulting in a training batch size of 512 per step. Every 400 steps, we replace the reference model with the latest policy model. To accelerate training, each rollout generates 8,192 outputs, which are randomly split into 16 minibatches and trained for only a single inner epoch. However, to mitigate the issue of language mixing, we introduce a language consistency reward during RL training, which is calculated as the proportion of target language words in the CoT.
 
 
 $$
@@ -340,7 +340,7 @@ Table 3 summarizes the performance of DeepSeek-R1 across multiple developmental 
 ---
 
 
-_Table 3 | Experimental results at each stage of DeepSeek-R1. Numbers in bold denote the performance is statistically significant (t-test with \( p < 0.01 \))._
+_Table 3 | Experimental results at each stage of DeepSeek-R1. Numbers in bold denote the performance is statistically significant (t-test with $ p < 0.01 $)._
 
 
 <table><tr><td></td><td>Benchmark (Metric)</td><td>R1-Zero</td><td>R1-Dev1</td><td>R1-Dev2</td><td>R1-Dev3</td><td>R1</td></tr><tr><td rowspan="10">English</td><td>MMLU (EM)</td><td>88.8</td><td>89.1</td><td>91.2</td><td>91.0</td><td>90.8</td></tr><tr><td>MMLU-Redux (EM)</td><td>85.6</td><td>90.0</td><td>93.0</td><td>93.1</td><td>92.9</td></tr><tr><td>MMLU-Pro (EM)</td><td>68.9</td><td>74.1</td><td>83.8</td><td>83.1</td><td>84.0</td></tr><tr><td>DROP (3-shot F1)</td><td>89.1</td><td>89.8</td><td>91.1</td><td>88.7</td><td>92.2</td></tr><tr><td>IF-Eval (Prompt Strict)</td><td>46.6</td><td>71.7</td><td>72.0</td><td>78.1</td><td>83.3</td></tr><tr><td>GPQA Diamond (Pass@1)</td><td>75.8</td><td>66.1</td><td>70.7</td><td>71.2</td><td>71.5</td></tr><tr><td>SimpleQA (Correct)</td><td>30.3</td><td>17.8</td><td>28.2</td><td>24.9</td><td>30.1</td></tr><tr><td>FRAMES (Acc.)</td><td>82.3</td><td>78.5</td><td>81.8</td><td>81.9</td><td>82.5</td></tr><tr><td>AlpacaEval2.0 (LC-winrate)</td><td>24.7</td><td>50.1</td><td>55.8</td><td>62.1</td><td>87.6</td></tr><tr><td>ArenaHard (GPT-4-1106)</td><td>53.6</td><td>77.0</td><td>73.2</td><td>75.6</td><td>92.3</td></tr><tr><td rowspan="5">Code</td><td>LiveCodeBench (Pass@1-COT)</td><td>50.0</td><td>57.5</td><td>63.5</td><td>64.6</td><td>65.9</td></tr><tr><td>Codeforces (Percentile)</td><td>80.4</td><td>84.5</td><td>90.5</td><td>92.1</td><td>96.3</td></tr><tr><td>Codeforces (Rating)</td><td>1444</td><td>1534</td><td>1687</td><td>1746</td><td>2029</td></tr><tr><td>SWE Verified (Resolved)</td><td>43.2</td><td>39.6</td><td>44.6</td><td>45.6</td><td>49.2</td></tr><tr><td>Aider-Polyglot (Acc.)</td><td>12.2</td><td>6.7</td><td>25.6</td><td>44.8</td><td>53.3</td></tr><tr><td rowspan="3">Math</td><td>AIME 2024 (Pass@1)</td><td>77.9</td><td>59.0</td><td>74.0</td><td>78.1</td><td>79.8</td></tr><tr><td>MATH-500 (Pass@1)</td><td>95.9</td><td>94.2</td><td>95.9</td><td>95.4</td><td>97.3</td></tr><tr><td>CNMO 2024 (Pass@1)</td><td>88.1</td><td>58.0</td><td>73.9</td><td>77.3</td><td>78.8</td></tr><tr><td rowspan="3">Chinese</td><td>CLUEWSC (EM)</td><td>93.1</td><td>92.8</td><td>92.6</td><td>91.6</td><td>92.8</td></tr><tr><td>C-Eval (EM)</td><td>92.8</td><td>85.7</td><td>91.9</td><td>86.4</td><td>91.8</td></tr><tr><td>C-SimpleQA (Correct)</td><td>66.4</td><td>58.8</td><td>64.2</td><td>66.9</td><td>63.7</td></tr></table>
@@ -349,7 +349,7 @@ _Table 3 | Experimental results at each stage of DeepSeek-R1. Numbers in bold de
 marked performance enhancements on benchmarks that require advanced reasoning skills, including those focused on code generation, mathematical problem solving, and STEM-related tasks. Benchmarks targeting general-purpose tasks, such as AlpacaEval 2.0, show marginal improvement. These results suggest that reasoning-oriented RL considerably enhances reasoning capabilities while exerting limited influence on user preference-oriented benchmarks.
 
 
-DeepSeek-R1 Dev3 integrates both reasoning and non-reasoning datasets into the SFT pipeline, thereby enhancing the model's proficiency in both reasoning and general language generation tasks. Compared to Dev2, DeepSeek-R1 Dev3 achieves notable performance improvements on AlpacaEval 2.0 and Aider-Polyglot, attributable to the inclusion of large-scale non-reasoning corpora and code engineering datasets. Finally, comprehensive RL training on DeepSeek-R1 Dev3 using mixed reasoning-focused and general-purpose data produced the final DeepSeek-R1. Marginal improvements occurred in code and mathematics benchmarks, as substantial reasoning-specific RL was done in prior stages. The primary advancements in the final DeepSeek-R1 were in general instruction-following and user-preference benchmarks, with AlpacaEval 2.0 improving by \(25\%\) and ArenaHard by \(17\%\).
+DeepSeek-R1 Dev3 integrates both reasoning and non-reasoning datasets into the SFT pipeline, thereby enhancing the model's proficiency in both reasoning and general language generation tasks. Compared to Dev2, DeepSeek-R1 Dev3 achieves notable performance improvements on AlpacaEval 2.0 and Aider-Polyglot, attributable to the inclusion of large-scale non-reasoning corpora and code engineering datasets. Finally, comprehensive RL training on DeepSeek-R1 Dev3 using mixed reasoning-focused and general-purpose data produced the final DeepSeek-R1. Marginal improvements occurred in code and mathematics benchmarks, as substantial reasoning-specific RL was done in prior stages. The primary advancements in the final DeepSeek-R1 were in general instruction-following and user-preference benchmarks, with AlpacaEval 2.0 improving by $25\%$ and ArenaHard by $17\%$.
 
 
 In addition, we compare DeepSeek-R1 with other models in Supplementary D.2. Model safety evaluations are provided in Supplementary D.3. A comprehensive analysis is provided in Supplementary E, including a comparison with DeepSeek-V3, performance evaluations on both fresh test sets, a breakdown of mathematical capabilities by category, and an investigation of test-time scaling behavior. Supplementary F shows that the strong reasoning capability can be transferred to smaller models.
@@ -484,7 +484,7 @@ In this study, we demonstrate that the SFT stage may impede a model's ability to
 Group Relative Policy Optimization (GRPO) (Shao et al., 2024) is the reinforcement learning algorithm that we adopt to train DeepSeek-R1-Zero and DeepSeek-R1. It was originally proposed to simplify the training process and reduce the resource consumption of Proximal Policy Optimization (PPO) (Schulman et al., 2017), which is widely used in the RL stage of LLMs (Ouyang et al., 2022). For an overall comparison between GRPO and PPO, see Figure 3.
 
 
-For each question \( q \), GRPO samples a group of outputs \( \{o_1, o_2, \dots, o_G\} \) from the old policy
+For each question $ q $, GRPO samples a group of outputs $ \{o_1, o_2, \dots, o_G\} $ from the old policy
 
 
 ---
@@ -528,7 +528,7 @@ For each question \( q \), GRPO samples a group of outputs \( \{o_1, o_2, \dots,
 _Figure 3 | Demonstration of PPO and our GRPO. GRPO foregoes the value model, instead estimating the advantages from group scores._
 
 
-\(\pi_{\theta_{old}}\) and then optimizes the policy model \(\pi_{\theta}\) by maximizing the following objective:
+$\pi_{\theta_{old}}$ and then optimizes the policy model $\pi_{\theta}$ by maximizing the following objective:
 
 
 $$
@@ -546,7 +546,7 @@ $$
 $$
 
 
-where \(\pi_{ref}\) is a reference policy, \(\varepsilon\) and \(\beta\) are hyper-parameters, and \(A_{i}\) is the advantage, computed using a group of rewards \(\{r_1,r_2,\ldots ,r_G\}\) corresponding to the outputs within each group:
+where $\pi_{ref}$ is a reference policy, $\varepsilon$ and $\beta$ are hyper-parameters, and $A_{i}$ is the advantage, computed using a group of rewards $\{r_1,r_2,\ldots ,r_G\}$ corresponding to the outputs within each group:
 
 
 $$
@@ -585,7 +585,7 @@ _Figure 4 | Performance of PPO and GRPO on the MATH task._
 maximize cumulative rewards, PPO's approach penalizes the cumulative KL divergence, which may implicitly penalize the length of the response and thereby prevent the model's response length from increasing. In addition, as we may train thousands of steps in the scenario of training long chain-of-thought reasoning models, the trained policy can diverge significantly from the initial reference policy. In order to balance the scope that the training policy can explore and the stability of the training, we periodically update the reference policy to the latest policy during the actual training process.
 
 
-Figure 4 compares the performance of PPO and GRPO on the MATH task using DeepSeekCoder-V2-Lite (16B MoE with 2.4B active parameters). Unlike GRPO, PPO requires additional hyperparameter tuning—particularly of the \(\lambda\) coefficient in GAE—and is highly sensitive to this parameter. When \(\lambda\) is set to 0.95 (the default value in most open-source PPO implementations), PPO performs considerably worse than GRPO. However, with careful tuning (setting \(\lambda\) to 1.0), PPO's performance improves substantially, nearing that of GRPO.
+Figure 4 compares the performance of PPO and GRPO on the MATH task using DeepSeekCoder-V2-Lite (16B MoE with 2.4B active parameters). Unlike GRPO, PPO requires additional hyperparameter tuning—particularly of the $\lambda$ coefficient in GAE—and is highly sensitive to this parameter. When $\lambda$ is set to 0.95 (the default value in most open-source PPO implementations), PPO performs considerably worse than GRPO. However, with careful tuning (setting $\lambda$ to 1.0), PPO's performance improves substantially, nearing that of GRPO.
 
 
 While PPO can achieve comparable performance when appropriately tuned, it demands additional computational cost for hyperparameter optimization. Moreover, considering the memory and computational overhead associated with training an additional value model, GRPO presents a more practical alternative, especially when training large-scale models with constrained resources.
@@ -682,22 +682,22 @@ Then consider the creativity and novelty of the assistant's answers when needed.
 After providing your explanation, you must output only one of the following choices as your final verdict with a label:
 
 
-1. Assistant A is significantly better: \(\left[\mathrm{A} \gg \mathrm{B}\right]\)
+1. Assistant A is significantly better: $\left[\mathrm{A} \gg \mathrm{B}\right]$
 
 
-2. Assistant A is slightly better: \(\left[\mathrm{A} > \mathrm{B}\right]\)
+2. Assistant A is slightly better: $\left[\mathrm{A} > \mathrm{B}\right]$
 
 
-3. Tie, relatively the same: \(\left[\mathrm{A} = \mathrm{B}\right]\)
+3. Tie, relatively the same: $\left[\mathrm{A} = \mathrm{B}\right]$
 
 
-4. Assistant B is slightly better: \(\left[\mathrm{B} > \mathrm{A}\right]\)
+4. Assistant B is slightly better: $\left[\mathrm{B} > \mathrm{A}\right]$
 
 
-5. Assistant B is significantly better: \(\left[\mathrm{B} \gg \mathrm{A}\right]\)
+5. Assistant B is significantly better: $\left[\mathrm{B} \gg \mathrm{A}\right]$
 
 
-Example output: My final verdict is tie: \([[\mathrm{A} = \mathrm{B}]]\):
+Example output: My final verdict is tie: $[[\mathrm{A} = \mathrm{B}]]$:
 
 
 ---
@@ -718,7 +718,7 @@ _Table 4 | Description of RL Data and Tasks._
 Reasoning RL data includes four categories: mathematics, coding, STEM, and logic problems. In addition, we also incorporate general RL data to improve the helpfulness and harmlessness of the model in the training of DeepSeek-R1. All questions are in Chinese or English. The description of the RL data can be found in Table 4, where we will describe the details of each data type one by one as follows:
 
 
-- Mathematics dataset consists of \(26k\) quantitative reasoning questions, including math exam questions and competition problems. The average number of prompt tokens is 122. The dataset covers various mathematical domains such as algebra, calculus, probability, and geometry. Problems range in difficulty from regional contests to international Olympiads. For each problem, the model is expected to produce a step-by-step reasoning process culminating in a final answer, which can be a numerical value (e.g., “\(5\))”, a mathematical expression (e.g., “\(x^2 + 3x - 2\)) or an equation (e.g., “\(y = 2x + 1\))). Mathematical proofs are excluded because it is difficult to determine their correctness. For reinforcement learning purposes, we calculate the reward of a reasoning process by matching the predicted answer with the reference answer. If the answer aligns with the reference, the reward is assigned a value of 1; otherwise, it is assigned a value of 0.
+- Mathematics dataset consists of $26k$ quantitative reasoning questions, including math exam questions and competition problems. The average number of prompt tokens is 122. The dataset covers various mathematical domains such as algebra, calculus, probability, and geometry. Problems range in difficulty from regional contests to international Olympiads. For each problem, the model is expected to produce a step-by-step reasoning process culminating in a final answer, which can be a numerical value (e.g., “$5$)”, a mathematical expression (e.g., “$x^2 + 3x - 2$) or an equation (e.g., “$y = 2x + 1$)). Mathematical proofs are excluded because it is difficult to determine their correctness. For reinforcement learning purposes, we calculate the reward of a reasoning process by matching the predicted answer with the reference answer. If the answer aligns with the reference, the reward is assigned a value of 1; otherwise, it is assigned a value of 0.
 
 
 Coding dataset includes 17k algorithm competition questions, along with 8k bug fixing problems. The algorithm competition questions are similar to problems found on platforms like Codeforces or LeetCode. Each problem typically includes a detailed problem description, constraints, and multiple input-output examples. The task is to write a complete function or program that can solve the problem correctly and efficiently, passing a comprehensive set of hidden test cases that assess both correctness and performance. These problems test algorithmic skills, including dynamic programming, graph theory, string manipulation, and data structure usage.
@@ -727,7 +727,7 @@ Coding dataset includes 17k algorithm competition questions, along with 8k bug f
 The bug-fixing problems are extracted from real-world GitHub issues. Each task provides an issue description, a buggy version of the source code, and a set of unit tests that partially or completely fail. The goal is to understand the intent of the issue, locate and fix the defect in the code, and ensure that the corrected version passes all unit tests.
 
 
-- STEM dataset comprises 22k choice questions that cover topics such as physics, chemistry, and biology. Each question in the STEM task presents a subject-specific problem accompanied by four to eight answer options. The model is required to select the most scientifically accurate answer based on the given context and domain knowledge. The average number of prompt tokens is 161. Specifically, the dataset includes \(15.5\%\) physics, \(30.7\%\) biology, \(46.5\%\) chemistry, and \(7.3\%\) other topics such as health and medicine. Since all STEM questions are multiple-choice, a binary reward is assigned based on whether the
+- STEM dataset comprises 22k choice questions that cover topics such as physics, chemistry, and biology. Each question in the STEM task presents a subject-specific problem accompanied by four to eight answer options. The model is required to select the most scientifically accurate answer based on the given context and domain knowledge. The average number of prompt tokens is 161. Specifically, the dataset includes $15.5\%$ physics, $30.7\%$ biology, $46.5\%$ chemistry, and $7.3\%$ other topics such as health and medicine. Since all STEM questions are multiple-choice, a binary reward is assigned based on whether the
 
 
 ---
@@ -811,7 +811,7 @@ A substring is a non-empty contiguous sequence of characters in a string.
 The first line contains a single integer t the number of test cases.   
 The first line of each test case contain one string word.   
 The second line of each test case contain one integer k.   
-It is guaranteed that word consists only of lowercase English letters, and the sum of | word| over all test cases does not exceed \(10^{-5}\)   
+It is guaranteed that word consists only of lowercase English letters, and the sum of | word| over all test cases does not exceed $10^{-5}$   
 **Output**   
 For each test case, print one integer the number of complete substrings of word.   
 **Example**   
@@ -837,7 +837,7 @@ def generate_random_string(l_min, l_max): length = random.randint(l_min, l_max) 
 ```
 return f"\{\{seq\}\} \n{[k]}\"   
 t = 10 # the number of test cases   
-testcase \(=\) [generate_random_string(10000, 10000) for _ in range(t)]   
+testcase $=$ [generate_random_string(10000, 10000) for _ in range(t)]   
 print(t)   
 print("\n".join(testcase))   
 "   
@@ -845,10 +845,10 @@ First construct a random input generator for large data with 10 testcases of dif
 '\'python   
 import random   
 import string   
-def generate_random_string(l_min, l_max): length \(=\) random.randint(l_min, l_max) seq \(=\) ".join(randomChoices(stringascii_lowercase, k=length)) k \(=\) random.randint(1, length) return f"\{\{seq\}\} \n{[k]}\" , len(seq)   
+def generate_random_string(l_min, l_max): length $=$ random.randint(l_min, l_max) seq $=$ ".join(randomChoices(stringascii_lowercase, k=length)) k $=$ random.randint(1, length) return f"\{\{seq\}\} \n{[k]}\" , len(seq)   
 t = 10 # the number of test cases   
-testcase \(=\) [] cum_length \(= 0\)   
-for i in range(t): # each test case should have length \(> = 1\) cur_testcase, cur_length \(=\) generate_random_string(1, 100000 - cum_length - (t - i)) testcase.append(cur_testcase) cum_length \(+ =\) cur_length   
+testcase $=$ [] cum_length $= 0$   
+for i in range(t): # each test case should have length $> = 1$ cur_testcase, cur_length $=$ generate_random_string(1, 100000 - cum_length - (t - i)) testcase.append(cur_testcase) cum_length $+ =$ cur_length   
 print(t)   
 print("\n".join(testcase))   
 "   
@@ -857,7 +857,7 @@ Construct a random input generator for large data with only one test case.
 import random   
 import string   
 def generate_random_string(l_min, l_max): t = 1 # the number of test cases   
-testcase \(=\) [generate_random_string(90000, 100000) for _ in range(t)]   
+testcase $=$ [generate_random_string(90000, 100000) for _ in range(t)]   
 print(t)   
 print("\n".join(testcase))   
 "   
@@ -865,7 +865,7 @@ Construct an input generator for large adversarial inputs of a string of a repea
 '\'python   
 import random   
 import string   
-def generate_single_repeated_char(l_min, l_max): length \(=\) random.randint(l_min, l_max)
+def generate_single_repeated_char(l_min, l_max): length $=$ random.randint(l_min, l_max)
 ```
 
 
@@ -924,7 +924,7 @@ Listing 3 | Prompt for generating chain-of-thought for simple math problem.
 
 
 ```
-## Question How much is \(5 + 4?\)
+## Question How much is $5 + 4?$
 ```
 
 
@@ -944,7 +944,7 @@ I need to add the numbers 5 and 4. Starting with 5, if I add 4 to it, the total 
 5 + 4 = 9 \]
 \[ 
 \] 
-**Final Answer:** \(\backslash (\backslash \text{boxed} \{9\}) \backslash\) 
+**Final Answer:** $\boxed{9}$ 
 --- 
 ## Question
 what is 1 plus 2
@@ -955,7 +955,7 @@ Adding these two numbers together, 1 plus 2 equals 3.
 Therefore, the answer is 3.
 </think>
 Sure! Let's solve the problem step by step.
-**Problem:** What is \((1 + 2)\)? 
+**Problem:** What is $(1 + 2)$? 
 **Solution:** 
 To find the sum of 1 and 2, simply add the two numbers together:
 \[ 
@@ -963,7 +963,7 @@ To find the sum of 1 and 2, simply add the two numbers together:
 \[ 
 \] 
 **Answer:** 
-\(\backslash (\backslash \text{boxed} \{3\}) \backslash\) 
+$\boxed{3}$ 
 --- 
 ## Question
 {question}
@@ -1030,7 +1030,7 @@ Listing 5 | An example SFT trajectory from reasoning data related to mathematics
 ## Question
 
 
-For positive integer \(n\), define \)S_n$ to be the minimum value of the sum \(\sqrt{\sum_{k=1}^{n} \sqrt{a_1 a_2 \ldots a_n}}\) where \(a_1, a_2, \ldots, a_n\) are positive real numbers whose sum is 17. There is a unique positive integer \(n\)'s for which \)S_n$ is also an integer. Find this $n$.
+For positive integer $n$, define $S_n$ to be the minimum value of the sum $\sqrt{\sum_{k=1}^{n} \sqrt{a_1 a_2 \ldots a_n}}$ where $a_1, a_2, \ldots, a_n$ are positive real numbers whose sum is 17. There is a unique positive integer $n$'s for which $S_n$ is also an integer. Find this $n$.
 
 
 ## Response
@@ -1042,66 +1042,66 @@ For positive integer \(n\), define \)S_n$ to be the minimum value of the sum \(\
 <think>
 
 
-Alright, so I'm trying to solve this problem where I need to find a positive integer \((n\backslash)\) such that \(\backslash (\texttt{S_n}\backslash)\), the minimum value of the sum \(\backslash (\texttt{sum}_{\{\mathsf{k} = 1\}}\hat{\mathsf{n}}\) \(\sqrt{\mathsf{q r t}}\{(2k - 1)^{\wedge}2 + a_{\mathsf{k}}\hat{\mathsf{2}}\}\backslash)\), is an integer. Here, \(\backslash (\texttt{a_1},\texttt{a_2},\texttt{ldots},\texttt{a_n}\backslash)\) are positive real numbers that add up to 17.
+Alright, so I'm trying to solve this problem where I need to find a positive integer $(n\backslash)$ such that $S_n$, the minimum value of the sum $\backslash (\texttt{sum}_{\{\mathsf{k} = 1\}}\hat{\mathsf{n}}$ $\sqrt{\mathsf{q r t}}\{(2k - 1)^{\wedge}2 + a_{\mathsf{k}}\hat{\mathsf{2}}\}\backslash)$, is an integer. Here, $\backslash (\texttt{a_1},\texttt{a_2},\texttt{ldots},\texttt{a_n}\backslash)$ are positive real numbers that add up to 17.
 
 
 Hmm, okay, let me break this down. I know that when you have a sum of square roots like this, it often relates to geometry, maybe minimizing distances. It reminds me of the problem where you have to break up a path into segments with certain slopes to minimize total distance. Maybe this is similar to finding the shortest path in a staircase.
 
 
-Let me visualize it. Each term \(\backslash\) (\sqrt[4]{2k - 1})^2 + a_k^2\} \backslash) \) looks like the hypotenuse of a right-angled triangle with legs \(\backslash\) (2k - 1) \) and \(\backslash\) (a_k \). So, if I imagine a grid where I move horizontally by \(\backslash\) (a_k \)) and vertically by \(\backslash\) (2k - 1) \) for each step \(\backslash\) (k \), then \(\backslash\) (S_n \)) would be the total length of this path.
+Let me visualize it. Each term $ (\sqrt[4]{2k - 1})^2 + a_k^2\} \backslash) $ looks like the hypotenuse of a right-angled triangle with legs $ (2k - 1) $ and $ (a_k $. So, if I imagine a grid where I move horizontally by $ (a_k $) and vertically by $ (2k - 1) $ for each step $ (k $, then $ (S_n $) would be the total length of this path.
 
 
-Now, the sum of all \((a_k)\) is 17, which would be the total horizontal distance. I need to figure out the vertical distances, which are fixed based on \((k)\). So the total vertical distance would be \((\sum_{k=1}^{\infty} n(2k - 1))\). Let me compute that:
+Now, the sum of all $(a_k)$ is 17, which would be the total horizontal distance. I need to figure out the vertical distances, which are fixed based on $(k)$. So the total vertical distance would be $(\sum_{k=1}^{\infty} n(2k - 1))$. Let me compute that:
 
 
-The sum \(\backslash (\backslash \text{sum\_}\{k = 1\} \hat{\cdot} n(2k - 1)\backslash)\) is equal to \(\backslash (2\backslash \text{sum\_}\{k = 1\} \hat{\cdot} n k - \backslash \text{sum\_}\{k = 1\} \hat{\cdot} n 1 =\) 2 \cdot \frac{frac{n(n + 1)}\{2\} - n = n(n + 1) - n = n^2\}}. So the total vertical distance is \(\backslash (\mathsf{n}^{\wedge}2\backslash)\).
+The sum $\backslash (\backslash \text{sum\_}\{k = 1\} \hat{\cdot} n(2k - 1)\backslash)$ is equal to $\backslash (2\backslash \text{sum\_}\{k = 1\} \hat{\cdot} n k - \backslash \text{sum\_}\{k = 1\} \hat{\cdot} n 1 =$ 2 \cdot \frac{frac{n(n + 1)}\{2\} - n = n(n + 1) - n = n^2\}}. So the total vertical distance is $\backslash (\mathsf{n}^{\wedge}2\backslash)$.
 
 
-Wait a second, so this entire setup is like moving from the origin to the point \((17, n^2)\) with \(\backslash (n\backslash)\) segments. Each segment has a horizontal component \((a_k\backslash)\) and a vertical component \((2k - 1)\). But in reality, this entire path from \((0,0)\) to \((17, n^2)\) can be considered as a single straight line if we could somehow combine all these segments.
+Wait a second, so this entire setup is like moving from the origin to the point $(17, n^2)$ with $\backslash (n\backslash)$ segments. Each segment has a horizontal component $(a_k\backslash)$ and a vertical component $(2k - 1)$. But in reality, this entire path from $(0,0)$ to $(17, n^2)$ can be considered as a single straight line if we could somehow combine all these segments.
 
 
-But we can't change the number of segments \((n\)); each segment's vertical component is fixed. However, the horizontal components \((a_{k})\) can be adjusted as long as their sum is 17. So, to find the minimal total distance, maybe we can think of it as if each segment is contributing to the total path optimally. If we scale each horizontal component \((a_{k})\) proportionally, maybe this also corresponds to scaling the vertical components.
+But we can't change the number of segments $(n$); each segment's vertical component is fixed. However, the horizontal components $(a_{k})$ can be adjusted as long as their sum is 17. So, to find the minimal total distance, maybe we can think of it as if each segment is contributing to the total path optimally. If we scale each horizontal component $(a_{k})$ proportionally, maybe this also corresponds to scaling the vertical components.
 
 
-Alternatively, I can think of calculus optimization techniques. If I need to minimize the sum \(\backslash (\backslash \text{sum\_}\{\mathbf{k} = 1\} \hat{\mathbf{n}}\) \(\backslash \text{sqrt}\{(2\mathbf{k} - 1)^{\wedge}2 + \mathbf{a}_{\mathbf{k}}\hat{\mathbf{n}}\}\) \(\backslash)\) subject to \(\backslash (\backslash \text{sum\_}\{\mathbf{k} = 1\} \hat{\mathbf{n}}\) a_k \(= 17\backslash)\), I can use the method of Lagrange multipliers.
+Alternatively, I can think of calculus optimization techniques. If I need to minimize the sum $\backslash (\backslash \text{sum\_}\{\mathbf{k} = 1\} \hat{\mathbf{n}}$ $\backslash \text{sqrt}\{(2\mathbf{k} - 1)^{\wedge}2 + \mathbf{a}_{\mathbf{k}}\hat{\mathbf{n}}\}$ $\backslash)$ subject to $\backslash (\backslash \text{sum\_}\{\mathbf{k} = 1\} \hat{\mathbf{n}}$ a_k $= 17\backslash)$, I can use the method of Lagrange multipliers.
 
 
-Let me set up the Lagrangian. Let \(\backslash\) (L = \sum_{k=1}^{\infty} n \sqrt{2 + a_k^2} + a_k^2) + \lambda\) lambda \(\backslash\) left(17 - \sum_{k=1}^{\infty} n a_k \sqrt{right})\).
+Let me set up the Lagrangian. Let $ (L = \sum_{k=1}^{\infty} n \sqrt{2 + a_k^2} + a_k^2) + \lambda$ lambda $ left(17 - \sum_{k=1}^{\infty} n a_k \sqrt{right})$.
 
 
-Taking the derivative of \(\backslash (\mathrm{L}\backslash)\) with respect to each \(\backslash (\mathrm{a_k}\backslash)\):
+Taking the derivative of $\backslash (\mathrm{L}\backslash)$ with respect to each $\backslash (\mathrm{a_k}\backslash)$:
 
 
-\(\backslash\) \(\backslash\) frac{\partial partial L}{partial a_k} = \backslash\) frac{a_k}{sqrt[(2k - 1)^2 + a_k^2]} - \(\backslash\) lambda \(= 0\backslash\) ).
+$ frac{\partial partial L}{partial a_k} = \backslash$ frac{a_k}{sqrt[(2k - 1)^2 + a_k^2]} - $ lambda = 0\backslash$ ).
 
 
-So, for each \(\backslash (\mathrm{k}\backslash)\) , we have \(\backslash (\backslash \mathrm{frac}\{\mathrm{a\_k}\} \{\backslash \mathrm{sqrt}\{(2\mathrm{k} - 1)^{\wedge}2 + \mathrm{a\_k}^{\wedge}2\} \} = \backslash \mathrm{lambda}\backslash)\) Let me solve for \(\backslash (\mathrm{a\_k}\backslash)\) ..
+So, for each $\backslash (\mathrm{k}\backslash)$ , we have $\backslash (\backslash \mathrm{frac}\{\mathrm{a\_k}\} \{\backslash \mathrm{sqrt}\{(2\mathrm{k} - 1)^{\wedge}2 + \mathrm{a\_k}^{\wedge}2\} \} = \backslash \mathrm{lambda}\backslash)$ Let me solve for $\backslash (\mathrm{a\_k}\backslash)$ ..
 
 
-Squaring both sides gives \(\backslash (\backslash \mathrm{frac}\{\mathrm{a\_k}^{\wedge}2\} \{(2\mathrm{k} - 1)^{\wedge}2 + \mathrm{a\_k}^{\wedge}2\} = \backslash \mathrm{lambda}^{\wedge}2\backslash)\)
+Squaring both sides gives $\backslash (\backslash \mathrm{frac}\{\mathrm{a\_k}^{\wedge}2\} \{(2\mathrm{k} - 1)^{\wedge}2 + \mathrm{a\_k}^{\wedge}2\} = \backslash \mathrm{lambda}^{\wedge}2\backslash)$
 
 
-Rearranging terms: \(\backslash\) (a_k^2 = \(\backslash\) lambda^2 \(\backslash\) left((2k - 1)^2 + a_k^2 \(\backslash\) right) \)).
+Rearranging terms: $ (a_k^2 = lambda^2 \left((2k - 1)^2 + a_k^2 \right) $).
 
 
-Divide both sides by \((a_k \hat{2} \backslash)\) (assuming \((a_k \backslash \text{neq } 0 \backslash)\)): \(\left(1 = \lambda \text{lambda}^2 \backslash \text{left}(\backslash \text{frac}\{(2k - 1)^2\} \backslash \{a_k \hat{2}\} + 1 \backslash \text{right})\right)\).
+Divide both sides by $(a_k \hat{2} \backslash)$ (assuming $(a_k \backslash \text{neq } 0 \backslash)$): $\left(1 = \lambda \text{lambda}^2 \backslash \text{left}(\backslash \text{frac}\{(2k - 1)^2\} \backslash \{a_k \hat{2}\} + 1 \backslash \text{right})\right)$.
 
 
 ---
 
 
 ```
-Simplify: \((1 - \backslash \text{lambda}^2 = \backslash \text{lambda}^2 \backslash \text{cdot} \backslash \text{frac}((2k - 1)^2 \backslash \{a_k^2\})\). Then, \(\backslash (\backslash \text{frac}((2k - 1)^2 \backslash \{a_k^2\}) = \backslash \text{frac}((1 - \backslash \text{lambda}^2) \backslash \{\backslash \text{lambda}^2\})\). Therefore, \(\backslash (\backslash \text{frac}((2k - 1) \backslash \{a_k\}) = \backslash \text{sqrt}(\backslash \text{frac}((1 - \backslash \text{lambda}^2) \backslash \{\backslash \text{lambda}^2\}) = \backslash \text{frac}(\backslash \text{sqrt}((1 - \backslash \text{lambda}^2) \backslash \{\backslash \text{lambda}^2\}))\). Let me denote \(\backslash (c = \backslash \text{frac}(\backslash \text{sqrt}((1 - \backslash \text{lambda}^2) \backslash \{\backslash \text{lambda}^2\}) = \backslash \text{frac}((1 - c))\). Then, \(\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))\). So, each \(\backslash (a_k)\) is proportional to \(\backslash ((2k - 1))\). That is, \(\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))\). Since the sum of all \(\backslash (a_k)\) is 17, we can write: \(\backslash (\backslash \text{sum}_{\{k=1\}}^{\sim n} a_k = \backslash \text{sum}_{\{k=1\}}^{\sim n} a_k\) and \(n = 1 - 1\) (2k-1). Then, \(\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))\). This is, we can write: Let me denote \(\backslash (c = \backslash \text{frac}(\backslash \text{sqrt}((1 - \backslash \text{sum}_{\{k=1\}}^{\sim n} a_k = \backslash \text{frac}((2k - 1) \backslash c))\). Then, \(\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))\). This is, we can write: Let me denote \(\backslash (c = \backslash \text{frac}((2k - 1) \backslash c))\). This is, we can write: Let me denote \(\backslash (c = \backslash \text{frac}((2k - 1) \backslash c))\). This is, we can write: Let me denote \(\backslash (c = \backslash \text{frac}((2k - 1) \backslash c))\) and \(n = 1 - 1\) (2k-1). Then, \(\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))\). This is, we can write: Let me denote \(\backslash (c = \backslash \text{frac}((2k - 1) \backslash c))\). This is, we can write: Let me denote \(\backslash (c = \backslash \text{frac}((2,k - 1) ^2 + 1)\). This is, we can write: Let me denote \(\backslash (c = \backslash \text{frac}((2k - 1) ^2 + 1)\). This is, we can write: Let me denote \(\backslash (c = \backslash \text{frac}((2k - 1) ^2 + 1)\). This is, we can write: Let me denote \(\backslash (c = \backslash \text{frac}((2k - 1) ^2 + 1)\). This is, we can write: Let me denote.
+Simplify: $(1 - \backslash \text{lambda}^2 = \backslash \text{lambda}^2 \backslash \text{cdot} \backslash \text{frac}((2k - 1)^2 \backslash \{a_k^2\})$. Then, $\backslash (\backslash \text{frac}((2k - 1)^2 \backslash \{a_k^2\}) = \backslash \text{frac}((1 - \backslash \text{lambda}^2) \backslash \{\backslash \text{lambda}^2\})$. Therefore, $\backslash (\backslash \text{frac}((2k - 1) \backslash \{a_k\}) = \backslash \text{sqrt}(\backslash \text{frac}((1 - \backslash \text{lambda}^2) \backslash \{\backslash \text{lambda}^2\}) = \backslash \text{frac}(\backslash \text{sqrt}((1 - \backslash \text{lambda}^2) \backslash \{\backslash \text{lambda}^2\}))$. Let me denote $\backslash (c = \backslash \text{frac}(\backslash \text{sqrt}((1 - \backslash \text{lambda}^2) \backslash \{\backslash \text{lambda}^2\}) = \backslash \text{frac}((1 - c))$. Then, $\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))$. So, each $\backslash (a_k)$ is proportional to $\backslash ((2k - 1))$. That is, $\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))$. Since the sum of all $\backslash (a_k)$ is 17, we can write: $\backslash (\backslash \text{sum}_{\{k=1\}}^{\sim n} a_k = \backslash \text{sum}_{\{k=1\}}^{\sim n} a_k$ and $n = 1 - 1$ (2k-1). Then, $\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))$. This is, we can write: Let me denote $\backslash (c = \backslash \text{frac}(\backslash \text{sqrt}((1 - \backslash \text{sum}_{\{k=1\}}^{\sim n} a_k = \backslash \text{frac}((2k - 1) \backslash c))$. Then, $\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))$. This is, we can write: Let me denote $\backslash (c = \backslash \text{frac}((2k - 1) \backslash c))$. This is, we can write: Let me denote $\backslash (c = \backslash \text{frac}((2k - 1) \backslash c))$. This is, we can write: Let me denote $\backslash (c = \backslash \text{frac}((2k - 1) \backslash c))$ and $n = 1 - 1$ (2k-1). Then, $\backslash (a_k = \backslash \text{frac}((2k - 1) \backslash c))$. This is, we can write: Let me denote $\backslash (c = \backslash \text{frac}((2k - 1) \backslash c))$. This is, we can write: Let me denote $\backslash (c = \backslash \text{frac}((2,k - 1) ^2 + 1)$. This is, we can write: Let me denote $\backslash (c = \backslash \text{frac}((2k - 1) ^2 + 1)$. This is, we can write: Let me denote $\backslash (c = \backslash \text{frac}((2k - 1) ^2 + 1)$. This is, we can write: Let me denote $\backslash (c = \backslash \text{frac}((2k - 1) ^2 + 1)$. This is, we can write: Let me denote.
 ```
 
 
 ---
 
 
-This implies \(\backslash (\mathsf{m}^{\wedge}2 - \mathsf{n}^{\wedge}4 = 289\backslash)\)
+This implies $\backslash (\mathsf{m}^{\wedge}2 - \mathsf{n}^{\wedge}4 = 289\backslash)$
 
 
-Hmm, 289 is \(17^{\wedge}2\). So, \(\backslash (\mathrm{m}^{\wedge}2 - \mathrm{n}^{\wedge}4 = 17^{\wedge}2\backslash)\). That can be written as:
+Hmm, 289 is $17^{\wedge}2$. So, $\backslash (\mathrm{m}^{\wedge}2 - \mathrm{n}^{\wedge}4 = 17^{\wedge}2\backslash)$. That can be written as:
 
 
 $$
@@ -1112,85 +1112,85 @@ $$
 Looking at this equation, it's a difference of squares.
 
 
-Wait, \(\backslash (\mathrm{m}^{\wedge}2 - \mathrm{n}^{\wedge}4 = (\mathrm{m} - \mathrm{n}^{\wedge}2)(\mathrm{m} + \mathrm{n}^{\wedge}2) = 17^{\wedge}2 = 289\backslash)\).
+Wait, $\backslash (\mathrm{m}^{\wedge}2 - \mathrm{n}^{\wedge}4 = (\mathrm{m} - \mathrm{n}^{\wedge}2)(\mathrm{m} + \mathrm{n}^{\wedge}2) = 17^{\wedge}2 = 289\backslash)$.
 
 
-So, we have \(\backslash (\mathrm{(m - n^{\wedge}2)(m + n^{\wedge}2)} = 289\backslash)\)
+So, we have $\backslash (\mathrm{(m - n^{\wedge}2)(m + n^{\wedge}2)} = 289\backslash)$
 
 
-Since \(\backslash (\texttt{m}\backslash)\) and \(\backslash (\texttt{n}\backslash)\) are positive integers, both \(\backslash (\texttt{m} -\texttt{n}^{\wedge}2\backslash)\) and \(\backslash (\texttt{m} +\texttt{n}^{\wedge}2\backslash)\) are positive integers and factors of 289. Also, \(\backslash (\texttt{m} +\texttt{n}^{\wedge}2 > \texttt{m} -\texttt{n}^{\wedge}2\backslash)\).
+Since $\backslash (\texttt{m}\backslash)$ and $\backslash (\texttt{n}\backslash)$ are positive integers, both $\backslash (\texttt{m} -\texttt{n}^{\wedge}2\backslash)$ and $\backslash (\texttt{m} +\texttt{n}^{\wedge}2\backslash)$ are positive integers and factors of 289. Also, $\backslash (\texttt{m} +\texttt{n}^{\wedge}2 > \texttt{m} -\texttt{n}^{\wedge}2\backslash)$.
 
 
-So, since 289 is \(17^{\circ}2\), its positive factor pairs are (1, 289) and (17,17).
+So, since 289 is $17^{\circ}2$, its positive factor pairs are (1, 289) and (17,17).
 
 
 Hence, the factor pairs are:
 
 
-1. \(\backslash (\mathrm{m} - \mathrm{n}^{\wedge}2 = 1\backslash)\) and \(\backslash (\mathrm{m} + \mathrm{n}^{\wedge}2 = 289\backslash)\).
+1. $\backslash (\mathrm{m} - \mathrm{n}^{\wedge}2 = 1\backslash)$ and $\backslash (\mathrm{m} + \mathrm{n}^{\wedge}2 = 289\backslash)$.
 
 
-2. \(\backslash (\mathrm{m} - \mathrm{n}^{\wedge}2 = 17\backslash)\) and \(\backslash (\mathrm{m} + \mathrm{n}^{\wedge}2 = 17\backslash)\).
+2. $\backslash (\mathrm{m} - \mathrm{n}^{\wedge}2 = 17\backslash)$ and $\backslash (\mathrm{m} + \mathrm{n}^{\wedge}2 = 17\backslash)$.
 
 
-But the second case gives \(\backslash (\mathrm{m} - \mathrm{n}^{\wedge}2 = 17\backslash)\) and \(\backslash (\mathrm{m} + \mathrm{n}^{\wedge}2 = 17\backslash)\).
+But the second case gives $\backslash (\mathrm{m} - \mathrm{n}^{\wedge}2 = 17\backslash)$ and $\backslash (\mathrm{m} + \mathrm{n}^{\wedge}2 = 17\backslash)$.
 
 
-Subtracting the equations: \((\mathrm{m} + \mathrm{n}^{\wedge}2) - (\mathrm{m} - \mathrm{n}^{\wedge}2) = 17 - 17\backslash)\Rightarrow \backslash (2\mathrm{n}^{\wedge}2 = 0\backslash)\Rightarrow\) \(\backslash (\mathrm{n}^{\wedge}2 = 0\backslash)\). But \(\backslash (\mathrm{n}\backslash)\) is a positive integer, so this case is invalid.
+Subtracting the equations: $(\mathrm{m} + \mathrm{n}^{\wedge}2) - (\mathrm{m} - \mathrm{n}^{\wedge}2) = 17 - 17\backslash)\Rightarrow \backslash (2\mathrm{n}^{\wedge}2 = 0\backslash)\Rightarrow$ $\backslash (\mathrm{n}^{\wedge}2 = 0\backslash)$. But $\backslash (\mathrm{n}\backslash)$ is a positive integer, so this case is invalid.
 
 
-So, we only consider the first factor pair: \(\backslash (\mathsf{m} - \mathsf{n}^{\wedge}2 = 1\backslash)\) and \(\backslash (\mathsf{m} + \mathsf{n}^{\wedge}2 = 289\backslash)\).
+So, we only consider the first factor pair: $\backslash (\mathsf{m} - \mathsf{n}^{\wedge}2 = 1\backslash)$ and $\backslash (\mathsf{m} + \mathsf{n}^{\wedge}2 = 289\backslash)$.
 
 
-Adding the two equations: \((m - n^2) + (m + n^2) = 1 + 289\quad)\Rightarrow \quad (2m = 290\quad)\Rightarrow \quad m = 145\quad)\).
+Adding the two equations: $(m - n^2) + (m + n^2) = 1 + 289\quad)\Rightarrow \quad (2m = 290\quad)\Rightarrow \quad m = 145\quad)$.
 
 
-Subtracting the two equations: \((\mathrm{m} + \mathrm{n}^{\wedge}2) - (\mathrm{m} - \mathrm{n}^{\wedge}2) = 289 - 1\) => \(\backslash (2\mathrm{n}^{\wedge}2 = 288\) \() => \backslash (\mathrm{n}^{\wedge}2 = 144\) \() => \backslash (\mathrm{n} = 12\) \()\) since \(\backslash (\mathrm{n}\backslash)\) is positive.
+Subtracting the two equations: $(\mathrm{m} + \mathrm{n}^{\wedge}2) - (\mathrm{m} - \mathrm{n}^{\wedge}2) = 289 - 1$ => $\backslash (2\mathrm{n}^{\wedge}2 = 288$ $) => \backslash (\mathrm{n}^{\wedge}2 = 144$ $) => \backslash (\mathrm{n} = 12$ $)$ since $\backslash (\mathrm{n}\backslash)$ is positive.
 
 
-Therefore, \(\backslash (n = 12\backslash)\)
+Therefore, $\backslash (n = 12\backslash)$
 
 
-Before I conclude, let me verify that \(\backslash (\mathrm{S\_n} = \backslash \mathrm{sqrt}\{12^{\wedge}4 + 17^{\wedge}2\} = \backslash \mathrm{sqrt}\{20736 + 289\} = \backslash \mathrm{sqrt}\{21025\} = 145\backslash)\), which is indeed an integer.
+Before I conclude, let me verify that $\backslash (\mathrm{S\_n} = \backslash \mathrm{sqrt}\{12^{\wedge}4 + 17^{\wedge}2\} = \backslash \mathrm{sqrt}\{20736 + 289\} = \backslash \mathrm{sqrt}\{21025\} = 145\backslash)$, which is indeed an integer.
 
 
-Is this the only \((n \setminus)?\) The question says there's a unique positive integer \((n \setminus)\), so this must be the one.
+Is this the only $(n \setminus)?$ The question says there's a unique positive integer $(n \setminus)$, so this must be the one.
 
 
 **Final Answer**
 
 
-The unique positive integer \(\backslash\) (n \) ) is \boxed{12}. </think>
+The unique positive integer $ (n $ ) is \boxed{12}. </think>
 
 
-To solve the problem, we need to find a positive integer \((n\setminus)\) such that \(\backslash (\texttt{S\_n}\backslash)\), the minimum value of the sum \(\backslash (\backslash \text{sum}_{-}\{\mathsf{k} = 1\} \hat{\mathsf{n}}\) \(\backslash \text{sqrt}\{(2\mathsf{k} - 1)^{\wedge}2 + \mathsf{a}_{\mathsf{k}}\hat{\mathsf{2}}\} \backslash)\), is an integer. Here, \(\backslash (\texttt{a}_1,\texttt{a}_2,\texttt{ldots},\texttt{a_n}\backslash)\) are positive real numbers whose sum is 17.
+To solve the problem, we need to find a positive integer $(n\setminus)$ such that $\backslash (\texttt{S\_n}\backslash)$, the minimum value of the sum $\backslash (\backslash \text{sum}_{-}\{\mathsf{k} = 1\} \hat{\mathsf{n}}$ $\backslash \text{sqrt}\{(2\mathsf{k} - 1)^{\wedge}2 + \mathsf{a}_{\mathsf{k}}\hat{\mathsf{2}}\} \backslash)$, is an integer. Here, $\backslash (\texttt{a}_1,\texttt{a}_2,\texttt{ldots},\texttt{a_n}\backslash)$ are positive real numbers whose sum is 17.
 
 
-First, we recognize that each term \(\backslash (\backslash \mathrm{sqrt}\{(2\mathrm{k} - 1)\hat{\mathrm{~2}} +\mathrm{a\_k}\hat{\mathrm{~2}}\})\) represents the hypotenuse of a right-angled triangle with legs \(\backslash (\backslash (2\mathrm{k} - 1)\backslash)\) and \(\backslash (\mathrm{a\_k}\backslash)\). The total vertical distance is the sum of the vertical components, which is \(\backslash (\backslash \mathrm{sum}_{\{\mathrm{k}} = 1\}}\hat{\mathrm{n}} (2\mathrm{k} - 1) = \mathrm{n}\hat{\mathrm{~2}}\backslash)\). The total horizontal distance is the sum of \(\backslash (\mathrm{a\_k}\backslash)\), which is 17.
+First, we recognize that each term $\backslash (\backslash \mathrm{sqrt}\{(2\mathrm{k} - 1)\hat{\mathrm{~2}} +\mathrm{a\_k}\hat{\mathrm{~2}}\})$ represents the hypotenuse of a right-angled triangle with legs $\backslash (\backslash (2\mathrm{k} - 1)\backslash)$ and $\backslash (\mathrm{a\_k}\backslash)$. The total vertical distance is the sum of the vertical components, which is $\backslash (\backslash \mathrm{sum}_{\{\mathrm{k}} = 1\}}\hat{\mathrm{n}} (2\mathrm{k} - 1) = \mathrm{n}\hat{\mathrm{~2}}\backslash)$. The total horizontal distance is the sum of $\backslash (\mathrm{a\_k}\backslash)$, which is 17.
 
 
-To minimize the sum, we use the method of Lagrange multipliers. We find that each \((a_k \backslash)\) is proportional to \((2k - 1) \backslash)\). Thus, \(\langle a_k = \frac{\partial}{\partial x} \{17(2k - 1)\} \{n^2\} \rangle\).
+To minimize the sum, we use the method of Lagrange multipliers. We find that each $(a_k \backslash)$ is proportional to $(2k - 1) \backslash)$. Thus, $\langle a_k = \frac{\partial}{\partial x} \{17(2k - 1)\} \{n^2\} \rangle$.
 
 
 ---
 
 
 ```
-Substituting this back into the expression for \(\backslash (\texttt{S\_n\backslash})\) , we get:   
+Substituting this back into the expression for $\backslash (\texttt{S\_n\backslash})$ , we get:   
 \[\texttt{S\_n} = \texttt{\backslash sum\_}\{k = 1\} \texttt{\hat{n}}\texttt{\backslash sqrt}\{(2k - 1)\hat{2} +\texttt{\backslash left} (\texttt{\backslash frac}\{17(2k - 1)\} \{n\hat{2}\} \texttt{\backslash right})\hat{2}\} = \texttt{\backslash}\]   
-\(\text{sqrt}\{\texttt{n}\hat{4} +289\} \backslash ]\)   
-We need \(\backslash (\texttt{\backslash sqrt}\{\texttt{n}\hat{4} +289\} \backslash)\) to be an integer. Let \(\backslash (\texttt{m}\backslash)\) be this integer, so:   
+$\text{sqrt}\{\texttt{n}\hat{4} +289\} \backslash ]$   
+We need $\backslash (\texttt{\backslash sqrt}\{\texttt{n}\hat{4} +289\} \backslash)$ to be an integer. Let $\backslash (\texttt{m}\backslash)$ be this integer, so:   
 \[\texttt{m}\hat{2} = \texttt{n}\hat{4} +289\backslash ]\)   
-\(\text{m}\hat{2} -\texttt{n}\hat{4} = 289\backslash ]\)   
+$\text{m}\hat{2} -\texttt{n}\hat{4} = 289\backslash ]$   
 This can be factored as:   
 \[\texttt{(m - n^{\hat{2}})(m + n^{\hat{2}})} = 289\backslash ]\)   
 The factor pairs of 289 are (1, 289) and (17, 17). The valid factor pair is (1, 289), leading to:   
 \[\texttt{m - n^{\hat{2}}} = 1\backslash ]\)   
-\(\text{m + n^{\hat{2}}} = 289\backslash ]\)   
+$\text{m + n^{\hat{2}}} = 289\backslash ]$   
 Adding and subtracting these equations, we find:   
 \[\texttt{[2m = 290\backslashimplies m = 145\backslash]}\)   
 \[\texttt{[2n^{\hat{2}} = 288\backslashimplies n^{\hat{2}} = 144\backslashimplies n = 12\backslash]}\)   
-Thus, the unique positive integer \(\backslash (\texttt{n}\backslash)\) is \(\backslash\) boxed{12}.
+Thus, the unique positive integer $\backslash (\texttt{n}\backslash)$ is $ boxed{12}.
 ```
 
 
@@ -1455,7 +1455,7 @@ To train DeepSeek-R1-Zero-Qwen-32B, we set the learning rate to 2e-6, the KL coe
 # B.4.2. Hyper-Parameters of SFT
 
 
-For code-start SFT and the second-stage SFT, we fine-tune DeepSeek-V3-Base for 2-3 epochs using the curated dataset, as described in B.3. We employ a cosine decay learning rate scheduler, starting at \(5 \times 10^{-5}\) and gradually decreasing to \(5 \times 10^{-6}\). The maximum context length is set to 32,768 tokens, and the batch size is 128.
+For code-start SFT and the second-stage SFT, we fine-tune DeepSeek-V3-Base for 2-3 epochs using the curated dataset, as described in B.3. We employ a cosine decay learning rate scheduler, starting at $5 \times 10^{-5}$ and gradually decreasing to $5 \times 10^{-6}$. The maximum context length is set to 32,768 tokens, and the batch size is 128.
 
 
 # B.4.3. Hyper-Parameters of Distillation
@@ -1473,7 +1473,7 @@ _Table 6 | DeepSeek-R1 Distilled Models, their corresponding Base Models, and In
 # B.4.4. Training Cost
 
 
-Regarding our research on DeepSeek-R1, we utilized the A100 GPUs to prepare for the experiments with a smaller model (30B parameters). The results from this smaller model have been promising, which has allowed us to confidently scale up to 660B R1-Zero and R1. For the training of DeepSeek-R1-Zero, we employed \(64^{*}8\) H800 GPUs, and the process required approximately 198 hours. Additionally, during the training phase of DeepSeek-R1, we utilized the same \(64^{*}8\) H800 GPUs, completing the process in about 4 days, or roughly 80 hours. To create the SFT datasets, we use 5K GPU hours. The details are shown in Table 7.
+Regarding our research on DeepSeek-R1, we utilized the A100 GPUs to prepare for the experiments with a smaller model (30B parameters). The results from this smaller model have been promising, which has allowed us to confidently scale up to 660B R1-Zero and R1. For the training of DeepSeek-R1-Zero, we employed $64^{*}8$ H800 GPUs, and the process required approximately 198 hours. Additionally, during the training phase of DeepSeek-R1, we utilized the same $64^{*}8$ H800 GPUs, completing the process in about 4 days, or roughly 80 hours. To create the SFT datasets, we use 5K GPU hours. The details are shown in Table 7.
 
 
 # B.5. Reward Hacking
@@ -1580,7 +1580,7 @@ _Figure 7 | The experiment results of Language Consistency (LC) Reward during re
 We analyzed DeepSeek-R1-Zero's performance on the MATH dataset stratified by difficulty levels (1-5). Figure 8 reveals distinct learning patterns: easy problems (levels 1-3) quickly reach high accuracy (0.90-0.95) and remain stable throughout training, while difficult problems show remarkable improvement - level 4 problems improve from near 0.78 to 0.95, and the most challenging level 5 problems demonstrate the most dramatic improvement from near 0.55 to 0.90.
 
 
-One may find it counterintuitive that the model's accuracy on harder questions (levels 3-4) occasionally surpasses its performance on easier questions (level 1) by a small margin. This apparent anomaly stems from several dataset characteristics. The MATH dataset is unevenly distributed, with level-1 questions comprising only 43 of 500 examples, while higher levels contain approximately 100 questions each. Consequently, the model's \(95 - 97\%\) accuracy on level-1 represents just 1-2 unsolved problems, primarily in geometry, where the model still struggles. Furthermore, the distribution of mathematical categories (geometry, algebra, etc.) varies across difficulty levels due to the dataset's construction methodology. It's also worth noting that these difficulty levels were annotated based on human perception of problem complexity rather than
+One may find it counterintuitive that the model's accuracy on harder questions (levels 3-4) occasionally surpasses its performance on easier questions (level 1) by a small margin. This apparent anomaly stems from several dataset characteristics. The MATH dataset is unevenly distributed, with level-1 questions comprising only 43 of 500 examples, while higher levels contain approximately 100 questions each. Consequently, the model's $95 - 97\%$ accuracy on level-1 represents just 1-2 unsolved problems, primarily in geometry, where the model still struggles. Furthermore, the distribution of mathematical categories (geometry, algebra, etc.) varies across difficulty levels due to the dataset's construction methodology. It's also worth noting that these difficulty levels were annotated based on human perception of problem complexity rather than
 
 
 ---
@@ -1699,7 +1699,7 @@ Table 18 to Table 32 present examples of our evaluation formats on different ben
 Baselines We conduct comprehensive evaluations against several strong baselines, including DeepSeek-V3, Claude-Sonnet-3.5-1022, GPT-4o-0513, OpenAI-o1-mini, and OpenAI-o1-1217. Since accessing the OpenAI-o1-1217 API is challenging in mainland China, we report its performance based on official reports. For distilled models, we also compare the open-source model QwQ-32B-Preview (Qwen, 2024a).
 
 
-We set the maximum generation length to 32,768 tokens for the models. We found that using greedy decoding to evaluate long-output reasoning models results in higher repetition rates and significant variability across different checkpoints. Therefore, we default to pass@k evaluation (Chen et al., 2021) and report pass@1 using a non-zero temperature. Specifically, we use a sampling temperature of 0.6 and a top- \( p \) value of 0.95 to generate \( k \) responses (typically between 4 and 64, depending on the test set size) for each question. Sepcifically, we use \( k = 64 \) for AIME and GPQA, \( k = 16 \) for MATH and CodeForces, and \( k = 8 \) for LCB. Pass@1 is then
+We set the maximum generation length to 32,768 tokens for the models. We found that using greedy decoding to evaluate long-output reasoning models results in higher repetition rates and significant variability across different checkpoints. Therefore, we default to pass@k evaluation (Chen et al., 2021) and report pass@1 using a non-zero temperature. Specifically, we use a sampling temperature of 0.6 and a top- $ p $ value of 0.95 to generate $ k $ responses (typically between 4 and 64, depending on the test set size) for each question. Sepcifically, we use $ k = 64 $ for AIME and GPQA, $ k = 16 $ for MATH and CodeForces, and $ k = 8 $ for LCB. Pass@1 is then
 
 
 ---
@@ -1713,13 +1713,13 @@ $$
 $$
 
 
-where \( p_i \) denotes the correctness of the \( i \)-th response. This method provides more reliable performance estimates. For AIME 2024, we also report consensus (majority vote) results using 64 samples, denoted as cons@64.
+where $ p_i $ denotes the correctness of the $ i $-th response. This method provides more reliable performance estimates. For AIME 2024, we also report consensus (majority vote) results using 64 samples, denoted as cons@64.
 
 
 # D.2. Main Results
 
 
-_Table 8 | Comparison between DeepSeek-R1 and other representative models. Numbers in bold denote the performance is statistically significant (t-test with \( p < 0.01 \))._
+_Table 8 | Comparison between DeepSeek-R1 and other representative models. Numbers in bold denote the performance is statistically significant (t-test with $ p < 0.01 $)._
 
 
 <table><tr><td colspan="2">Benchmark (Metric)</td><td>Claude-3.5-Sonnet-1022</td><td>GPT-4o 0513</td><td>DeepSeek V3</td><td>OpenAI o1-mini</td><td>OpenAI o1-1217</td><td>DeepSeek R1</td></tr><tr><td colspan="2">Architecture</td><td>-</td><td>-</td><td>MoE</td><td>-</td><td>-</td><td>MoE</td></tr><tr><td colspan="2"># Activated Params</td><td>-</td><td>-</td><td>37B</td><td>-</td><td>-</td><td>37B</td></tr><tr><td colspan="2"># Total Params</td><td>-</td><td>-</td><td>671B</td><td>-</td><td>-</td><td>671B</td></tr><tr><td rowspan="10">English</td><td>MMLU (EM)</td><td>88.3</td><td>87.2</td><td>88.5</td><td>85.2</td><td>91.8</td><td>90.8</td></tr><tr><td>MMLU-Redux (EM)</td><td>88.9</td><td>88.0</td><td>89.1</td><td>86.7</td><td>-</td><td>92.9</td></tr><tr><td>MMLU-Pro (EM)</td><td>78.0</td><td>72.6</td><td>75.9</td><td>80.3</td><td>-</td><td>84.0</td></tr><tr><td>DROP (3-shot F1)</td><td>88.3</td><td>83.7</td><td>91.6</td><td>83.9</td><td>90.2</td><td>92.2</td></tr><tr><td>IF-Eval (Prompt Strict)</td><td>86.5</td><td>84.3</td><td>86.1</td><td>84.8</td><td>-</td><td>83.3</td></tr><tr><td>GPQA Diamond (Pass@1)</td><td>65.0</td><td>49.9</td><td>59.1</td><td>60.0</td><td>75.7</td><td>71.5</td></tr><tr><td>SimpleQA (Correct)</td><td>28.4</td><td>38.2</td><td>24.9</td><td>7.0</td><td>47.0</td><td>30.1</td></tr><tr><td>FRAMES (Acc.)</td><td>72.5</td><td>80.5</td><td>73.3</td><td>76.9</td><td>-</td><td>82.5</td></tr><tr><td>AlpacaEval2.0 (LC-winrate)</td><td>52.0</td><td>51.1</td><td>70.0</td><td>57.8</td><td>-</td><td>87.6</td></tr><tr><td>ArenaHard (GPT-4-1106)</td><td>85.2</td><td>80.4</td><td>85.5</td><td>92.0</td><td>-</td><td>92.3</td></tr><tr><td rowspan="5">Code</td><td>LiveCodeBench (Pass@1-COT)</td><td>38.9</td><td>32.9</td><td>36.2</td><td>53.8</td><td>63.4</td><td>65.9</td></tr><tr><td>Codeforces (Percentile)</td><td>20.3</td><td>23.6</td><td>58.7</td><td>93.4</td><td>96.6</td><td>96.3</td></tr><tr><td>Codeforces (Rating)</td><td>717</td><td>759</td><td>1134</td><td>1820</td><td>2061</td><td>2029</td></tr><tr><td>SWE Verified (Resolved)</td><td>50.8</td><td>38.8</td><td>42.0</td><td>41.6</td><td>48.9</td><td>49.2</td></tr><tr><td>Aider-Polyglot (Acc.)</td><td>45.3</td><td>16.0</td><td>49.6</td><td>32.9</td><td>61.7</td><td>53.3</td></tr><tr><td rowspan="3">Math</td><td>AIME 2024 (Pass@1)</td><td>16.0</td><td>9.3</td><td>39.2</td><td>63.6</td><td>79.2</td><td>79.8</td></tr><tr><td>MATH-500 (Pass@1)</td><td>78.3</td><td>74.6</td><td>90.2</td><td>90.0</td><td>96.4</td><td>97.3</td></tr><tr><td>CNMO 2024 (Pass@1)</td><td>13.1</td><td>10.8</td><td>43.2</td><td>67.6</td><td>-</td><td>78.8</td></tr><tr><td rowspan="3">Chinese</td><td>CLUEWSC (EM)</td><td>85.4</td><td>87.9</td><td>90.9</td><td>89.9</td><td>-</td><td>92.8</td></tr><tr><td>C-Eval (EM)</td><td>76.7</td><td>76.0</td><td>86.5</td><td>68.9</td><td>-</td><td>91.8</td></tr><tr><td>C-SimpleQA (Correct)</td><td>55.4</td><td>58.7</td><td>68.0</td><td>40.3</td><td>-</td><td>63.7</td></tr></table>
@@ -1761,7 +1761,7 @@ On math tasks, DeepSeek-R1 demonstrates performance on par with OpenAI-o1-1217, 
 _Figure 10 | The benchmark performance of DeepSeek-R1 and DeepSeek-R1-Zero is compared with human scores across different datasets. For AIME and Codeforces, the human scores represent the average performance of all human competitors. In the case of GPQA, the human score corresponds to Ph.D.-level individuals who had access to the web for answering the questions._
 
 
-Figure 10 presents a comparative analysis of the performance of DeepSeek-R1-Zero, DeepSeek-R1, and human participants across several benchmark competitions. Notably, the AIME is a mathematics competition designed for high school students, and DeepSeek-R1 demonstrates performance that surpasses the mean score achieved by human competitors in this event. On the Codeforces platform, DeepSeek-R1 outperforms \(96.3\%\) of human participants, underscoring its advanced problem-solving capabilities. In the case of GPQA, where human experts—typically individuals with Ph.D.-level qualifications and access to web resources—participate, human performance remains superior to that of DeepSeek-R1. However, we anticipate that enabling web access for DeepSeek-R1 could substantially enhance its performance on GPQA, potentially narrowing or closing the observed gap.
+Figure 10 presents a comparative analysis of the performance of DeepSeek-R1-Zero, DeepSeek-R1, and human participants across several benchmark competitions. Notably, the AIME is a mathematics competition designed for high school students, and DeepSeek-R1 demonstrates performance that surpasses the mean score achieved by human competitors in this event. On the Codeforces platform, DeepSeek-R1 outperforms $96.3\%$ of human participants, underscoring its advanced problem-solving capabilities. In the case of GPQA, where human experts—typically individuals with Ph.D.-level qualifications and access to web resources—participate, human performance remains superior to that of DeepSeek-R1. However, we anticipate that enabling web access for DeepSeek-R1 could substantially enhance its performance on GPQA, potentially narrowing or closing the observed gap.
 
 
 ---
@@ -2034,13 +2034,13 @@ Table 10 | Comparison of DeepSeek-R1 and other frontier models in fine-grained s
 answers, with lower values being more desirable (we prefer safe responses over rejections since it can provide risk warning information).
 
 
-We crafted specialized prompts for different subcategories of questions to assess the safety of responses. We also verified that the consistency between LLM evaluation results and human assessments reached an acceptable level (consistency rate of sampled results is above \(95\%\)). The experimental comparison results are presented in Table 10, from which the following conclusions can be observed:
+We crafted specialized prompts for different subcategories of questions to assess the safety of responses. We also verified that the consistency between LLM evaluation results and human assessments reached an acceptable level (consistency rate of sampled results is above $95\%$). The experimental comparison results are presented in Table 10, from which the following conclusions can be observed:
 
 
-- Analyzing unsafe rates: DeepSeek-V3 (with risk control) belongs to the first tier of safe models (unsafe rate around \(5\%\)); DeepSeek-R1 (with risk control), Claude-3.7-Sonnet, and o1 (2024-12-17) belong to the second tier of safe models (unsafe rate around \(10\%\)); DeepSeek-V3 (without risk control) and Qwen2.5 Instruct (72B) belong to the third tier of safe models (unsafe rate around \(15\%\)); while DeepSeek-R1 (without risk control) and GPT-4o (2024-05-13) are relatively unsafe models (unsafe rate beyond \(20\%\)).
+- Analyzing unsafe rates: DeepSeek-V3 (with risk control) belongs to the first tier of safe models (unsafe rate around $5\%$); DeepSeek-R1 (with risk control), Claude-3.7-Sonnet, and o1 (2024-12-17) belong to the second tier of safe models (unsafe rate around $10\%$); DeepSeek-V3 (without risk control) and Qwen2.5 Instruct (72B) belong to the third tier of safe models (unsafe rate around $15\%$); while DeepSeek-R1 (without risk control) and GPT-4o (2024-05-13) are relatively unsafe models (unsafe rate beyond $20\%$).
 
 
-- Analyzing rejection rates: The base models of DeepSeek-R1 and DeepSeek-V3 have relatively low rejection rates but higher unsafe rates. After implementing a risk control system, these models show relatively low unsafe rates but higher rejection rates (around \(25\%\)). Additionally, Claude-3.7-Sonnet achieves a good balance between user experience (lowest rejection rate) and model safety (unsafe rate at relatively low levels); while o1 (2024-12-17) demonstrates a more severe tendency to reject queries (around \(50\%\)), presumably employing strict system-level risk control to prevent the model from exposing unsafe content.
+- Analyzing rejection rates: The base models of DeepSeek-R1 and DeepSeek-V3 have relatively low rejection rates but higher unsafe rates. After implementing a risk control system, these models show relatively low unsafe rates but higher rejection rates (around $25\%$). Additionally, Claude-3.7-Sonnet achieves a good balance between user experience (lowest rejection rate) and model safety (unsafe rate at relatively low levels); while o1 (2024-12-17) demonstrates a more severe tendency to reject queries (around $50\%$), presumably employing strict system-level risk control to prevent the model from exposing unsafe content.
 
 
 - Analyzing risk types: DeepSeek-R1 performs exceptionally well in handling queries related to Illegal and Criminal Behavior and Moral and Ethical Issues, while showing average performance in scenarios involving Discrimination and Prejudice Issues and Harmful Behavior, which encourages us to pay more attention on these two categories when developing model safety features and risk control system.
@@ -2122,7 +2122,7 @@ _Table 11 | Comparison of DeepSeek-R1 and other frontier models in jailbreaking 
 <table><tr><td></td><td colspan="3">Unsafe Ratio</td><td colspan="3">Rejected Ratio</td></tr><tr><td>Ratio(%)</td><td colspan="2">Origin Jailbreak</td><td>GAP</td><td colspan="2">Origin Jailbreak</td><td>GAP</td></tr><tr><td>Claude-3.7-Sonnet</td><td>10.7</td><td>26.2</td><td>+15.5</td><td>3.6</td><td>21.9</td><td>+18.3</td></tr><tr><td>o1 (2024-12-17)</td><td>9.0</td><td>12.1</td><td>+3.1</td><td>50.4</td><td>79.8</td><td>+29.4</td></tr><tr><td>GPT-4o (2024-05-13)</td><td>22.0</td><td>30.4</td><td>+8.4</td><td>17.1</td><td>57.3</td><td>+40.2</td></tr><tr><td>Qwen2.5 Instruct (72B)</td><td>13.8</td><td>29.7</td><td>+15.9</td><td>5.4</td><td>25.2</td><td>+19.8</td></tr><tr><td>DeepSeek-V3</td><td>17.6</td><td>36.4</td><td>+18.8</td><td>8.1</td><td>8.9</td><td>+0.8</td></tr><tr><td>+ risk control system</td><td>5.3</td><td>2.3</td><td>-3.0</td><td>25.4</td><td>46.5</td><td>+21.1</td></tr><tr><td>DeepSeek-R1</td><td>25.2</td><td>85.9</td><td>+60.7</td><td>5.6</td><td>1.9</td><td>-3.7</td></tr><tr><td>+ risk control system</td><td>8.5</td><td>4.3</td><td>-4.2</td><td>27.3</td><td>87.3</td><td>+60.0</td></tr></table>
 
 
-- All tested models exhibited significantly increased rates of unsafe responses and rejections, along with decreased safety rates when facing jailbreak attacks. For example, Claude-3.7-Sonnet, showed a \(33.8\%\) decrease in the proportion of safe responses when confronted with our security jailbreak attacks. This demonstrates that current cutting-edge models still face substantial threats from jailbreak attacks.
+- All tested models exhibited significantly increased rates of unsafe responses and rejections, along with decreased safety rates when facing jailbreak attacks. For example, Claude-3.7-Sonnet, showed a $33.8\%$ decrease in the proportion of safe responses when confronted with our security jailbreak attacks. This demonstrates that current cutting-edge models still face substantial threats from jailbreak attacks.
 
 
 - Compared to non-reasoning models, the two reasoning models in our experiments — DeepSeek-R1 and o1(2024-12-17) — rely more heavily on the risk control system for security checks, resulting in considerably higher overall rejection rates (79.8% and 87.3% respectively).
@@ -2207,7 +2207,7 @@ _Figure 16 | The comparison of DeepSeek-V3 and DeepSeek-R1 across MMLU-Pro categ
 ---
 
 
-_Table 12 | A Comparative Analysis of DeepSeek-V3 and DeepSeek-R1. DeepSeek-V3 is a non-reasoning model developed on top of DeepSeek-V3-Base, which also serves as the foundational base model for DeepSeek-R1. Numbers in bold denote the performance is statistically significant (t-test with \( p < 0.01 \))._
+_Table 12 | A Comparative Analysis of DeepSeek-V3 and DeepSeek-R1. DeepSeek-V3 is a non-reasoning model developed on top of DeepSeek-V3-Base, which also serves as the foundational base model for DeepSeek-R1. Numbers in bold denote the performance is statistically significant (t-test with $ p < 0.01 $)._
 
 
 <table><tr><td></td><td>Benchmark (Metric)</td><td>V3-Base</td><td>V3</td><td>R1-Zero</td><td>R1</td></tr><tr><td rowspan="10">English</td><td>MMLU (EM)</td><td>87.1</td><td>88.5</td><td>88.8</td><td>90.8</td></tr><tr><td>MMLU-Redux (EM)</td><td>86.2</td><td>89.1</td><td>85.6</td><td>92.9</td></tr><tr><td>MMLU-Pro (EM)</td><td>64.4</td><td>75.9</td><td>68.9</td><td>84.0</td></tr><tr><td>DROP (3-shot F1)</td><td>89.0</td><td>91.6</td><td>89.1</td><td>92.2</td></tr><tr><td>IF-Eval (Prompt Strict)</td><td>58.6</td><td>86.1</td><td>46.6</td><td>83.3</td></tr><tr><td>GPQA Diamond (Pass@1)</td><td>-</td><td>59.1</td><td>75.8</td><td>71.5</td></tr><tr><td>SimpleQA (Correct)</td><td>20.1</td><td>24.9</td><td>30.3</td><td>30.1</td></tr><tr><td>FRAMES (Acc.)</td><td>-</td><td>73.3</td><td>82.3</td><td>82.5</td></tr><tr><td>AlpacaEval2.0 (LC-winrate)</td><td>-</td><td>70.0</td><td>24.7</td><td>87.6</td></tr><tr><td>ArenaHard (GPT-4-1106)</td><td>-</td><td>85.5</td><td>53.6</td><td>92.3</td></tr><tr><td rowspan="5">Code</td><td>LiveCodeBench (Pass@1-COT)</td><td>-</td><td>36.2</td><td>50.0</td><td>65.9</td></tr><tr><td>Codeforces (Percentile)</td><td>-</td><td>58.7</td><td>80.4</td><td>96.3</td></tr><tr><td>Codeforces (Rating)</td><td>-</td><td>1134</td><td>1444</td><td>2029</td></tr><tr><td>SWE Verified (Resolved)</td><td>-</td><td>42.0</td><td>43.2</td><td>49.2</td></tr><tr><td>Aider-Polyglot (Acc.)</td><td>-</td><td>49.6</td><td>12.2</td><td>53.3</td></tr><tr><td rowspan="3">Math</td><td>AIME 2024 (Pass@1)</td><td>-</td><td>39.2</td><td>77.9</td><td>79.8</td></tr><tr><td>MATH-500 (Pass@1)</td><td>-</td><td>90.2</td><td>95.9</td><td>97.3</td></tr><tr><td>CNMO 2024 (Pass@1)</td><td>-</td><td>43.2</td><td>88.1</td><td>78.8</td></tr><tr><td rowspan="3">Chinese</td><td>CLUEWSC (EM)</td><td>82.7</td><td>90.9</td><td>93.1</td><td>92.8</td></tr><tr><td>C-Eval (EM)</td><td>90.1</td><td>86.5</td><td>92.8</td><td>91.8</td></tr><tr><td>C-SimpleQA (Correct)</td><td>-</td><td>68.0</td><td>66.4</td><td>63.7</td></tr></table>
@@ -2237,7 +2237,7 @@ _Table 13 | Performance on latest math competitions. Participants with their USA
 # E.2. Generalization to Real-World Competitions
 
 
-Despite rigorous efforts to eliminate data contamination, variations of test set questions or discussions of related problems may still exist on websites that were included in the pre-training corpus. This raises an important question: can DeepSeek-R1 achieve comparable performance on test sets that were released after its training? To investigate this, we evaluate our model on AIME 2025, providing insights into its generalization capabilities on unseen data. As shown in Table 13, in AIME 2025 (https://artofproblemsolving.com/wiki/index.php/2025_AIME_II_Problems), DeepSeek-R1 achieves a \(75\%\) solve rate (Pass@1), approaching o1's performance of \(80\%\). Most notably, the model attains a score of 143.7/150 in AMC 12 2024 (https://artofproblemsolving.com/wiki/index.php/2024_AMC_12B_Problems) - a performance that, when combined with its AIME results, yields a score exceeding the qualification threshold for attending the USAMO (United States of America Mathematical Olympiad https://artofproblemsolving.com/wiki/index.php/AMC_historical_results?srsltid=AfmB0oqQ6pQic5NCan_NX1wYgr-aoHgJ33hsq7KSekF-rUwY8TBaBao 1). This performance positions DeepSeek-R1 among the nation's top-tier high school students.
+Despite rigorous efforts to eliminate data contamination, variations of test set questions or discussions of related problems may still exist on websites that were included in the pre-training corpus. This raises an important question: can DeepSeek-R1 achieve comparable performance on test sets that were released after its training? To investigate this, we evaluate our model on AIME 2025, providing insights into its generalization capabilities on unseen data. As shown in Table 13, in AIME 2025 (https://artofproblemsolving.com/wiki/index.php/2025_AIME_II_Problems), DeepSeek-R1 achieves a $75\%$ solve rate (Pass@1), approaching o1's performance of $80\%$. Most notably, the model attains a score of 143.7/150 in AMC 12 2024 (https://artofproblemsolving.com/wiki/index.php/2024_AMC_12B_Problems) - a performance that, when combined with its AIME results, yields a score exceeding the qualification threshold for attending the USAMO (United States of America Mathematical Olympiad https://artofproblemsolving.com/wiki/index.php/AMC_historical_results?srsltid=AfmB0oqQ6pQic5NCan_NX1wYgr-aoHgJ33hsq7KSekF-rUwY8TBaBao 1). This performance positions DeepSeek-R1 among the nation's top-tier high school students.
 
 
 # E.3. Mathematical Capabilities Breakdown by Categories
@@ -2249,7 +2249,7 @@ To assess DeepSeek-R1's mathematical reasoning capabilities comprehensively, we 
 # E.4. An Analysis on CoT Length
 
 
-Adaptive CoT length: During training, DeepSeek-R1 was permitted to think for a long time (i.e., to generate a lengthy chain of thought) before arriving at a final solution. To maximize success on challenging reasoning tasks, the model learned to dynamically scale computation by generating more thinking tokens to verify or correct its reasoning steps, or to backtrack and explore alternative approaches when initial attempts proved unsuccessful. The complexity of a problem directly correlates with the number of thinking tokens required: more difficult problems typically demand more extensive computation. For extremely easy questions, like \( 1 + 1 = \), the model tends to use fewer tokens (< 100 tokens) to answer the question.
+Adaptive CoT length: During training, DeepSeek-R1 was permitted to think for a long time (i.e., to generate a lengthy chain of thought) before arriving at a final solution. To maximize success on challenging reasoning tasks, the model learned to dynamically scale computation by generating more thinking tokens to verify or correct its reasoning steps, or to backtrack and explore alternative approaches when initial attempts proved unsuccessful. The complexity of a problem directly correlates with the number of thinking tokens required: more difficult problems typically demand more extensive computation. For extremely easy questions, like $ 1 + 1 = $, the model tends to use fewer tokens (< 100 tokens) to answer the question.
 
 
 ---
@@ -2292,10 +2292,10 @@ _Figure 17 | Performance breakdown by different categories of quantitative reaso
 _Figure 18 | Test-time compute scaling (measured by the number of thinking tokens generated to reach correct answers) as problem difficulty (measured by Pass@1) increases. The picture is smoothed using UnivariateSpline from SciPy with a smoothing factor of 5._
 
 
-Figure 18 demonstrates how DeepSeek-R1 scales test-time compute to solve challenging problems from math competitions held in 2024 (the same set of problems used in Figure 17). DeepSeek-R1 achieves a \(61.8\%\) solve rate (Pass@1) by scaling test-time compute to an average of 8,793 thinking tokens per problem. Notably, the model adaptively adjusts its computational effort based on problem difficulty, using fewer than 7,000 thinking tokens for simple problems while dedicating more than 18,000 thinking tokens to the most challenging ones, which demonstrates DeepSeek-R1 allocates test-time compute adaptively based on problem complexity: on more complex problems, it tends to think for longer. Looking forward, we hypothesize that if token budget allocation were explicitly modeled during training, the disparity in token usage between easy and hard questions at test time could become even more pronounced.
+Figure 18 demonstrates how DeepSeek-R1 scales test-time compute to solve challenging problems from math competitions held in 2024 (the same set of problems used in Figure 17). DeepSeek-R1 achieves a $61.8\%$ solve rate (Pass@1) by scaling test-time compute to an average of 8,793 thinking tokens per problem. Notably, the model adaptively adjusts its computational effort based on problem difficulty, using fewer than 7,000 thinking tokens for simple problems while dedicating more than 18,000 thinking tokens to the most challenging ones, which demonstrates DeepSeek-R1 allocates test-time compute adaptively based on problem complexity: on more complex problems, it tends to think for longer. Looking forward, we hypothesize that if token budget allocation were explicitly modeled during training, the disparity in token usage between easy and hard questions at test time could become even more pronounced.
 
 
-Comparison of non-reasoning models: A key advantage of reasoning models like DeepSeek-R1 over non-reasoning models such as GPT-4o 0513 is their ability to scale effectively along the dimension of reasoning. Non-reasoning models typically generate solutions directly, without intermediate thinking steps, and rarely demonstrate advanced problem-solving techniques like self-reflection, backtracking, or exploring alternative approaches. On this same set of math problems, GPT-4o 0513 achieves only a \(24.7\%\) solve rate while generating 711 output tokens on average — an order of magnitude less than DeepSeek-R1. Notably, non-reasoning models can also scale test-time compute with traditional methods like majority voting, but those methods fail to close the performance gap with reasoning models, even when controlling for the total number of tokens generated. For example, majority voting across 16 samples per problem yields minimal improvement in GPT-4o's solve rate on the 2024 collection of competition-level math problems, despite consuming more total tokens than DeepSeek-R1. On AIME 2024, majority voting across 64 samples only increases GPT-4o's solve rate from \(9.3\%\) to \(13.4\%\)—still dramatically lower than DeepSeek-R1's \(79.8\%\) solve rate or o1's \(79.2\%\) solve rate. This persistent performance gap stems
+Comparison of non-reasoning models: A key advantage of reasoning models like DeepSeek-R1 over non-reasoning models such as GPT-4o 0513 is their ability to scale effectively along the dimension of reasoning. Non-reasoning models typically generate solutions directly, without intermediate thinking steps, and rarely demonstrate advanced problem-solving techniques like self-reflection, backtracking, or exploring alternative approaches. On this same set of math problems, GPT-4o 0513 achieves only a $24.7\%$ solve rate while generating 711 output tokens on average — an order of magnitude less than DeepSeek-R1. Notably, non-reasoning models can also scale test-time compute with traditional methods like majority voting, but those methods fail to close the performance gap with reasoning models, even when controlling for the total number of tokens generated. For example, majority voting across 16 samples per problem yields minimal improvement in GPT-4o's solve rate on the 2024 collection of competition-level math problems, despite consuming more total tokens than DeepSeek-R1. On AIME 2024, majority voting across 64 samples only increases GPT-4o's solve rate from $9.3\%$ to $13.4\%$—still dramatically lower than DeepSeek-R1's $79.8\%$ solve rate or o1's $79.2\%$ solve rate. This persistent performance gap stems
 
 
 ---
@@ -2304,7 +2304,7 @@ Comparison of non-reasoning models: A key advantage of reasoning models like Dee
 from a fundamental limitation: in majority voting, samples are generated independently rather than building upon each other. Since non-reasoning models lack the ability to backtrack or self-correct, scaling the sample size merely results in repeatedly sampling potentially incorrect final solutions without increasing the probability of finding correct solutions in any single attempt, making this approach highly token-inefficient.
 
 
-**Drawback:** However, DeepSeek-R1's extended reasoning chains still sometimes fail to be thorough or become trapped in incorrect logic paths. Independently sampling multiple reasoning chains increases the probability of discovering correct solutions, as evidenced by the fact that DeepSeek-R1's Pass@64 score on AIME 2024 is \(90.0\%\), significantly higher than its Pass@1 score of \(79.8\%\). Therefore, traditional test-time scaling methods like majority voting or Monte Carlo Tree Search (MCTS) can complement DeepSeek-R1's long reasoning; specifically, majority voting further improves DeepSeek-R1's accuracy from \(79.8\%\) to \(86.7\%\).
+**Drawback:** However, DeepSeek-R1's extended reasoning chains still sometimes fail to be thorough or become trapped in incorrect logic paths. Independently sampling multiple reasoning chains increases the probability of discovering correct solutions, as evidenced by the fact that DeepSeek-R1's Pass@64 score on AIME 2024 is $90.0\%$, significantly higher than its Pass@1 score of $79.8\%$. Therefore, traditional test-time scaling methods like majority voting or Monte Carlo Tree Search (MCTS) can complement DeepSeek-R1's long reasoning; specifically, majority voting further improves DeepSeek-R1's accuracy from $79.8\%$ to $86.7\%$.
 
 
 # E.5. Performance of Each Stage on Problems of Varying Difficulty
@@ -2337,7 +2337,7 @@ For distilled models, we apply only SFT and do not include an RL stage, even tho
 demonstrate the effectiveness of the distillation technique, leaving the exploration of the RL stage to the broader research community. For details on distillation training, please see Appendix B.4.3.
 
 
-_Table 15 | Comparison of DeepSeek-R1 distilled models and other comparable models on reasoning-related benchmarks. Numbers in bold denote the performance is statistically significant (t-test with \( p < 0.01 \))._
+_Table 15 | Comparison of DeepSeek-R1 distilled models and other comparable models on reasoning-related benchmarks. Numbers in bold denote the performance is statistically significant (t-test with $ p < 0.01 $)._
 
 
 <table><tr><td rowspan="2">Model</td><td colspan="2">AIME 2024</td><td>MATH</td><td rowspan="2">GPQA Diamond pass@1</td><td rowspan="2">LiveCode Bench pass@1</td><td rowspan="2">CodeForces rating</td></tr><tr><td>pass@1</td><td>cons@64</td><td>pass@1</td></tr><tr><td>GPT-4o-0513</td><td>9.3</td><td>13.4</td><td>74.6</td><td>49.9</td><td>32.9</td><td>759</td></tr><tr><td>Claude-3.5-Sonnet-1022</td><td>16.0</td><td>26.7</td><td>78.3</td><td>65.0</td><td>38.9</td><td>717</td></tr><tr><td>DeepSeek-R1-Distill-Qwen-1.5B</td><td>28.9</td><td>52.7</td><td>83.9</td><td>33.8</td><td>16.9</td><td>954</td></tr><tr><td>DeepSeek-R1-Distill-Qwen-7B</td><td>55.5</td><td>83.3</td><td>92.8</td><td>49.1</td><td>37.6</td><td>1189</td></tr><tr><td>DeepSeek-R1-Distill-Qwen-14B</td><td>69.7</td><td>80.0</td><td>93.9</td><td>59.1</td><td>53.1</td><td>1481</td></tr><tr><td>DeepSeek-R1-Distill-Qwen-32B</td><td>72.6</td><td>83.3</td><td>94.3</td><td>62.1</td><td>57.2</td><td>1691</td></tr><tr><td>DeepSeek-R1-Distill-Llama-8B</td><td>50.4</td><td>80.0</td><td>89.1</td><td>49.0</td><td>39.6</td><td>1205</td></tr><tr><td>DeepSeek-R1-Distill-Llama-70B</td><td>70.0</td><td>86.7</td><td>94.5</td><td>65.2</td><td>57.5</td><td>1633</td></tr></table>
@@ -2809,22 +2809,22 @@ Then consider the creativity and novelty of the assistant's answers when needed.
 After providing your explanation, you must output only one of the following choices as your final verdict with a label:
 
 
-1. Assistant A is significantly better: \(\left[\mathrm{[A > > B]}\right]\)
+1. Assistant A is significantly better: $\left[\mathrm{[A > > B]}\right]$
 
 
-2. Assistant A is slightly better: \([ [A > B ] ]\)
+2. Assistant A is slightly better: $[ [A > B ] ]$
 
 
-3. Tie, relatively the same: \(\left[\left[\mathrm{A} = \mathrm{B}\right]\right]\)
+3. Tie, relatively the same: $\left[\left[\mathrm{A} = \mathrm{B}\right]\right]$
 
 
-4. Assistant B is slightly better: \(\left[\mathrm{B} > \mathrm{A}\right]\)
+4. Assistant B is slightly better: $\left[\mathrm{B} > \mathrm{A}\right]$
 
 
-5. Assistant B is significantly better: \(\left[\mathrm{B} > > \mathrm{A}\right]\)
+5. Assistant B is significantly better: $\left[\mathrm{B} > > \mathrm{A}\right]$
 
 
-Example output: "My final verdict is tie: \([[\mathrm{A} = \mathrm{B}]]\)."
+Example output: "My final verdict is tie: $[[\mathrm{A} = \mathrm{B}]]$."
 
 
 ---
@@ -2879,7 +2879,7 @@ _Table 28 | C-EVAL evaluates a model's breadth and depth of knowledge across 52 
 以下是中国关于逻辑学考试的单项选择题，请选出其中的正确答案。
 
 
-1991年6月15日，菲律宾吕宋岛上的皮纳图博火山突然大喷发，2000万吨二氧化硫气体冲入平流层，形成的霾像毯子一样盖在地球上空，把部分要照射到地球的阳光反射回太空几年之后，气象学家发现这层霾使得当时地球表面的温度累计下降了 \(0.5^{\circ} \mathrm{C}\)，而皮纳图博火山喷发前的一个世纪，因人类活动而造成的温室效应已经使地球表面温度升高 \(1^{\circ} \mathrm{C}\)。某位持“人工气候改造论”的科学家据此认为，可以用火箭弹等方式将二氧化硫充入大气层，阻挡部分阳光，达到地球表面降温的目的。以下哪项如果为真，最能对该科学家的提议构成质疑？
+1991年6月15日，菲律宾吕宋岛上的皮纳图博火山突然大喷发，2000万吨二氧化硫气体冲入平流层，形成的霾像毯子一样盖在地球上空，把部分要照射到地球的阳光反射回太空几年之后，气象学家发现这层霾使得当时地球表面的温度累计下降了 $0.5^{\circ} \mathrm{C}$，而皮纳图博火山喷发前的一个世纪，因人类活动而造成的温室效应已经使地球表面温度升高 $1^{\circ} \mathrm{C}$。某位持“人工气候改造论”的科学家据此认为，可以用火箭弹等方式将二氧化硫充入大气层，阻挡部分阳光，达到地球表面降温的目的。以下哪项如果为真，最能对该科学家的提议构成质疑？
 
 
 A. 如果利用火箭弹将二氧化硫充入大气层, 会导致航空乘客呼吸不适。
@@ -2927,19 +2927,19 @@ _Table 29 | GPQA (Graduate-Level Google-Proof QA Benchmark) is a rigorous evalua
 Answer the following multiple choice question. The last line of your response should be of the following format: 'ANSWER: $LETTER' (without quotes) where LETTER is one of ABCD. Think step by step before answering.
 
 
-Two quantum states with energies E1 and E2 have a lifetime of \(10^{-9}\) sec and \(10^{-8}\) sec, respectively. We want to clearly distinguish these two energy levels. Which one of the following options could be their energy difference so that they can be clearly resolved?
+Two quantum states with energies E1 and E2 have a lifetime of $10^{-9}$ sec and $10^{-8}$ sec, respectively. We want to clearly distinguish these two energy levels. Which one of the following options could be their energy difference so that they can be clearly resolved?
 
 
-A) \(10^{-9} \mathrm{eV}\)
+A) $10^{-9} \mathrm{eV}$
 
 
-B) \(10^{-8} \mathrm{eV}\)
+B) $10^{-8} \mathrm{eV}$
 
 
-C) \(10^{-4} \mathrm{eV}\)
+C) $10^{-4} \mathrm{eV}$
 
 
-D) \(10^{-11} \mathrm{eV}\)
+D) $10^{-11} \mathrm{eV}$
 
 
 # Evaluation
